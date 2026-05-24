@@ -164,6 +164,236 @@ void RenderCache::CachesManager(GraphContext& context, const TransformCoordinate
 	}
 }
 
+//#include<iostream>
+
+void RenderCache::ThresholdCasheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
+{
+	const size_t IndexOfPoint = 0;
+	
+	const double y_min_pixels = data.thresholds.min;
+	const double y_max_pixels = data.thresholds.max;
+
+	auto curr_point = cache.points[IndexOfPoint];
+	auto next_point = cache.points[IndexOfPoint + 1];
+
+	// coefficient lean "k" of line and constant Y-offset "b"
+	auto delta = next_point - curr_point;
+
+	// <delta.x> cannot be equal to zero, delta.x == step of LinearData
+	auto k = delta.y / delta.x;
+	auto b = curr_point.y - (curr_point.x * k);
+
+	// update flags of first line
+	// check begin of line
+	if (curr_point.y < y_max_pixels) {
+		data.begin_in_area = false;
+		data.begin_state_y = y_max_pixels;
+	}
+	else if (curr_point.y > y_min_pixels) {
+		data.begin_in_area = false;
+		data.begin_state_y = y_min_pixels;
+	}
+	else {
+		data.begin_in_area = true;
+	}
+
+	// check end of line
+	if (next_point.y < y_max_pixels) {
+		data.end_in_area = false;
+		data.end_state_y = y_max_pixels;
+	}
+	else if (next_point.y > y_min_pixels) {
+		data.end_in_area = false;
+		data.end_state_y = y_min_pixels;
+	}
+	else {
+		data.end_in_area = true;
+	}
+
+	if (data.begin_in_area == true && data.end_in_area == true) {
+		// not changes
+		visible_cache.push_back(curr_point);
+		visible_cache.push_back(next_point);
+	}
+	else if (data.begin_in_area == true && data.end_in_area == false) {
+		// recalculate end
+		double end_state_x = (data.end_state_y - b) / k;
+		visible_cache.push_back(curr_point);
+		visible_cache.push_back({ end_state_x , data.end_state_y });
+		visible_cache.push_back({ next_point.x , data.end_state_y });
+	}
+	else if (data.begin_in_area == false && data.end_in_area == true) {
+		// recalculate begin
+		double begin_state_x = (data.begin_state_y - b) / k;
+		visible_cache.push_back({ curr_point.x , data.begin_state_y });
+		visible_cache.push_back({ begin_state_x , data.begin_state_y });
+		visible_cache.push_back(next_point);
+	}
+	else if (data.begin_in_area == false && data.end_in_area == false) {
+		// recalculate begin/end
+		if (data.begin_state_y == data.end_state_y) {
+			// invisible line
+			visible_cache.push_back({ curr_point.x , data.begin_state_y });
+			visible_cache.push_back({ next_point.x , data.end_state_y });
+		}
+		else {
+			double begin_state_x = (data.begin_state_y - b) / k;
+			double end_state_x = (data.end_state_y - b) / k;
+			visible_cache.push_back({ curr_point.x , data.begin_state_y });
+			visible_cache.push_back({ begin_state_x , data.begin_state_y });
+			visible_cache.push_back({ end_state_x , data.end_state_y });
+			visible_cache.push_back({ next_point.x , data.end_state_y });
+		}
+	}
+
+	// state flow
+	data.begin_in_area = data.end_in_area;
+	data.begin_state_y = data.end_state_y;
+}
+
+void RenderCache::ThresholdCasheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
+{
+	const double y_min_pixels = data.thresholds.min;
+	const double y_max_pixels = data.thresholds.max;
+
+	size_t IndexOfPoint = 1;
+
+	for (size_t l = 0; l < cache.points.size() - 2; ++l)
+	{
+		// here see only next point
+		// update only next point(points), without current!!!
+		auto curr_point = cache.points[IndexOfPoint];
+		auto next_point = cache.points[IndexOfPoint + 1];
+
+		// coefficient lean "k" of line and constant Y-offset "b"
+		auto delta = next_point - curr_point;
+
+		// <delta.x> cannot be equal to zero, delta.x == step of LinearData
+		auto k = delta.y / delta.x;
+		auto b = curr_point.y - (curr_point.x * k);
+
+		// check end of line
+		if (next_point.y < y_max_pixels) {
+			data.end_in_area = false;
+			data.end_state_y = y_max_pixels;
+		}
+		else if (next_point.y > y_min_pixels) {
+			data.end_in_area = false;
+			data.end_state_y = y_min_pixels;
+		}
+		else {
+			data.end_in_area = true;
+		}
+
+		if (data.begin_in_area == true && data.end_in_area == true) {
+			// not changes
+			visible_cache.push_back(next_point);
+		}
+		else if (data.begin_in_area == true && data.end_in_area == false) {
+			// recalculate end
+			double end_state_x = (data.end_state_y - b) / k;
+			visible_cache.push_back({ end_state_x , data.end_state_y });
+			visible_cache.push_back({ next_point.x , data.end_state_y });
+		}
+		else if (data.begin_in_area == false && data.end_in_area == true) {
+			// recalculate begin
+			double begin_state_x = (data.begin_state_y - b) / k;
+			visible_cache.push_back({ begin_state_x , data.begin_state_y });
+			visible_cache.push_back(next_point);
+		}
+		else if (data.begin_in_area == false && data.end_in_area == false) {
+			// recalculate begin/end
+			if (data.begin_state_y == data.end_state_y) {
+				// invisible line
+				visible_cache.push_back({ next_point.x , data.end_state_y });
+			}
+			else {
+				double begin_state_x = (data.begin_state_y - b) / k;
+				double end_state_x = (data.end_state_y - b) / k;
+				visible_cache.push_back({ begin_state_x , data.begin_state_y });
+				visible_cache.push_back({ end_state_x , data.end_state_y });
+				visible_cache.push_back({ next_point.x , data.end_state_y });
+			}
+		}
+
+		// next line
+		IndexOfPoint++;
+
+		// state flow
+		data.begin_in_area = data.end_in_area;
+		data.begin_state_y = data.end_state_y;
+	}
+}
+
+void RenderCache::ThresholdCasheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds)
+{
+	std::vector<Vec2d> visible_cache;
+
+	ThresholdCacheYAnalyzeData data;
+	data.begin_in_area = true;
+	data.begin_state_y = 0;
+	data.end_in_area = true;
+	data.end_state_y = 0;
+	data.thresholds = thresholds;
+
+	ThresholdCasheYAnalyzeEntry(cache, visible_cache, data);
+	ThresholdCasheYAnalyzeContinues(cache, visible_cache, data);
+
+	cache.points = visible_cache; // load full content
+}
+
+// reject invisible Y-parts of image
+void RenderCache::ThresholdCasheY(GraphContext& context)
+{
+	// reject threshold
+	// shouldn't tracking points on boundary plot from "DataTracker"
+	constexpr double threshold = 15.;
+
+	// extract world-coordinates Y-range
+	// in values: y_min_pixels > y_max_pixels (inverted logic)
+	double y_min_pixels = context.GetPlotReferenceOffset().y + threshold;
+	double y_max_pixels = context.GetPlotReferenceOffset().y - context.GetPlotSize().y - threshold;
+
+	for (int i = 0; i < caches.size(); ++i) {
+		auto& cache = caches[i];
+
+		if (cache.is_active == false) continue;
+
+		// if 1 point -> it's just point
+		if (cache.points.size() <= 1) {
+			// not valid
+			if (cache.points.size() == 0) continue;
+
+			// size == 1
+			// logic single point
+			// empty line ?
+		}
+
+		// here size >= 2
+		auto& points = cache.points;
+
+		// scenario ?
+		if (cache.is_compressed == true) {
+			// just cut Y + threshold ...
+			for (size_t i = 0; i < points.size(); ++i) {
+				if (points[i].y > y_min_pixels) {
+					points[i].y = y_min_pixels;
+					continue;
+				}
+				if (points[i].y < y_max_pixels) {
+					points[i].y = y_max_pixels;
+				}
+			}
+		}
+		else {
+			// linear approximation in the visible region
+			// y = k * x + b
+			ThresholdsYInPixel thresholds = { y_min_pixels , y_max_pixels };
+			ThresholdCasheYDirectMode(caches[i], thresholds);
+		}
+	}
+}
+
 const std::vector<TraceCache>& RenderCache::GetCaches() const { return caches; }
 
 void RenderCache::GenerateRenderCacheData(

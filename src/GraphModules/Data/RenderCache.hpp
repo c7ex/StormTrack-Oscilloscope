@@ -23,9 +23,17 @@ struct EffectiveIndices {
 	double max_index;
 };
 
-struct RangeYInPixel {
+struct ThresholdsYInPixel {
 	double min;
 	double max;
+};
+
+struct ThresholdCacheYAnalyzeData { // for optimization in DirectMode Y-caches
+	bool begin_in_area;
+	double begin_state_y;
+	bool end_in_area;
+	double end_state_y;
+	ThresholdsYInPixel thresholds;
 };
 
 struct TraceCache {
@@ -61,6 +69,14 @@ private:
 	void CreateScenarioCacheDirect(const TransformCoordinates& coreEngine, const LinearData& data);
 	void CreateScenarioCacheCompressed(const TransformCoordinates& coreEngine, const LinearData& data, double compressedScale);
 	void CachesManager(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data);
+
+private:
+	void ThresholdCasheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
+	void ThresholdCasheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
+	void ThresholdCasheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds);
+
+public:
+	void ThresholdCasheY(GraphContext& context);
 
 private:
 	void Reset();

@@ -199,6 +199,8 @@ void GraphState::RenderGraph(HDC hdc)
         data_state_.GetData()
     );
 
+    render_cache_.ThresholdCasheY(graph_context_);
+
     auto_scaler_.SwitchActive(window_state_);
 
 // >> begin draw
