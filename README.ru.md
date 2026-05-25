@@ -23,7 +23,7 @@
 ## Сборка
 
 ### Способ 1 — готовый SDK (рекомендуется)
-1. Получите SDK. Если в [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases/tag/v1.3.0) доступен готовый SDK (.zip), скачайте его и распакуйте.
+1. Получите SDK. Если в [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases) доступен готовый SDK (.zip), скачайте его и распакуйте.
    Иначе откройте решение и соберите проект `StormTrack` в конфигурации Release —
    в папке `bin/x64/Release` появятся `StormTrack.lib` и папка `StormTrackHeaders`.
 2. Скопируйте в свой проект папку `StormTrackHeaders` и файл `StormTrack.lib`.

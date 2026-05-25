@@ -23,7 +23,7 @@
 ## Build Instructions
 
 ### Method 1 — Ready-to-use SDK (recommended)
-1. Get the SDK. If a prebuilt SDK (.zip) is available in [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases/tag/v1.3.0), download and extract it.
+1. Get the SDK. If a prebuilt SDK (.zip) is available in [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases), download and extract it.
    Otherwise, open the solution and build the `StormTrack` project in Release configuration —
    `StormTrack.lib` and the `StormTrackHeaders` folder will appear in `bin/x64/Release`.
 2. Copy the `StormTrackHeaders` folder and `StormTrack.lib` into your project.
