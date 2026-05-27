@@ -2,7 +2,6 @@
 #define WINDOWSTATE_H
 
 #include <windows.h>
-#include <iostream>
 
 #include "RaiiWinApi.hpp"
 #include "AxesState.hpp"

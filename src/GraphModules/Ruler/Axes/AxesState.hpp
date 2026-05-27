@@ -3,8 +3,6 @@
 
 #include <sstream>
 #include <iomanip>
-#include <iostream>
-
 #include "Grid.hpp"
 #include "Caption.hpp"
 #include "WindowState.hpp"

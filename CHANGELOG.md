@@ -5,6 +5,14 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и этот проект придерживается [семантического версионирования](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2026-05-28
+
+### Added
+- Отключен `<iostream>`
+- x-индексы в `Cache` переведены с `int` на `size_t`/`int64_t`
+- Явная смена окна компрессии в `CreateScenarioCacheCompressed`
+- Исправлена опечатка в `Cache`-методах
+
 ## [1.3.1] - 2026-05-25
 
 ### Added

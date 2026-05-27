@@ -33,12 +33,19 @@ void RenderCache::calculateEffectiveIndices(const LinearData& ldata, const Posit
 	LinearDataParameters data_parameters = ldata.getParameters();
 
 	// boards
-	auto left_index_board = 0;
-	auto right_index_board = ldata.size() - 1;
+	int64_t left_index_board = 0;
+	int64_t right_index_board = ldata.size() - 1;
+
+	if (right_index_board < 0) {
+		// no valid case -> exit cache further
+		ei.min_index = 0;
+		ei.max_index = 0;
+		return;
+	}
 
 	// calculated effective indexes with +1 correct
-	auto left_index = static_cast<int>((vrX.min_value_x - data_parameters.offset) / data_parameters.step);
-	auto right_index = static_cast<int>((vrX.max_value_x - data_parameters.offset) / data_parameters.step);
+	int64_t left_index = static_cast<int64_t>((vrX.min_value_x - data_parameters.offset) / data_parameters.step);
+	int64_t right_index = static_cast<int64_t>((vrX.max_value_x - data_parameters.offset) / data_parameters.step);
 
 	left_index--;
 	right_index++;
@@ -66,6 +73,7 @@ void RenderCache::calculateEffectiveIndices(const LinearData& ldata, const Posit
 	}
 
 	// update
+	// alwayse > 0
 	ei.min_index = left_index;
 	ei.max_index = right_index;
 }
@@ -110,12 +118,14 @@ void RenderCache::CreateScenarioCacheCompressed(const TransformCoordinates& core
 	trace.is_compressed = true;
 
 	double float_index = ei.min_index;
+	size_t l_idx = static_cast<size_t>(float_index);
 
 	while (float_index < ei.max_index) {
-		int l_idx = static_cast<int>(float_index);
 		float_index += compressedScale;
-		int r_idx = static_cast<int>(float_index);
-		if (r_idx > ei.max_index) r_idx = static_cast<int>(ei.max_index);
+		size_t r_idx = static_cast<size_t>(float_index);
+
+		// protect end
+		if (r_idx > ei.max_index) r_idx = static_cast<size_t>(ei.max_index);
 
 		double min_y = data[l_idx].y;
 		double max_y = min_y;
@@ -138,6 +148,11 @@ void RenderCache::CreateScenarioCacheCompressed(const TransformCoordinates& core
 		trace.max_x = (std::max)(trace.max_x, (std::max)(p1.x, p2.x));
 		trace.min_y = (std::min)(trace.min_y, (std::min)(p1.y, p2.y));
 		trace.max_y = (std::max)(trace.max_y, (std::max)(p1.y, p2.y));
+
+		l_idx = r_idx + 1;
+
+		// case end
+		if (l_idx > ei.max_index) break;
 	}
 
 	caches.push_back(std::move(trace));
@@ -164,9 +179,7 @@ void RenderCache::CachesManager(GraphContext& context, const TransformCoordinate
 	}
 }
 
-//#include<iostream>
-
-void RenderCache::ThresholdCasheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
+void RenderCache::ThresholdCacheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
 {
 	const size_t IndexOfPoint = 0;
 	
@@ -251,7 +264,7 @@ void RenderCache::ThresholdCasheYAnalyzeEntry(const TraceCache& cache, std::vect
 	data.begin_state_y = data.end_state_y;
 }
 
-void RenderCache::ThresholdCasheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
+void RenderCache::ThresholdCacheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data)
 {
 	const double y_min_pixels = data.thresholds.min;
 	const double y_max_pixels = data.thresholds.max;
@@ -325,7 +338,7 @@ void RenderCache::ThresholdCasheYAnalyzeContinues(const TraceCache& cache, std::
 	}
 }
 
-void RenderCache::ThresholdCasheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds)
+void RenderCache::ThresholdCacheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds)
 {
 	std::vector<Vec2d> visible_cache;
 
@@ -336,14 +349,14 @@ void RenderCache::ThresholdCasheYDirectMode(TraceCache& cache, const ThresholdsY
 	data.end_state_y = 0;
 	data.thresholds = thresholds;
 
-	ThresholdCasheYAnalyzeEntry(cache, visible_cache, data);
-	ThresholdCasheYAnalyzeContinues(cache, visible_cache, data);
+	ThresholdCacheYAnalyzeEntry(cache, visible_cache, data);
+	ThresholdCacheYAnalyzeContinues(cache, visible_cache, data);
 
 	cache.points = visible_cache; // load full content
 }
 
 // reject invisible Y-parts of image
-void RenderCache::ThresholdCasheY(GraphContext& context)
+void RenderCache::ThresholdCacheY(GraphContext& context)
 {
 	// reject threshold
 	// shouldn't tracking points on boundary plot from "DataTracker"
@@ -389,7 +402,7 @@ void RenderCache::ThresholdCasheY(GraphContext& context)
 			// linear approximation in the visible region
 			// y = k * x + b
 			ThresholdsYInPixel thresholds = { y_min_pixels , y_max_pixels };
-			ThresholdCasheYDirectMode(caches[i], thresholds);
+			ThresholdCacheYDirectMode(caches[i], thresholds);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 #ifndef TEXTFORMATTER_H
 #define TEXTFORMATTER_H
 
-#include <iostream>
 #include <string>
 #include <sstream>
 #include <iomanip>

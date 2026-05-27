@@ -1,6 +1,5 @@
 #include "GraphState.hpp"
 #include <ctime>
-#include <iostream>
 #include <iomanip>
 #include <algorithm>
 #include <chrono>
@@ -154,7 +153,7 @@ void GraphState::InitializeReferencePosition(double x, double y) {
 void GraphState::DrawCentralPoint(HDC hdc) {
     rwa::PEN pen(hdc, PS_SOLID, 1, RGB(150, 150, 150));
     RECT wspa = graph_context_.GetPlotArea();
-    const long center_x = (wspa.left + wspa.right + 1) / 2; // +1 для коррекции точно по центру
+    const long center_x = (wspa.left + wspa.right + 1) / 2; // +1 for placement in the center
     const long center_y = (wspa.top + wspa.bottom) / 2;
     Ellipse(hdc, center_x - 1, center_y - 1, center_x + 1, center_y + 1);
 }
@@ -199,7 +198,7 @@ void GraphState::RenderGraph(HDC hdc)
         data_state_.GetData()
     );
 
-    render_cache_.ThresholdCasheY(graph_context_);
+    render_cache_.ThresholdCacheY(graph_context_);
 
     auto_scaler_.SwitchActive(window_state_);
 

@@ -19,8 +19,8 @@ struct VisibleRangeX {
 };
 
 struct EffectiveIndices {
-	double min_index;
-	double max_index;
+	size_t min_index;
+	size_t max_index;
 };
 
 struct ThresholdsYInPixel {
@@ -71,12 +71,12 @@ private:
 	void CachesManager(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data);
 
 private:
-	void ThresholdCasheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
-	void ThresholdCasheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
-	void ThresholdCasheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds);
+	void ThresholdCacheYAnalyzeEntry(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
+	void ThresholdCacheYAnalyzeContinues(const TraceCache& cache, std::vector<Vec2d>& visible_cache, ThresholdCacheYAnalyzeData& data);
+	void ThresholdCacheYDirectMode(TraceCache& cache, const ThresholdsYInPixel& thresholds);
 
 public:
-	void ThresholdCasheY(GraphContext& context);
+	void ThresholdCacheY(GraphContext& context);
 
 private:
 	void Reset();

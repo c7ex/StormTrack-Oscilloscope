@@ -1,5 +1,4 @@
 #include "DataState.hpp"
-#include <iostream>
 #include <chrono>
 
 DataState::DataState() {}
