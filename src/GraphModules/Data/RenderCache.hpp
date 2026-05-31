@@ -67,7 +67,8 @@ private:
 
 private:
 	void CreateScenarioCacheDirect(const TransformCoordinates& coreEngine, const LinearData& data);
-	void CreateScenarioCacheCompressed(const TransformCoordinates& coreEngine, const LinearData& data, double compressedScale);
+	bool ArtifactsDetectorCacheCompressed(GraphContext& context, const LinearData& data, double compressedScale);
+	void CreateScenarioCacheCompressed(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data, double compressedScale);
 	void CachesManager(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data);
 
 private:

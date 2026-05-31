@@ -2,7 +2,6 @@
 #define _PLOTRESIZER_HPP_
 
 #include"Vec2d.hpp"
-#include"iostream"
 
 class PlotResizer {
 private:

@@ -107,7 +107,29 @@ void RenderCache::CreateScenarioCacheDirect(const TransformCoordinates& coreEngi
 	caches.push_back(std::move(trace));
 }
 
-void RenderCache::CreateScenarioCacheCompressed(const TransformCoordinates& coreEngine, const LinearData& data, double compressedScale) {	
+bool RenderCache::ArtifactsDetectorCacheCompressed(GraphContext& context, const LinearData& data, double compressedScale)
+{
+	// begin plot world coordinations
+	double world_left = context.GetReferencePosition().x;
+
+	// pixel x-width world coordinations
+	double step = data.getParameters().step;
+	double bin_width = compressedScale * step;
+
+	// begin fractional phase
+	double phase = std::abs(std::fmod(world_left, bin_width) / bin_width);
+
+	constexpr double phase_artifact_min = 0.4;
+	constexpr double phase_artifact_max = 0.6;
+
+	if (phase >= phase_artifact_min &&
+		phase <= phase_artifact_max)
+		return true;
+
+	return false;
+}
+
+void RenderCache::CreateScenarioCacheCompressed(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data, double compressedScale) {
 	TraceCache trace;
 	trace.trace_id = trace_id;
 	trace.is_active = true;
@@ -117,8 +139,17 @@ void RenderCache::CreateScenarioCacheCompressed(const TransformCoordinates& core
 	trace.max_y = -(std::numeric_limits<double>::max)();
 	trace.is_compressed = true;
 
-	double float_index = ei.min_index;
+	// align x -> static picture
+	double float_index = std::floor(ei.min_index / compressedScale) * compressedScale;
 	size_t l_idx = static_cast<size_t>(float_index);
+
+	double correct_phase = 0;
+
+	if (ArtifactsDetectorCacheCompressed(context, data, compressedScale)) {
+		double step = data.getParameters().step;
+		double bin_width = compressedScale * step;
+		correct_phase = bin_width / 2.;
+	}
 
 	while (float_index < ei.max_index) {
 		float_index += compressedScale;
@@ -135,8 +166,8 @@ void RenderCache::CreateScenarioCacheCompressed(const TransformCoordinates& core
 			else if (y > max_y) max_y = y;
 		}
 
-		int m_idx = (l_idx + r_idx) >> 1;
-		double x = data[m_idx].x;
+		size_t m_idx = (l_idx + r_idx) >> 1;
+		double x = data[m_idx].x + correct_phase;
 
 		Vec2d p1 = coreEngine.ConvertToPixelCoords(x, min_y);
 		Vec2d p2 = coreEngine.ConvertToPixelCoords(x, max_y);
@@ -175,7 +206,7 @@ void RenderCache::CachesManager(GraphContext& context, const TransformCoordinate
 		CreateScenarioCacheDirect(coreEngine, ldata);
 	}
 	else {
-		CreateScenarioCacheCompressed(coreEngine, ldata, compressedScale);
+		CreateScenarioCacheCompressed(context, coreEngine, ldata, compressedScale);
 	}
 }
 
@@ -427,7 +458,7 @@ void RenderCache::GenerateRenderCacheData(
 	// get rangeX in PixelX
 	calculateRangeXInPixelX();
 
-	for (int i = 0; i < data_pull.size(); ++i) {
+	for (size_t i = 0; i < data_pull.size(); ++i) {
 		bool active_data = li.IsActive(i);
 		trace_id = i;
 		if (active_data) {

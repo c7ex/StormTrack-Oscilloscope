@@ -1,5 +1,4 @@
 #include"WindowState.hpp"
-#include"iostream"
 
 RECT WindowState::GetMargins() const {
     return margins;

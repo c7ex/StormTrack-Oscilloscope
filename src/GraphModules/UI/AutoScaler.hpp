@@ -1,8 +1,6 @@
 #ifndef AUTO_SCALER_H
 #define AUTO_SCALER_H
 
-#include"iostream"
-
 #include"DataState.hpp"
 #include"WindowState.hpp"
 #include"GraphContext.hpp"

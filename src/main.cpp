@@ -294,7 +294,29 @@ void RunMillionPointsDemo() {
     window.WaitForClose();
 }
 
+void RunNoiseTest() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrack window(hInstance, L"Noise Points");
+    window.Show();
+
+    const size_t N = 5000000;
+    std::vector<double> noise(N);
+    {
+        static std::mt19937 rng(123);
+        std::normal_distribution<double> dist(0.0, 1.0);
+        for (size_t i = 0; i < N; ++i)
+            noise[i] = dist(rng);
+    }
+
+    window.JustView(noise, L"White noise", RGB(200, 200, 100));
+
+    window.WaitForClose();
+}
+
 int main() {
+    //RunNoiseTest();
+    //return 0;
+
     std::thread streamingDemo(RunStreamingDemo);
     std::thread realtimeDemo(RunRealtimeDemo);
     std::thread multiTraceDemo(RunMultiTraceDemo);
