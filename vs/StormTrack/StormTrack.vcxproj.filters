@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\src\StormTrack\StormTrackAPI.cpp">
       <Filter>src\StormTrack</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GraphModules\UI\FpsState.cpp">
+      <Filter>src\GraphModules\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GraphCore\GraphContext.hpp">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\StormTrack\StormTrack.hpp">
       <Filter>src\StormTrack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GraphModules\UI\FpsState.hpp">
+      <Filter>src\GraphModules\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

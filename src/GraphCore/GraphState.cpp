@@ -101,6 +101,9 @@ void GraphState::HandlerKeyDown(WPARAM wParam) {
     case 'A':
         window_state_.ActivateKey(UserKeys::_A);
         break;
+    case 'F':
+        window_state_.ActivateKey(UserKeys::_F);
+        break;
     }
 }
 
@@ -114,6 +117,9 @@ void GraphState::HandlerKeyUp(WPARAM wParam) {
         break;
     case 'A':
         window_state_.DisactivateKey(UserKeys::_A);
+        break;
+    case 'F':
+        window_state_.DisactivateKey(UserKeys::_F);
         break;
     }
 }
@@ -158,34 +164,14 @@ void GraphState::DrawCentralPoint(HDC hdc) {
     Ellipse(hdc, center_x - 1, center_y - 1, center_x + 1, center_y + 1);
 }
 
-void GraphState::DrawFPS(HDC hdc, int fps) {
-    double alpha = 1. / static_cast<double>(fps_state_.window_smoov_fps);
-    double betta = 1. - alpha;
-    fps_state_.average_fps = static_cast<double>(fps) * alpha + betta * fps_state_.average_fps;
-
-    std::wstring text = L"FPS: " + std::to_wstring(static_cast<int>(fps_state_.average_fps));
-
-    rwa::FONT font(hdc, 14, 0, 0, 0, FW_BOLD, false, false, false,
-        DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-        DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Arial");
-
-    SetTextColor(hdc, RGB(0, 255, 0));
-
-    auto ref_plot = graph_context_.GetPlotReferenceOffset();
-    auto size_plot = graph_context_.GetPlotSize();
-    constexpr double offset_scaler_fps_x = 0.01;
-    constexpr double offset_scaler_fps_y = 0.01;
-    int x = ref_plot.x + size_plot.x * offset_scaler_fps_x;
-    int y = ref_plot.y - size_plot.y + size_plot.y * offset_scaler_fps_y;
-
-    TextOutW(hdc, x, y, text.c_str(), text.length());
-}
-
 void GraphState::RenderGraph(HDC hdc)
 {
     auto start = std::chrono::high_resolution_clock::now();
 
     std::lock_guard<std::mutex> lock(mtx);
+
+    auto_scaler_.SwitchActive(window_state_);
+    fps_state_.SwitchActive(window_state_);
 
 // >> check & recalculate area if auto scale ON
 
@@ -199,8 +185,6 @@ void GraphState::RenderGraph(HDC hdc)
     );
 
     render_cache_.ThresholdCacheY(graph_context_);
-
-    auto_scaler_.SwitchActive(window_state_);
 
 // >> begin draw
 
@@ -218,15 +202,16 @@ void GraphState::RenderGraph(HDC hdc)
 
     axes_state_.LaunchDrawCaptions(hdc, graph_context_, transform_coords_);
     legend_item_.Draw(hdc, graph_context_);
+    data_tracker_.ShowCoordinates(hdc, graph_context_, transform_coords_, data_state_, window_state_);
 
 //#ifndef CURSORZOOM
 //    DrawCentralPoint(hdc);
 //#endif
+
     constexpr double millisecond = 1e6;
     double duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start).count();
     size_t fps = static_cast<size_t>(millisecond / duration);
-    data_tracker_.ShowCoordinates(hdc, graph_context_, transform_coords_, data_state_, window_state_);
-    DrawFPS(hdc, fps);
+    fps_state_.Draw(graph_context_, hdc, fps);
 
 // >> end draw
 }

@@ -14,13 +14,9 @@
 #include "AutoScaler.hpp"
 #include "WindowState.hpp"
 #include "DataTracker.hpp"
+#include "FpsState.hpp"
 #include "GraphContext.hpp"
 #include "TransformCoordinates.hpp"
-
-struct FpsState {
-    double average_fps = 60;
-    const size_t window_smoov_fps = 64;
-};
 
 class GraphState {
 private:
@@ -60,7 +56,6 @@ public:
     void InitializeVisibleArea(double x, double y);
     void InitializeReferencePosition(double x, double y);
 
-    void DrawFPS(HDC hdc, int fps);
     void DrawCentralPoint(HDC hdc);
     void RenderGraph(HDC hdc);
     

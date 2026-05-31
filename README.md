@@ -14,6 +14,7 @@
 - **Zoom** via mouse wheel (both XY or X-only with Shift held); zooming relative to cursor position.
 - **Pan** (dragging) with left mouse button within the plot area.
 - **Auto-fit on X** — the `A` hotkey toggles automatic adjustment of the visible area to match all active traces.
+- **FPS display** — the `F` hotkey toggles the rendering performance overlay on/off.
 - **Legend** — a list of traces with show/hide toggles (click the colored square).
 - **Data tracking** — hovering over the plot highlights the nearest point and displays its coordinates.
 - **Adaptive grid** with numeric labels.
@@ -137,6 +138,7 @@ window.WaitForClose();
 | Zoom | Mouse wheel. Default — both X and Y. With `Shift` held — X only. With `Ctrl` held — fast zoom. Zoom is centered on cursor position. |
 | Pan | Hold left mouse button over the plot area and drag. |
 | Auto-fit X | `A` key (toggles on/off). When enabled, the visible area automatically adjusts to cover the full X range of all active traces. |
+| FPS display | The `F` key (toggles on/off). When enabled, displays the number of rendered frames per second. |
 | Legend (show/hide trace) | Click the colored square in the right panel. The trace is temporarily hidden or shown again. |
 | Coordinate tracking | Hover over the plot — the nearest data point is highlighted, and a tooltip with its coordinates appears near the cursor. |
 | Plot area resize | Move the cursor to the edge of the dark border (a double-sided arrow will appear) and drag the boundary. Expands or collapses the legend panel. |

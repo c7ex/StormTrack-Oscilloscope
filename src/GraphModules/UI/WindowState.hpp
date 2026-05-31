@@ -39,13 +39,15 @@ enum PlotSideType {
 enum UserKeys {
     _SHIFT,
     _CTRL,
-    _A
+    _A,
+    _F
 };
 
 struct KeysState {
     bool shift = false;
     bool ctrl = false;
     bool a = false;
+    bool f = true;
 };
 
 class WindowState {

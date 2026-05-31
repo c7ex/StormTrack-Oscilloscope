@@ -36,6 +36,7 @@
     <ClCompile Include="..\..\src\GraphModules\Ruler\Support\TransparentColor.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\AutoScaler.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\DataTracker.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\FpsState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\LegendItem.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\TugboatState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\WindowState.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="..\..\src\GraphModules\UI\AutoScaler.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\ConfigUI.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\DataTracker.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\FpsState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\LegendItem.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\PlotResizer.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\TugboatState.hpp" />
