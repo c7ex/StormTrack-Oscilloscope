@@ -49,3 +49,7 @@ bool StormTrack::FrameView(std::vector<double>& load_data, size_t trace_index) {
 bool StormTrack::RealtimeView(std::vector<double>& load_data, size_t trace_index) {
     return graphState.StreamAppend(load_data, trace_index);
 }
+
+bool StormTrack::RealtimeView(const double load_value, size_t trace_index) {
+	return graphState.StreamAppend(load_value, trace_index);
+}

@@ -21,6 +21,7 @@ public:
     void load(std::vector<double>& load_data, double step = 1, double offset = 0);
     void stream(std::vector<double>& new_data, size_t trace_index);
     void append(std::vector<double>& new_data, size_t trace_index);
+    void append(const double new_value, size_t trace_index);
 
     void update_data(const LegendItem& li);
 

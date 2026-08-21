@@ -88,6 +88,7 @@ public:
     void JustView(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     bool FrameView(std::vector<double>& load_data, size_t trace_index);
     bool RealtimeView(std::vector<double>& load_data, size_t trace_index);
+    bool RealtimeView(const double load_value, size_t trace_index);
 };
 
 #endif

@@ -46,8 +46,8 @@ enum UserKeys {
 struct KeysState {
     bool shift = false;
     bool ctrl = false;
-    bool a = false;
-    bool f = true;
+    bool a = ConfigUI::AutoScaler::default_autoscaler_x_active;
+    bool f = ConfigUI::Fps::default_active;
 };
 
 class WindowState {
@@ -65,8 +65,8 @@ private:
         LONG    right;
         LONG    bottom;
     */
-
-    RECT base_margins = { 30, 25, 25, 25 };
+ 
+    RECT base_margins = { 65, 35, 45, 45 };
     RECT margins = base_margins;
 
 private:

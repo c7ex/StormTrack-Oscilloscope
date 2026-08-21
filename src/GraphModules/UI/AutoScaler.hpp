@@ -1,6 +1,7 @@
 #ifndef AUTO_SCALER_H
 #define AUTO_SCALER_H
 
+#include"ConfigUI.hpp"
 #include"DataState.hpp"
 #include"WindowState.hpp"
 #include"GraphContext.hpp"
@@ -18,7 +19,7 @@ struct Range {
 };
 
 class AutoScaler {
-	bool active = false;
+	bool active = ConfigUI::AutoScaler::default_autoscaler_x_active;
 	bool holder = false;
 
 private:

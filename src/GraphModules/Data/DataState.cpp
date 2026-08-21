@@ -21,6 +21,10 @@ void DataState::append(std::vector<double>& new_data, size_t trace_index) {
     data[trace_index].AppendData(new_data);
 }
 
+void DataState::append(const double new_value, size_t trace_index) {
+    data[trace_index].AppendData(new_value);
+}
+
 void DataState::update_data(const LegendItem& li) {
     for (int i = 0; i < data.size(); ++i) {
         data[i].SetStatus(li.IsActive(i));

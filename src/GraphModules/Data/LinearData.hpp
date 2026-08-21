@@ -50,6 +50,7 @@ public:
 public:
 	void LoadData(std::vector<double>& new_data);
 	void AppendData(const std::vector<double>& new_data);
+	void AppendData(const double new_value);
 
 public:
 	void Init(const std::vector<double>& init_data, double init_step, double init_offset);

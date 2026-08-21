@@ -279,3 +279,15 @@ bool GraphState::StreamAppend(std::vector<double>& load_data, size_t trace_index
 
     return false;
 }
+
+bool GraphState::StreamAppend(const double load_value, size_t trace_index) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto count_traces = legend_item_.GetCountTrace();
+
+    if (trace_index < count_traces) {
+        data_state_.append(load_value, trace_index);
+        return true;
+    }
+
+    return false;
+}

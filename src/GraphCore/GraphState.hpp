@@ -67,6 +67,7 @@ public:
     size_t CreateTrace(std::wstring caption, COLORREF color, double step = 1.0, double offset = 0.0);
     bool StreamUpdate(std::vector<double>& load_data, size_t trace_index);
     bool StreamAppend(std::vector<double>& load_data, size_t trace_index);
+    bool StreamAppend(const double load_value, size_t trace_index);
 };
 
 #endif

@@ -55,6 +55,18 @@ public:
         static constexpr double clip_scale_x = 0.03;
         static constexpr double clip_scale_y = 0.03;
     };
+
+    class Fps {
+	public:		
+		static constexpr bool default_active = true;
+        static constexpr size_t default_fps = 60;
+        static constexpr size_t default_window_smoov_fps = 64;
+    };
+
+    class AutoScaler {
+    public:
+		static constexpr bool default_autoscaler_x_active = true;
+    };
 };
 
 #endif

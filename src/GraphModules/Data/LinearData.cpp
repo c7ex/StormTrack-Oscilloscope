@@ -13,7 +13,12 @@ const Position2d LinearData::operator [](size_t index) const
 	double x = offset + step * static_cast<double>(index);
 	double y = 0;
 	if (index >= size())
-	{ /* error access*/ }
+	{
+		/* error access*/
+		#ifdef _DEBUG
+		return { x, 0 };
+		#endif
+	}
 	else { y = data[index]; }
 	return { x, y };
 }
@@ -56,6 +61,10 @@ void LinearData::LoadData(std::vector<double>& new_data) {
 
 void LinearData::AppendData(const std::vector<double>& new_data) {
 	data.insert(data.end(), new_data.begin(), new_data.end());
+}
+
+void LinearData::AppendData(const double new_value) {
+	data.push_back(new_value);
 }
 
 void LinearData::Init(const std::vector<double>& init_data, double init_step, double init_offset) {

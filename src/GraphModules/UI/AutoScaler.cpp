@@ -1,7 +1,7 @@
 #include"AutoScaler.hpp"
 
 void AutoScaler::SwitchActive(const WindowState& window) {
-	bool hotkey = window.GetKeysState(UserKeys::_A);
+	bool hotkey = window.GetKeysState(UserKeys::_A) ^ ConfigUI::AutoScaler::default_autoscaler_x_active;
 	if (holder != hotkey) {
 		if (!holder && hotkey) {
 			active = !active;
