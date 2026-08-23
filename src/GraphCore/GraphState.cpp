@@ -175,7 +175,7 @@ void GraphState::RenderGraph(HDC hdc)
 
 // >> check & recalculate area if auto scale ON
 
-    auto_scaler_.CorrectAreaX(graph_context_, transform_coords_, data_state_);
+    auto_scaler_.CorrectAreaX(graph_context_, transform_coords_, data_state_, window_state_);
 
     render_cache_.GenerateRenderCacheData(
         graph_context_,

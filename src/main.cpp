@@ -142,6 +142,7 @@ void RunStreamingDemo() {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
+
     window.Close();
     window.WaitForClose();
 }
@@ -313,8 +314,41 @@ void RunNoiseTest() {
     window.WaitForClose();
 }
 
+void RunChangeSizeData() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrack window(hInstance, L"Change Data Size");
+	auto trace = window.AddTrace(L"Change Data Size Trace", RGB(200, 200, 100));
+
+    window.Show();
+
+    for (;;) {
+        size_t N = std::rand() & 0xfffff;
+        std::vector<double> data = generateRandomWalk(N, 0.0, 0.1);
+        window.FrameView(data, trace);
+    }
+
+    window.WaitForClose();
+}
+
+void RunEmptyData() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrack window(hInstance, L"Empty data");
+    window.Show();
+
+    const size_t N = 0;
+    std::vector<double> data_empty(0);
+    std::vector<double> data_no_empty(1);
+    std::vector<double> data_two_points(2);
+
+    window.JustView(data_empty, L"Empty data", RGB(200, 200, 100));
+    window.JustView(data_no_empty, L"Data with one point", RGB(100, 100, 200));
+    window.JustView(data_two_points, L"Data with two points", RGB(100, 200, 100));
+
+    window.WaitForClose();
+}
+
 int main() {
-    //RunNoiseTest();
+    //RunEmptyData();
     //return 0;
 
     std::thread streamingDemo(RunStreamingDemo);

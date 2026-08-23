@@ -28,7 +28,7 @@ private:
 public:
 	void SwitchActive(const WindowState& window);
 
-	void CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data);
+	void CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, WindowState& window);
 
 	void Disactivate();
 

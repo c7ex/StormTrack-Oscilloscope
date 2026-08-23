@@ -33,6 +33,10 @@ void WindowState::UpdateCursor(CursorType new_cursor_type, PlotSideType new_plot
     }
 }
 
+void WindowState::UpdateDataException(DataException new_data_exception) {
+    data_exception = new_data_exception;
+}
+
 void WindowState::UpdatePlotStates(GraphContext& context)
 {
     auto mouse_position = context.GetMousePosition();
@@ -201,6 +205,10 @@ bool WindowState::GetIsPlotBound() const {
 
 CursorType WindowState::GetCursorType() const {
     return cursor_type;
+}
+
+DataException WindowState::GetDataException() const {
+	return data_exception;
 }
 
 bool WindowState::GetKeysState(UserKeys key) const {

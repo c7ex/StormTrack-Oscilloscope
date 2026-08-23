@@ -31,7 +31,11 @@ Range AutoScaler::GetTotalRangeX(const DataState& data) {
 	return Range{ minX, maxX };
 }
 
-void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data) {
+void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, WindowState& window)
+{
+	// Free-fly mode by defaut without autoscale
+	window.UpdateDataException(DataException::_VALID_DATA_RANGE);
+
 	if (!active) return;
 	
 	size_t count_active_traces = 0;
@@ -41,9 +45,20 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 		}
 	}
 
-	if (count_active_traces == 0) return;
+	if (count_active_traces == 0) {
+		window.UpdateDataException(DataException::_NAN_DATA);
+		return;
+	}
 
 	Range rangeX = GetTotalRangeX(data);
+
+	// reject singularity
+	// set "DataTracker" to 'Invalid X-Range'
+	if (rangeX.min == rangeX.max) {
+		window.UpdateDataException(DataException::_INVALID_DATA_X_RANGE);
+		rangeX.min += ConfigUI::AutoScaler::default_singularity_case_x_range_min;
+		rangeX.max += ConfigUI::AutoScaler::default_singularity_case_x_range_max;
+	}
 
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();

@@ -1,5 +1,30 @@
 #include"GraphState.hpp"
 
+void DataTracker::DrawDot(HDC hdc, int x, int y, int radius, COLORREF color) {
+    rwa::BRUSH brush(hdc, color);
+    Ellipse(hdc, x - radius, y - radius, x + radius, y + radius);
+}
+
+void DataTracker::DrawLabel(HDC hdc, const Position2d& mouse_position,
+    const std::wstring& text, COLORREF bgColor) {
+    SIZE textSize;
+    GetTextExtentPoint32W(hdc, text.c_str(), text.length(), &textSize);
+    int left = mouse_position.x + ConfigUI::DataTracker::offsetX;
+    int top = mouse_position.y + ConfigUI::DataTracker::offsetY;
+    int right = left + textSize.cx + 2 * ConfigUI::DataTracker::padding;
+    int bottom = top + textSize.cy + 2 * ConfigUI::DataTracker::padding;
+
+    rwa::PEN pen(hdc, PS_SOLID, 1, ConfigUI::DataTracker::borderColor);
+    rwa::BRUSH brush(hdc, bgColor);
+    Rectangle(hdc, left, top, right, bottom);
+
+    SetTextColor(hdc, ConfigUI::DataTracker::textColor);
+    TextOutW(hdc,
+        left + ConfigUI::DataTracker::padding,
+        top + ConfigUI::DataTracker::padding,
+        text.c_str(), text.length());
+}
+
 void DataTracker::SearchPoint(
     const LinearData& data, 
     const TransformCoordinates& coreEngine, 
@@ -22,11 +47,6 @@ double DataTracker::VecModule(const Vec2d& p1, const Vec2d& p2) {
     double distance_squa_y = distance_point.y * distance_point.y;
     double distance = sqrt(distance_squa_x + distance_squa_y);
     return distance;
-}
-
-void DataTracker::DrawDot(HDC hdc, int x, int y, int radius, COLORREF color) {
-    rwa::BRUSH brush(hdc, color);
-    Ellipse(hdc, x - radius, y - radius, x + radius, y + radius);
 }
 
 void DataTracker::SearchNearestLinearData(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data)
@@ -144,45 +164,70 @@ Position2d DataTracker::TryHoldNearestData(HDC hdc, GraphContext& context, const
 
 void DataTracker::ShowCoordinates(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws)
 {
-    if (ws.GetIsPlotArea()) {
+    if (ws.GetIsPlotArea())
+    {
         Position2d mouse_position = context.GetMousePosition();
-        Position2d coordinates = TryHoldNearestData(hdc, context, coreEngine, data, ws);
 
-        COLORREF bgColor = search_data_result.nearest_range >= 0
-            ? (data.GetData()[search_data_result.data_trace_id].GetColor())
-            : RGB(255, 255, 200);
+        switch (ws.GetDataException())
+        {
+            case DataException::_VALID_DATA_RANGE: {
+                Position2d coordinates = TryHoldNearestData(hdc, context, coreEngine, data, ws);
 
-        std::wstring coord_text = L"" + std::to_wstring(coordinates.x) + L", " +
-            std::to_wstring(coordinates.y) + L"";
+                COLORREF bgColor = search_data_result.nearest_range >= 0
+                    ? (data.GetData()[search_data_result.data_trace_id].GetColor())
+                    : ConfigUI::DataTracker::freefly_backgroundColor;
 
-        int oldBkMode = SetBkMode(hdc, TRANSPARENT);
-        COLORREF oldTextColor = SetTextColor(hdc, ConfigUI::DataTracker::textColor);
+                std::wstring coord_text = L"" + std::to_wstring(coordinates.x) + L", " +
+                    std::to_wstring(coordinates.y) + L"";
+                int oldBkMode = SetBkMode(hdc, TRANSPARENT);
+                COLORREF oldTextColor = SetTextColor(hdc, ConfigUI::DataTracker::textColor);
+
+                LOGFONT lf = {};
+                GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
+                lf.lfWeight = (search_data_result.nearest_range >= 0) ? FW_BOLD : FW_NORMAL;
+                rwa::FONT font(hdc, lf);
+
+                DrawLabel(hdc, mouse_position, coord_text, bgColor);
+
+                SetBkMode(hdc, oldBkMode);
+                SetTextColor(hdc, oldTextColor);
+                break;
+            }
         
-        LOGFONT lf = {};
-        GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
-        lf.lfWeight = (search_data_result.nearest_range >= 0) ? FW_BOLD : FW_NORMAL;
+			case DataException::_INVALID_DATA_X_RANGE: {
+				std::wstring warning_text = L"Invalid X-Range, trying auto scale";
+				int oldBkMode = SetBkMode(hdc, TRANSPARENT);
+				COLORREF oldTextColor = SetTextColor(hdc, ConfigUI::DataTracker::textColor);
+				LOGFONT lf = {};
+				GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
+				lf.lfWeight = FW_BOLD;
+				rwa::FONT font(hdc, lf);
 
-        rwa::FONT font(hdc, lf);
+                DrawLabel(hdc, mouse_position, warning_text, ConfigUI::DataTracker::warning_backgroundColor);
 
-        SIZE textSize;
-        GetTextExtentPoint32W(hdc, coord_text.c_str(), coord_text.length(), &textSize);
+				SetBkMode(hdc, oldBkMode);
+				SetTextColor(hdc, oldTextColor);
+				break;
+			}
 
-        int left = mouse_position.x + ConfigUI::DataTracker::offsetX;
-        int top = mouse_position.y + ConfigUI::DataTracker::offsetY;
-        int right = left + textSize.cx + 2 * ConfigUI::DataTracker::padding;
-        int bottom = top + textSize.cy + 2 * ConfigUI::DataTracker::padding;
+			case DataException::_NAN_DATA: {
+				std::wstring warning_text = L"No data or all traces hidden, trying auto scale";
+				int oldBkMode = SetBkMode(hdc, TRANSPARENT);
+				COLORREF oldTextColor = SetTextColor(hdc, ConfigUI::DataTracker::textColor);
+				LOGFONT lf = {};
+				GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
+				lf.lfWeight = FW_BOLD;
+				rwa::FONT font(hdc, lf);
 
-        rwa::PEN pen(hdc, PS_SOLID, 1, ConfigUI::DataTracker::borderColor);
-        rwa::BRUSH brush(hdc, bgColor);
-        Rectangle(hdc, left, top, right, bottom);
+                DrawLabel(hdc, mouse_position, warning_text, ConfigUI::DataTracker::warning_backgroundColor);
 
-        SetTextColor(hdc, ConfigUI::DataTracker::textColor);
-        TextOutW(hdc, 
-            left + ConfigUI::DataTracker::padding, 
-            top + ConfigUI::DataTracker::padding,
-            coord_text.c_str(), coord_text.length());
+				SetBkMode(hdc, oldBkMode);
+				SetTextColor(hdc, oldTextColor);
+				break;
+			}
 
-        SetBkMode(hdc, oldBkMode);
-        SetTextColor(hdc, oldTextColor);
+			default:
+				break;
+        }
     }
 }

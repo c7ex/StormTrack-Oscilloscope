@@ -36,6 +36,12 @@ enum PlotSideType {
     _BOT_RIGHT
 };
 
+enum DataException {
+    _VALID_DATA_RANGE,
+    _INVALID_DATA_X_RANGE,
+    _NAN_DATA
+};
+
 enum UserKeys {
     _SHIFT,
     _CTRL,
@@ -56,6 +62,7 @@ private:
     bool is_plot_bound;
     CursorType cursor_type;
     PlotSideType plot_side_type;
+    DataException data_exception;
     KeysState keys_state;
 
     /*
@@ -73,10 +80,13 @@ private:
     void UpdateCursor(CursorType new_cursor_type, PlotSideType new_plot_size_type);
 
 public:
+	void UpdateDataException(DataException new_data_exception);
     void UpdatePlotStates(GraphContext& context);
+    
     bool GetIsPlotArea() const;
     bool GetIsPlotBound() const;
     CursorType GetCursorType() const;
+	DataException GetDataException() const;
 
     void UpdatePlotSize(GraphContext& context, Vec2d delta, RECT ref_margins);
 

@@ -32,6 +32,8 @@ public:
 
         static constexpr COLORREF textColor = RGB(0, 0, 0);
         static constexpr COLORREF borderColor = RGB(0, 0, 0);
+		static constexpr COLORREF freefly_backgroundColor = RGB(255, 255, 200);
+        static constexpr COLORREF warning_backgroundColor = RGB(255, 30, 70);
     };
 
     class Zoom {
@@ -66,6 +68,8 @@ public:
     class AutoScaler {
     public:
 		static constexpr bool default_autoscaler_x_active = true;
+        static constexpr double default_singularity_case_x_range_min = -0.5;
+        static constexpr double default_singularity_case_x_range_max = 0.5;
     };
 };
 
