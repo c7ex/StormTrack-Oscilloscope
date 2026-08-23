@@ -36,7 +36,7 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
             FillRect(memDC, &clientRect, blackBrush);
             DeleteObject(blackBrush);
 
-            graphState.RenderGraph(memDC);
+            graphState.Render(memDC);
 
             BitBlt(hdc, 0, 0, bufferWidth, bufferHeight, memDC, 0, 0, SRCCOPY);
 

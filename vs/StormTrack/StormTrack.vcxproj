@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\GraphCore\GraphContext.cpp" />
+    <ClCompile Include="..\..\src\GraphCore\GraphRender.cpp" />
     <ClCompile Include="..\..\src\GraphCore\GraphState.cpp" />
     <ClCompile Include="..\..\src\GraphCore\TransformCoordinates.cpp" />
     <ClCompile Include="..\..\src\GraphModules\BaseMath\Area2d.cpp" />

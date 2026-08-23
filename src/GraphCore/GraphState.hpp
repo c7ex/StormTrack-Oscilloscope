@@ -56,9 +56,6 @@ public:
     void InitializeVisibleArea(double x, double y);
     void InitializeReferencePosition(double x, double y);
 
-    void DrawCentralPoint(HDC hdc);
-    void RenderGraph(HDC hdc);
-    
     Vec2d ExtractWindowSize();
     CursorType ExtractCursorType();
     
@@ -67,11 +64,15 @@ public:
     bool ExtractFlagOfPlotResize() const;
     bool ExtractFlagOfDataTrack() const;
 
-    void AddData(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     size_t CreateTrace(std::wstring caption, COLORREF color, double step = 1.0, double offset = 0.0);
+
+    void AddData(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     bool StreamUpdate(std::vector<double>& load_data, size_t trace_index);
     bool StreamAppend(std::vector<double>& load_data, size_t trace_index);
     bool StreamAppend(const double load_value, size_t trace_index);
+
+    void DrawCentralPoint(HDC hdc);
+    void Render(HDC hdc);
 };
 
 #endif

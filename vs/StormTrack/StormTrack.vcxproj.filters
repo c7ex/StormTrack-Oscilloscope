@@ -120,6 +120,9 @@
     <ClCompile Include="..\..\src\GraphModules\UI\FpsState.cpp">
       <Filter>src\GraphModules\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GraphCore\GraphRender.cpp">
+      <Filter>src\GraphCore</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GraphCore\GraphContext.hpp">

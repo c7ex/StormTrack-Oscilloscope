@@ -1,6 +1,8 @@
 #ifndef AUTO_SCALER_H
 #define AUTO_SCALER_H
 
+#include <utility>
+
 #include"ConfigUI.hpp"
 #include"DataState.hpp"
 #include"WindowState.hpp"
@@ -23,7 +25,7 @@ class AutoScaler {
 	bool holder = false;
 
 private:
-	Range GetTotalRangeX(const DataState& data);
+	std::pair<bool, Range> GetTotalRangeX(const DataState& data, WindowState& window);
 
 public:
 	void SwitchActive(const WindowState& window);

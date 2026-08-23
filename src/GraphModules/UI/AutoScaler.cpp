@@ -10,13 +10,29 @@ void AutoScaler::SwitchActive(const WindowState& window) {
 	}
 }
 
-Range AutoScaler::GetTotalRangeX(const DataState& data) {
-	double init_board = data.GetData()[0][0].x;
+std::pair<bool, Range> AutoScaler::GetTotalRangeX(const DataState& data, WindowState& window)
+{
+	size_t count_active_valid_traces = 0;
+	double init_board = 0;
+	for (const LinearData& linear_data : data.GetData()) {
+		if (linear_data.GetStatus() && linear_data.size() > 0) {
+			count_active_valid_traces++;
+			init_board = linear_data[0].x;
+			break;
+		}
+	}
+
+	if (count_active_valid_traces == 0) {
+		// output & not apply autoscale
+		window.UpdateDataException(DataException::_NAN_DATA);
+		return std::make_pair(false, Range{ 0, 0 });
+	}
+
 	double minX = init_board;
 	double maxX = init_board;
 
 	for (const LinearData& linear_data : data.GetData()) {
-		if (!linear_data.GetStatus()) continue;
+		if (!linear_data.GetStatus() || linear_data.size() == 0) continue;
 		size_t first_index = 0;
 		double current_minX = linear_data[first_index].x;
 		if (current_minX < minX) minX = current_minX;
@@ -28,7 +44,15 @@ Range AutoScaler::GetTotalRangeX(const DataState& data) {
 		if (current_maxX > maxX) maxX = current_maxX;
 	}
 
-	return Range{ minX, maxX };
+	// reject singularity
+	// set "DataTracker" to 'Invalid X-Range'
+	if (minX == maxX) {
+		window.UpdateDataException(DataException::_INVALID_DATA_X_RANGE);
+		minX += ConfigUI::AutoScaler::default_singularity_case_x_range_min;
+		maxX += ConfigUI::AutoScaler::default_singularity_case_x_range_max;
+	}
+
+	return std::make_pair(true, Range{ minX, maxX });
 }
 
 void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, WindowState& window)
@@ -37,28 +61,12 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 	window.UpdateDataException(DataException::_VALID_DATA_RANGE);
 
 	if (!active) return;
-	
-	size_t count_active_traces = 0;
-	for (const LinearData& linear_data : data.GetData()) {
-		if (linear_data.GetStatus()) {
-			count_active_traces++;
-		}
-	}
 
-	if (count_active_traces == 0) {
-		window.UpdateDataException(DataException::_NAN_DATA);
-		return;
-	}
+	std::pair<bool, Range> status_with_rangeX = GetTotalRangeX(data, window);
 
-	Range rangeX = GetTotalRangeX(data);
+	if (!status_with_rangeX.first) { return; }
 
-	// reject singularity
-	// set "DataTracker" to 'Invalid X-Range'
-	if (rangeX.min == rangeX.max) {
-		window.UpdateDataException(DataException::_INVALID_DATA_X_RANGE);
-		rangeX.min += ConfigUI::AutoScaler::default_singularity_case_x_range_min;
-		rangeX.max += ConfigUI::AutoScaler::default_singularity_case_x_range_max;
-	}
+	Range rangeX = status_with_rangeX.second;
 
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();
