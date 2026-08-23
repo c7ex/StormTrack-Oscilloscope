@@ -1,8 +1,14 @@
 #include"GraphState.hpp"
 
 void DataTracker::DrawDot(HDC hdc, int x, int y, int radius, COLORREF color) {
-    rwa::BRUSH brush(hdc, color);
+    rwa::PEN pen(hdc, PS_SOLID, 1, ConfigUI::GeneralGraph::background);
+    rwa::BRUSH brushOuter(hdc, color);
     Ellipse(hdc, x - radius, y - radius, x + radius, y + radius);
+
+    int innerRadius = static_cast<int>(radius * 1.0 / 3.0);
+    rwa::PEN penBlack(hdc, PS_SOLID, 1, ConfigUI::GeneralGraph::background);
+    rwa::BRUSH brushInner(hdc, ConfigUI::GeneralGraph::background);
+    Ellipse(hdc, x - innerRadius, y - innerRadius, x + innerRadius, y + innerRadius);
 }
 
 void DataTracker::DrawLabel(HDC hdc, const Position2d& mouse_position,
@@ -153,6 +159,7 @@ Position2d DataTracker::TryHoldNearestData(HDC hdc, GraphContext& context, const
 
     if (search_data_result.nearest_range >= 0) {
         // data is tracking
+        track_state = true;
         coordinates = linear_data[search_data_result.data_trace_id][search_data_result.data_index];
         auto track_point = coreEngine.ConvertToPixelCoords(coordinates);
         COLORREF colorData = linear_data[search_data_result.data_trace_id].GetColor();
@@ -164,6 +171,8 @@ Position2d DataTracker::TryHoldNearestData(HDC hdc, GraphContext& context, const
 
 void DataTracker::ShowCoordinates(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws)
 {
+    track_state = false;
+
     if (ws.GetIsPlotArea())
     {
         Position2d mouse_position = context.GetMousePosition();
@@ -191,6 +200,7 @@ void DataTracker::ShowCoordinates(HDC hdc, GraphContext& context, const Transfor
 
                 SetBkMode(hdc, oldBkMode);
                 SetTextColor(hdc, oldTextColor);
+
                 break;
             }
         
@@ -230,4 +240,8 @@ void DataTracker::ShowCoordinates(HDC hdc, GraphContext& context, const Transfor
 				break;
         }
     }
+}
+
+bool DataTracker::GetTrackState() const {
+    return track_state;
 }

@@ -63,7 +63,7 @@ void Grid::DrawGrid(HDC& hdc, const TransformCoordinates& coreEngine, const Grid
     const Size2d step = gpc.step;
     GridDrawSelection gridDrawSelection = gpc.selection;
 
-    COLORREF current_color = TransparentColor::Mix(GridConfig::BACKGROUND, gpc.color, gpc.alpha);
+    COLORREF current_color = TransparentColor::Mix(ConfigUI::GeneralGraph::background, gpc.color, gpc.alpha);
     
     rwa::PEN pen(hdc, PS_SOLID, GridConfig::GRID_LINE_WIDTH, current_color);
     

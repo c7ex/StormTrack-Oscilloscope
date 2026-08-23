@@ -191,6 +191,9 @@ void GraphState::RenderGraph(HDC hdc)
     RECT rplt = graph_context_.GetPlotArea();
     rwa::RGN rgn(hdc, &rplt);
 
+    rwa::BRUSH bgBrush(hdc, ConfigUI::GeneralGraph::background);
+    FillRect(hdc, &rplt, bgBrush.get());
+
     axes_state_.LaunchDrawGrids(hdc, graph_context_, transform_coords_);
 
     // display 1080x1920, Intel i5-7300HQ, 100ê x 3 graphs = 60 fps 
@@ -226,9 +229,22 @@ CursorType GraphState::ExtractCursorType() {
     return ct;
 }
 
-bool GraphState::ExtractFlagOfPlotResize() {
+// monitor cursor type change, return true if changed
+bool GraphState::CursorMonitor(CursorType new_cursor_type) {
+    return window_state_.UpdateCursor(new_cursor_type);
+}
+
+bool GraphState::PlotAreaActiveStatus() const {
+    return window_state_.GetIsPlotArea();
+}
+
+bool GraphState::ExtractFlagOfPlotResize() const {
     bool plotIsResized = plot_resizer_.GetStatus();
     return plotIsResized;
+}
+
+bool GraphState::ExtractFlagOfDataTrack() const {
+    return data_tracker_.GetTrackState();
 }
 
 void GraphState::AddData(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step, double offset) {

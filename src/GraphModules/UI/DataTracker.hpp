@@ -47,6 +47,7 @@ public:
 class DataTracker {
 private:
     DataSearchResult search_data_result;
+    bool track_state = false;
 
 private:
     void SearchPoint(
@@ -65,6 +66,7 @@ private:
     
 public:
     void ShowCoordinates(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws);
+    bool GetTrackState() const;
 };
 
 #endif

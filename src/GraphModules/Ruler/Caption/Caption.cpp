@@ -87,7 +87,7 @@ void Caption::DrawCaptionHorizontal(HDC hdc, const TransformCoordinates& coreEng
 
 void Caption::DrawCaptions(HDC& hdc, const TransformCoordinates& coreEngine, const GridPassContent& gpc, const CoreContent& cc)
 {
-    COLORREF transparentColor = TransparentColor::Mix(GridConfig::BACKGROUND, gpc.color, gpc.alpha);
+    COLORREF transparentColor = TransparentColor::Mix(ConfigUI::GeneralGraph::boundary, gpc.color, gpc.alpha);
     rwa::PEN penCreatePen(hdc, PS_SOLID, 1, transparentColor);
     rwa::BRUSH brush(hdc, transparentColor);
     rwa::FONT font(hdc, DEFAULT_GUI_FONT);

@@ -5,6 +5,12 @@
 
 class ConfigUI {
 public:
+    class GeneralGraph {
+    public:
+        static constexpr COLORREF background = RGB(10, 14, 23);
+        static constexpr COLORREF boundary = RGB(8, 0, 15);
+    };
+
     class LegendItem {
     public:
         static constexpr int item_size = 15;
@@ -23,7 +29,7 @@ public:
 
     class DataTracker {
     public:
-        static constexpr int radiusTrackDataInPixels = 8;
+        static constexpr int radiusTrackDataInPixels = 7;
         static constexpr int maximalSearchCountPounts = 1024;
 
         static constexpr int padding = 3;

@@ -33,6 +33,14 @@ void WindowState::UpdateCursor(CursorType new_cursor_type, PlotSideType new_plot
     }
 }
 
+bool WindowState::UpdateCursor(CursorType new_cursor_type) {
+    if (new_cursor_type != cursor_type) {
+        cursor_type = new_cursor_type;
+        return true;
+    }
+    return false;
+}
+
 void WindowState::UpdateDataException(DataException new_data_exception) {
     data_exception = new_data_exception;
 }

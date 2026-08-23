@@ -21,7 +21,8 @@ enum CursorType {
     _WE,
     _NS,
     _NWSE,
-    _NESW
+    _NESW,
+    _HIDDEN
 };
 
 enum PlotSideType {
@@ -80,7 +81,8 @@ private:
     void UpdateCursor(CursorType new_cursor_type, PlotSideType new_plot_size_type);
 
 public:
-	void UpdateDataException(DataException new_data_exception);
+    bool UpdateCursor(CursorType new_cursor_type);
+    void UpdateDataException(DataException new_data_exception);
     void UpdatePlotStates(GraphContext& context);
     
     bool GetIsPlotArea() const;

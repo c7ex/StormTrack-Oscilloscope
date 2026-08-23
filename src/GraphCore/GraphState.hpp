@@ -61,7 +61,11 @@ public:
     
     Vec2d ExtractWindowSize();
     CursorType ExtractCursorType();
-    bool ExtractFlagOfPlotResize();
+    
+    bool CursorMonitor(CursorType new_cursor_type);
+    bool PlotAreaActiveStatus() const;
+    bool ExtractFlagOfPlotResize() const;
+    bool ExtractFlagOfDataTrack() const;
 
     void AddData(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     size_t CreateTrace(std::wstring caption, COLORREF color, double step = 1.0, double offset = 0.0);
