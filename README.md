@@ -2,7 +2,7 @@
 
 **Read this in other languages:** [Русский](README.ru.md)
 
-**StormTrack** — is a C++ WinAPI library for real-time time series visualization on Windows using GDI. Its main purpose is to speed up R&D projects that need visualization in Visual Studio. The library works as a software oscilloscope: it can plot both static and streaming data. The rendering window runs in a separate thread, keeping the console responsive. Great performance even with a million data points.
+**StormTrack** is a C++ WinAPI library for real-time time series visualization on Windows using GDI. Its main purpose is to speed up R&D projects that need visualization in Visual Studio. The library works as a software oscilloscope: it can plot both static and streaming data. The rendering window runs in a separate thread, keeping the console responsive. Great performance even with a million data points.
 
 ![Interface example](screen/Demo.gif) 
 
@@ -14,12 +14,17 @@
 - **Zoom** via mouse wheel (both XY or X-only with Shift held); zooming relative to cursor position.
 - **Pan** (dragging) with left mouse button within the plot area.
 - **Auto-fit on X** — the `A` hotkey toggles automatic adjustment of the visible area to match all active traces.
+- **Auto-fit on Y** — the `S` hotkey toggles automatic scaling of the Y‑axis to fit all visible trace data.
 - **FPS display** — the `F` hotkey toggles the rendering performance overlay on/off.
 - **Legend** — a list of traces with show/hide toggles (click the colored square).
 - **Data tracking** — hovering over the plot highlights the nearest point and displays its coordinates.
 - **Adaptive grid** with numeric labels.
 - **Resizable plot area** — plot boundaries can be dragged.
 - **Multithreading** — the window runs in its own thread without blocking the main console thread.
+- **Smart rendering with anti‑aliasing artifacts elimination** — dynamic data compression and phase‑aligned binning ensure stable, flicker‑free panning even at extreme zoom levels.
+- **Two streaming modes** — full frame replacement (`FrameView` with move semantics) or continuous appending (`RealtimeView` with copy), giving you full control over data ownership.
+- **Zero external dependencies** — pure Win32/GDI, no Qt, no boost, no extra DLLs. Just include headers and link the static library.
+- **Configurable UI appearance** — background colors, FPS counter visibility, and other visual parameters are exposed in a single `ConfigUI.hpp` header (requires rebuilding the project).
 
 ## Build Instructions
 
@@ -124,8 +129,9 @@ window.WaitForClose();
 |--------|-------------|----------------|
 | `JustView(data, name, color, step, offset)` | Load static plot once | Copies |
 | `AddTrace(name, color, step, offset)` | Create trace, returns ID | — |
-| `FrameView(data, traceId)` | Full frame replace | Moves |
-| `RealtimeView(data, traceId)` | Append data to trace end | Copies |
+| `FrameView(data, traceId)` | Full frame replacement | Moves |
+| `RealtimeView(data, traceId)` | Append data to trace end (vector) | Copies |
+| `RealtimeView(value, traceId)` | Append a single value to trace end | Copies |
 | `Show()` | Open window in background thread | — |
 | `Close()` | Send close signal to window | — |
 | `WaitForClose()` | Block until window thread exits | — |
@@ -138,7 +144,8 @@ window.WaitForClose();
 | Zoom | Mouse wheel. Default — both X and Y. With `Shift` held — X only. With `Ctrl` held — fast zoom. Zoom is centered on cursor position. |
 | Pan | Hold left mouse button over the plot area and drag. |
 | Auto-fit X | `A` key (toggles on/off). When enabled, the visible area automatically adjusts to cover the full X range of all active traces. |
-| FPS display | The `F` key (toggles on/off). When enabled, displays the number of rendered frames per second. |
+| Auto-fit Y | `S` key (toggles on/off). When enabled, the Y‑axis automatically scales to fit all visible trace data. |
+| FPS display | `F` key (toggles on/off). When enabled, displays the number of rendered frames per second. |
 | Legend (show/hide trace) | Click the colored square in the right panel. The trace is temporarily hidden or shown again. |
 | Coordinate tracking | Hover over the plot — the nearest data point is highlighted, and a tooltip with its coordinates appears near the cursor. |
 | Plot area resize | Move the cursor to the edge of the dark border (a double-sided arrow will appear) and drag the boundary. Expands or collapses the legend panel. |

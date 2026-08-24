@@ -74,8 +74,11 @@ public:
     class AutoScaler {
     public:
 		static constexpr bool default_autoscaler_x_active = true;
+        static constexpr bool default_autoscaler_y_active = false;
         static constexpr double default_singularity_case_x_range_min = -0.5;
         static constexpr double default_singularity_case_x_range_max = 0.5;
+        static constexpr double default_singularity_case_y_range_min = -0.5;
+        static constexpr double default_singularity_case_y_range_max = 0.5;
     };
 };
 

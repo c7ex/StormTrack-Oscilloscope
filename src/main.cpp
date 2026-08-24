@@ -300,7 +300,7 @@ void RunNoiseTest() {
     StormTrack window(hInstance, L"Noise Points");
     window.Show();
 
-    const size_t N = 5000000;
+    const size_t N = 2048;
     std::vector<double> noise(N);
     {
         static std::mt19937 rng(123);
@@ -349,6 +349,7 @@ void RunEmptyData() {
 
 int main() {
     //RunEmptyData();
+    //RunNoiseTest();
     //return 0;
 
     std::thread streamingDemo(RunStreamingDemo);

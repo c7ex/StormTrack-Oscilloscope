@@ -87,6 +87,8 @@ void RenderCache::CreateScenarioCacheDirect(const TransformCoordinates& coreEngi
 	trace.min_y = (std::numeric_limits<double>::max)();
 	trace.max_y = -(std::numeric_limits<double>::max)();
 	trace.is_compressed = false;
+	trace.y_world_min = (std::numeric_limits<double>::max)();
+	trace.y_world_max = -(std::numeric_limits<double>::max)();
 
 	size_t start = static_cast<size_t>(ei.min_index);
 	size_t end = static_cast<size_t>(ei.max_index);
@@ -95,6 +97,9 @@ void RenderCache::CreateScenarioCacheDirect(const TransformCoordinates& coreEngi
 	trace.points.reserve(count);
 
 	for (size_t i = start; i <= end; ++i) {
+		trace.y_world_min = (std::min)(trace.y_world_min, data[i].y);
+		trace.y_world_max = (std::max)(trace.y_world_max, data[i].y);
+
 		Vec2d p = coreEngine.ConvertToPixelCoords(data[i]);
 		trace.points.push_back(p);
 
@@ -138,6 +143,8 @@ void RenderCache::CreateScenarioCacheCompressed(GraphContext& context, const Tra
 	trace.min_y = (std::numeric_limits<double>::max)();
 	trace.max_y = -(std::numeric_limits<double>::max)();
 	trace.is_compressed = true;
+	trace.y_world_min = (std::numeric_limits<double>::max)();
+	trace.y_world_max = -(std::numeric_limits<double>::max)();
 
 	// align x -> static picture
 	double float_index = std::floor(ei.min_index / compressedScale) * compressedScale;
@@ -168,6 +175,9 @@ void RenderCache::CreateScenarioCacheCompressed(GraphContext& context, const Tra
 
 		size_t m_idx = (l_idx + r_idx) >> 1;
 		double x = data[m_idx].x + correct_phase;
+
+		trace.y_world_min = (std::min)(trace.y_world_min, min_y);
+		trace.y_world_max = (std::max)(trace.y_world_max, max_y);
 
 		Vec2d p1 = coreEngine.ConvertToPixelCoords(x, min_y);
 		Vec2d p2 = coreEngine.ConvertToPixelCoords(x, max_y);
@@ -438,7 +448,22 @@ void RenderCache::ThresholdCacheY(GraphContext& context)
 	}
 }
 
+void RenderCache::RecalculatePixelY(const PixelRecalcParams& params) {
+	for (auto& cache : caches) {
+		if (!cache.is_active) continue;
+		for (auto& p : cache.points) {
+			p.y = params.plot_ref_y + (p.y - params.plot_ref_y) * params.ky + params.dy;
+		}
+		if (cache.min_y > cache.max_y) std::swap(cache.min_y, cache.max_y);
+		cache.min_y = params.plot_ref_y + (cache.min_y - params.plot_ref_y) * params.ky + params.dy;
+		cache.max_y = params.plot_ref_y + (cache.max_y - params.plot_ref_y) * params.ky + params.dy;
+		if (cache.min_y > cache.max_y) std::swap(cache.min_y, cache.max_y);
+	}
+}
+
 const std::vector<TraceCache>& RenderCache::GetCaches() const { return caches; }
+
+std::vector<TraceCache>& RenderCache::DebugGetCaches() { return caches; }
 
 void RenderCache::GenerateRenderCacheData(
 	GraphContext& context,

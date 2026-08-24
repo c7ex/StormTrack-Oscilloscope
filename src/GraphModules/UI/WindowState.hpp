@@ -47,6 +47,7 @@ enum UserKeys {
     _SHIFT,
     _CTRL,
     _A,
+    _S,
     _F
 };
 
@@ -54,6 +55,7 @@ struct KeysState {
     bool shift = false;
     bool ctrl = false;
     bool a = ConfigUI::AutoScaler::default_autoscaler_x_active;
+    bool s = ConfigUI::AutoScaler::default_autoscaler_y_active;
     bool f = ConfigUI::Fps::default_active;
 };
 

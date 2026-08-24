@@ -1,12 +1,22 @@
 #include"AutoScaler.hpp"
 
-void AutoScaler::SwitchActive(const WindowState& window) {
+void AutoScaler::SwitchActiveRangeX(const WindowState& window) {
 	bool hotkey = window.GetKeysState(UserKeys::_A) ^ ConfigUI::AutoScaler::default_autoscaler_x_active;
-	if (holder != hotkey) {
-		if (!holder && hotkey) {
-			active = !active;
+	if (holder_x != hotkey) {
+		if (!holder_x && hotkey) {
+			active_x = !active_x;
 		}
-		holder = hotkey;
+		holder_x = hotkey;
+	}
+}
+
+void AutoScaler::SwitchActiveRangeY(const WindowState& window) {
+	bool hotkey = window.GetKeysState(UserKeys::_S) ^ ConfigUI::AutoScaler::default_autoscaler_y_active;
+	if (holder_y != hotkey) {
+		if (!holder_y && hotkey) {
+			active_y = !active_y;
+		}
+		holder_y = hotkey;
 	}
 }
 
@@ -60,7 +70,7 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 	// Free-fly mode by defaut without autoscale
 	window.UpdateDataException(DataException::_VALID_DATA_RANGE);
 
-	if (!active) return;
+	if (!active_x) return;
 
 	std::pair<bool, Range> status_with_rangeX = GetTotalRangeX(data, window);
 
@@ -79,11 +89,73 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 	context.SetVisibleArea(new_area);
 }
 
-void AutoScaler::Disactivate() {
-	active = false;
-	holder = false;
+void AutoScaler::CorrectAreaY(GraphContext& context, const TransformCoordinates& coreEngine, RenderCache& render_cache) {
+	if (!active_y) return;
+	
+	bool have_active_trace = false;
+	double min_y = (std::numeric_limits<double>::max)();
+	double max_y = -(std::numeric_limits<double>::max)();
+	for (int i = 0; i < render_cache.GetCaches().size(); ++i) {
+		const auto& cache = render_cache.GetCaches()[i];
+		if (cache.is_active) {
+			have_active_trace = true;
+			min_y = (std::min)(min_y, cache.y_world_min);
+			max_y = (std::max)(max_y, cache.y_world_max);
+		}
+	}
+
+	if (!have_active_trace) return;
+
+	if (min_y == max_y) {
+		min_y += ConfigUI::AutoScaler::default_singularity_case_y_range_min;
+		max_y += ConfigUI::AutoScaler::default_singularity_case_y_range_max;
+	}
+
+	// PoC
+	//const auto& cache = render_cache.GetCaches()[0];
+	//auto size_points = cache.points.size();
+	//std::vector<Vec2d> render_cache_points(size_points);
+	//for (int i = 0; i < size_points; ++i) {
+	//	render_cache_points[i] = coreEngine.ConvertToWorldCoords(cache.points[i].x, cache.points[i].y);
+	//}
+
+	// debug
+	// save point
+	//auto debug_mouse_y_ref_old = render_cache.GetCaches()[0].points[0].y;
+	//auto debug_world_y_ref = coreEngine.ConvertToWorldCoords(render_cache.GetCaches()[0].points[0].x, render_cache.GetCaches()[0].points[0].y).y;
+	// <
+
+	auto current_area = context.GetVisibleArea();
+	auto current_ref = context.GetReferencePosition();
+
+	Position2d new_ref = Position2d{ current_ref.x, min_y };
+	Position2d new_area = Position2d{ current_area.x, max_y - min_y };
+
+	double plot_size_y = context.GetPlotSize().y;
+
+	double ky = current_area.y / new_area.y;
+	double dy = (new_ref.y - current_ref.y) * (plot_size_y / new_area.y);
+	double plot_ref_y = context.GetPlotReferenceOffset().y;
+
+	context.SetReferencePosition(new_ref);
+	context.SetVisibleArea(new_area);
+
+	render_cache.RecalculatePixelY(PixelRecalcParams{ ky, dy, plot_ref_y });
+
+	// debug
+	//render_cache.RecalculatePixelY(PixelRecalcParams{ky, dy,plot_ref_y});
+	//auto debug_mouse_y_ref_new = render_cache.GetCaches()[0].points[0].y;
+
+	// PoC
+	//for (int i = 0; i < size_points; ++i) {
+	//	render_cache.DebugGetCaches()[0].points[i] = coreEngine.ConvertToPixelCoords(render_cache_points[i].x, render_cache_points[i].y);
+	//}
 }
 
-bool AutoScaler::GetState() const {
-	return active;
+bool AutoScaler::GetStateAutoX() const {
+	return active_x;
+}
+
+bool AutoScaler::GetStateAutoY() const {
+	return active_y;
 }

@@ -224,6 +224,7 @@ bool WindowState::GetKeysState(UserKeys key) const {
         case UserKeys::_SHIFT: { return keys_state.shift; }
         case UserKeys::_CTRL: { return keys_state.ctrl; }
         case UserKeys::_A: { return keys_state.a; }
+        case UserKeys::_S: { return keys_state.s; }
         case UserKeys::_F: { return keys_state.f; }
     }
 }
@@ -233,6 +234,7 @@ void WindowState::ActivateKey(UserKeys key) {
         case UserKeys::_SHIFT: { keys_state.shift = true; break; }
         case UserKeys::_CTRL : { keys_state.ctrl = true; break; }
         case UserKeys::_A: { keys_state.a = true; break; }
+        case UserKeys::_S: { keys_state.s = true; break; }
         case UserKeys::_F: { keys_state.f = true; break; }
 
     }
@@ -243,6 +245,7 @@ void WindowState::DisactivateKey(UserKeys key) {
         case UserKeys::_SHIFT: { keys_state.shift = false; break; }
         case UserKeys::_CTRL: { keys_state.ctrl = false; break; }
         case UserKeys::_A: { keys_state.a = false; break; }
+        case UserKeys::_S: { keys_state.s = false; break; }
         case UserKeys::_F: { keys_state.f = false; break; }
     }
 }

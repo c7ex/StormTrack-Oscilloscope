@@ -91,6 +91,7 @@ void GraphState::HandlerKeyDown(WPARAM wParam) {
         case VK_SHIFT: window_state_.ActivateKey(UserKeys::_SHIFT); break;
         case VK_CONTROL: window_state_.ActivateKey(UserKeys::_CTRL); break;
         case 'A': window_state_.ActivateKey(UserKeys::_A); break;
+		case 'S': window_state_.ActivateKey(UserKeys::_S); break;
         case 'F': window_state_.ActivateKey(UserKeys::_F); break;
     }
 }
@@ -100,6 +101,7 @@ void GraphState::HandlerKeyUp(WPARAM wParam) {
         case VK_SHIFT: window_state_.DisactivateKey(UserKeys::_SHIFT); break;
         case VK_CONTROL: window_state_.DisactivateKey(UserKeys::_CTRL); break;
         case 'A': window_state_.DisactivateKey(UserKeys::_A); break;
+        case 'S': window_state_.DisactivateKey(UserKeys::_S); break;
         case 'F': window_state_.DisactivateKey(UserKeys::_F); break;
     }
 }

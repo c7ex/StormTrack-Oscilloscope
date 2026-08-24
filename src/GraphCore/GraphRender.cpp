@@ -19,13 +19,17 @@ void GraphState::Render(HDC hdc)
 
     std::lock_guard<std::mutex> lock(mtx);
 
-    auto_scaler_.SwitchActive(window_state_);
     fps_state_.SwitchActive(window_state_);
+
+    auto_scaler_.SwitchActiveRangeX(window_state_);
+    auto_scaler_.SwitchActiveRangeY(window_state_);
 
     // >> check & recalculate area if auto scale ON
 
     auto_scaler_.CorrectAreaX(graph_context_, transform_coords_, data_state_, window_state_);
 
+	// >> here X-range not will changed
+    
     render_cache_.GenerateRenderCacheData(
         graph_context_,
         transform_coords_,
@@ -33,7 +37,10 @@ void GraphState::Render(HDC hdc)
         data_state_.GetData()
     );
 
-    render_cache_.ThresholdCacheY(graph_context_);
+    if (auto_scaler_.GetStateAutoY())
+        auto_scaler_.CorrectAreaY(graph_context_, transform_coords_, render_cache_);
+    else
+        render_cache_.ThresholdCacheY(graph_context_);
 
     // >> begin draw
 

@@ -21,20 +21,23 @@ struct Range {
 };
 
 class AutoScaler {
-	bool active = ConfigUI::AutoScaler::default_autoscaler_x_active;
-	bool holder = false;
+	bool active_x = ConfigUI::AutoScaler::default_autoscaler_x_active;
+	bool holder_x = false;
+	bool active_y = ConfigUI::AutoScaler::default_autoscaler_y_active;
+	bool holder_y = false;
 
 private:
 	std::pair<bool, Range> GetTotalRangeX(const DataState& data, WindowState& window);
 
 public:
-	void SwitchActive(const WindowState& window);
+	void SwitchActiveRangeX(const WindowState& window);
+	void SwitchActiveRangeY(const WindowState& window);
 
 	void CorrectAreaX(GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, WindowState& window);
+	void CorrectAreaY(GraphContext& context, const TransformCoordinates& coreEngine, RenderCache& render_cache);
 
-	void Disactivate();
-
-	bool GetState() const;
+	bool GetStateAutoX() const;
+	bool GetStateAutoY() const;
 };
 
 #endif

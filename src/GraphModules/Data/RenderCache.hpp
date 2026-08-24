@@ -45,6 +45,14 @@ struct TraceCache {
 	double max_y;
 	bool is_active;
 	bool is_compressed;
+	double y_world_min;
+	double y_world_max;
+};
+
+struct PixelRecalcParams {
+	double ky;         // area_old.y / area_new.y
+	double dy;         // (ref_new.y - ref_old.y) * (plot_size.y / area_new.y)
+	double plot_ref_y; // plot_reference_offset.y
 };
 
 class RenderCache {
@@ -78,12 +86,14 @@ private:
 
 public:
 	void ThresholdCacheY(GraphContext& context);
+	void RecalculatePixelY(const PixelRecalcParams& params);
 
 private:
 	void Reset();
 
 public:
 	const std::vector<TraceCache>& GetCaches() const;
+	std::vector<TraceCache>& DebugGetCaches();
 
 public:
 	void GenerateRenderCacheData(
