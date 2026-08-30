@@ -7,6 +7,9 @@
 __listing.mentor
 ideas.txt
 
+#Generation
+src/StormTrack/StormTrackIconData.hpp
+
 # User-specific files
 *.rsuser
 *.suo

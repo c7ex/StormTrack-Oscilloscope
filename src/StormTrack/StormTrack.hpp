@@ -10,6 +10,7 @@
 #include <atomic>
 
 #include"GraphState.hpp"
+#include"WinApiIconLoader.hpp"
 
 /*
     <StormTrack>

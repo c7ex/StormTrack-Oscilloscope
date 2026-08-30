@@ -22,6 +22,11 @@ LRESULT CALLBACK StormTrack::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wParam
 }
 
 bool StormTrack::RegisterWindowClass() {
+    WNDCLASSEX wcCheck = {};
+    if (GetClassInfoEx(hInstance, CLASS_NAME, &wcCheck)) {
+        return true;
+    }
+
     WNDCLASSEX wc = {};
     wc.cbSize = sizeof(WNDCLASSEX);
     wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -30,6 +35,21 @@ bool StormTrack::RegisterWindowClass() {
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszClassName = CLASS_NAME;
+
+    constexpr int icon_width = 256;
+    constexpr int icon_height = 256;
+
+    HICON hIcon = WinApiIconLoader::CreateIconFromICOMemory(
+        icon::StormTrackIconData,
+        icon::StormTrackIconDataSize,
+        icon_width, icon_height
+    );
+
+    if (!hIcon) {
+        hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    }
+
+    wc.hIcon = hIcon;
 
     return RegisterClassEx(&wc) != 0;
 }

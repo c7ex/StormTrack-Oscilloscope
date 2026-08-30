@@ -45,6 +45,7 @@
     <ClCompile Include="..\..\src\StormTrack\StormTrack.cpp" />
     <ClCompile Include="..\..\src\StormTrack\StormTrackAPI.cpp" />
     <ClCompile Include="..\..\src\StormTrack\WinApiEvents.cpp" />
+    <ClCompile Include="..\..\src\StormTrack\WinApiIconLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GraphCore\GraphContext.hpp" />
@@ -75,6 +76,8 @@
     <ClInclude Include="..\..\src\GraphModules\UI\ZoomState.hpp" />
     <ClInclude Include="..\..\src\RaiiWinApi\RaiiWinApi.hpp" />
     <ClInclude Include="..\..\src\StormTrack\StormTrack.hpp" />
+    <ClInclude Include="..\..\src\StormTrack\StormTrackIconData.hpp" />
+    <ClInclude Include="..\..\src\StormTrack\WinApiIconLoader.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -184,6 +187,9 @@
 mkdir "$(OutDir)StormTrackHeaders"
 for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackHeaders\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -209,6 +215,9 @@ for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackH
 mkdir "$(OutDir)StormTrackHeaders"
 for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackHeaders\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

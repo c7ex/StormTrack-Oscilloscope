@@ -123,6 +123,9 @@
     <ClCompile Include="..\..\src\GraphCore\GraphRender.cpp">
       <Filter>src\GraphCore</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\StormTrack\WinApiIconLoader.cpp">
+      <Filter>src\StormTrack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GraphCore\GraphContext.hpp">
@@ -208,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\GraphModules\UI\FpsState.hpp">
       <Filter>src\GraphModules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\StormTrack\StormTrackIconData.hpp">
+      <Filter>src\StormTrack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\StormTrack\WinApiIconLoader.hpp">
+      <Filter>src\StormTrack</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
