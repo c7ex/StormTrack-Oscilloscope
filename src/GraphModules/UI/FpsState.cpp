@@ -1,7 +1,7 @@
 #include "FpsState.hpp"
 
 void FpsState::SwitchActive(const WindowState& window) {
-    bool hotkey = window.GetKeysState(UserKeys::_F) ^ ConfigUI::Fps::default_active;
+    bool hotkey = window.GetKeysState(ActionHotKey::visible_fps) ^ ConfigUI::Fps::default_active;
     if (holder != hotkey) {
         if (!holder && hotkey) {
             active = !active;

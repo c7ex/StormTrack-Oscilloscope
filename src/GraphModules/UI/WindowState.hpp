@@ -43,20 +43,20 @@ enum DataException {
     _NAN_DATA
 };
 
-enum UserKeys {
-    _SHIFT,
-    _CTRL,
-    _A,
-    _S,
-    _F
+enum ActionHotKey {
+    fast_zoom,
+    x_zoom,
+    autoscale_x,
+    autoscale_y,
+	visible_fps
 };
 
-struct KeysState {
-    bool shift = false;
-    bool ctrl = false;
-    bool a = ConfigUI::AutoScaler::default_autoscaler_x_active;
-    bool s = ConfigUI::AutoScaler::default_autoscaler_y_active;
-    bool f = ConfigUI::Fps::default_active;
+struct ActionHotKeyState {
+    bool fast_zoom = false;
+    bool x_zoom = false;
+    bool autoscale_x = ConfigUI::AutoScaler::default_autoscaler_x_active;
+    bool autoscale_y = ConfigUI::AutoScaler::default_autoscaler_y_active;
+    bool visible_fps = ConfigUI::Fps::default_active;
 };
 
 class WindowState {
@@ -66,7 +66,7 @@ private:
     CursorType cursor_type;
     PlotSideType plot_side_type;
     DataException data_exception;
-    KeysState keys_state;
+    ActionHotKeyState keys_state;
 
     /*
         RECT ->
@@ -99,9 +99,9 @@ public:
     void UpdateWindowSize(GraphContext& context, const LPARAM lParam);
     void UpdatePlotForm(GraphContext& context);
 
-    bool GetKeysState(UserKeys key) const;
-    void ActivateKey(UserKeys key);
-    void DisactivateKey(UserKeys key);
+    bool GetKeysState(ActionHotKey key) const;
+    void ActivateKey(ActionHotKey key);
+    void DisactivateKey(ActionHotKey key);
 
     void DrawPlotBoundary(HDC hdc, GraphContext& context, const TransformCoordinates coreEngine);
 };

@@ -80,6 +80,15 @@ public:
         static constexpr double default_singularity_case_y_range_min = -0.5;
         static constexpr double default_singularity_case_y_range_max = 0.5;
     };
+
+    class BindHotKeys {
+    public:
+        static constexpr int toggle_fast_zoom = VK_CONTROL;
+        static constexpr int toggle_x_mode_zoom = VK_SHIFT;
+        static constexpr int toggle_autoscale_x = 'A';
+        static constexpr int toggle_autoscale_y = 'S';
+        static constexpr int toggle_visible_fps = 'F';
+    };
 };
 
 #endif

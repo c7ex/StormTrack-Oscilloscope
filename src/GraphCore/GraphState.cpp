@@ -74,8 +74,8 @@ void GraphState::HandlerMouseWheel(LPARAM lParam, WPARAM wParam, HWND hwnd) {
             transform_coords_, 
             tugboat_state_,
             direction,
-            window_state_.GetKeysState(UserKeys::_CTRL), 
-            window_state_.GetKeysState(UserKeys::_SHIFT));
+            window_state_.GetKeysState(ActionHotKey::fast_zoom),
+            window_state_.GetKeysState(ActionHotKey::x_zoom));
     }
 }
 
@@ -88,21 +88,21 @@ void GraphState::HandlerMouseLeave(LPARAM lParam) {
 
 void GraphState::HandlerKeyDown(WPARAM wParam) {
     switch (wParam) {
-        case VK_SHIFT: window_state_.ActivateKey(UserKeys::_SHIFT); break;
-        case VK_CONTROL: window_state_.ActivateKey(UserKeys::_CTRL); break;
-        case 'A': window_state_.ActivateKey(UserKeys::_A); break;
-		case 'S': window_state_.ActivateKey(UserKeys::_S); break;
-        case 'F': window_state_.ActivateKey(UserKeys::_F); break;
+        case ConfigUI::BindHotKeys::toggle_fast_zoom: window_state_.ActivateKey(ActionHotKey::fast_zoom); break;
+        case ConfigUI::BindHotKeys::toggle_x_mode_zoom: window_state_.ActivateKey(ActionHotKey::x_zoom); break;
+        case ConfigUI::BindHotKeys::toggle_autoscale_x: window_state_.ActivateKey(ActionHotKey::autoscale_x); break;
+        case ConfigUI::BindHotKeys::toggle_autoscale_y: window_state_.ActivateKey(ActionHotKey::autoscale_y); break;
+        case ConfigUI::BindHotKeys::toggle_visible_fps: window_state_.ActivateKey(ActionHotKey::visible_fps); break;
     }
 }
 
 void GraphState::HandlerKeyUp(WPARAM wParam) {
     switch (wParam) {
-        case VK_SHIFT: window_state_.DisactivateKey(UserKeys::_SHIFT); break;
-        case VK_CONTROL: window_state_.DisactivateKey(UserKeys::_CTRL); break;
-        case 'A': window_state_.DisactivateKey(UserKeys::_A); break;
-        case 'S': window_state_.DisactivateKey(UserKeys::_S); break;
-        case 'F': window_state_.DisactivateKey(UserKeys::_F); break;
+        case ConfigUI::BindHotKeys::toggle_fast_zoom: window_state_.DisactivateKey(ActionHotKey::fast_zoom); break;
+        case ConfigUI::BindHotKeys::toggle_x_mode_zoom: window_state_.DisactivateKey(ActionHotKey::x_zoom); break;
+        case ConfigUI::BindHotKeys::toggle_autoscale_x: window_state_.DisactivateKey(ActionHotKey::autoscale_x); break;
+        case ConfigUI::BindHotKeys::toggle_autoscale_y: window_state_.DisactivateKey(ActionHotKey::autoscale_y); break;
+        case ConfigUI::BindHotKeys::toggle_visible_fps: window_state_.DisactivateKey(ActionHotKey::visible_fps); break;
     }
 }
 

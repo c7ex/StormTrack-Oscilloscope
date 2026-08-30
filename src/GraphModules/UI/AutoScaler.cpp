@@ -1,7 +1,7 @@
 #include"AutoScaler.hpp"
 
 void AutoScaler::SwitchActiveRangeX(const WindowState& window) {
-	bool hotkey = window.GetKeysState(UserKeys::_A) ^ ConfigUI::AutoScaler::default_autoscaler_x_active;
+	bool hotkey = window.GetKeysState(ActionHotKey::autoscale_x) ^ ConfigUI::AutoScaler::default_autoscaler_x_active;
 	if (holder_x != hotkey) {
 		if (!holder_x && hotkey) {
 			active_x = !active_x;
@@ -11,7 +11,7 @@ void AutoScaler::SwitchActiveRangeX(const WindowState& window) {
 }
 
 void AutoScaler::SwitchActiveRangeY(const WindowState& window) {
-	bool hotkey = window.GetKeysState(UserKeys::_S) ^ ConfigUI::AutoScaler::default_autoscaler_y_active;
+	bool hotkey = window.GetKeysState(ActionHotKey::autoscale_y) ^ ConfigUI::AutoScaler::default_autoscaler_y_active;
 	if (holder_y != hotkey) {
 		if (!holder_y && hotkey) {
 			active_y = !active_y;
@@ -111,20 +111,6 @@ void AutoScaler::CorrectAreaY(GraphContext& context, const TransformCoordinates&
 		max_y += ConfigUI::AutoScaler::default_singularity_case_y_range_max;
 	}
 
-	// PoC
-	//const auto& cache = render_cache.GetCaches()[0];
-	//auto size_points = cache.points.size();
-	//std::vector<Vec2d> render_cache_points(size_points);
-	//for (int i = 0; i < size_points; ++i) {
-	//	render_cache_points[i] = coreEngine.ConvertToWorldCoords(cache.points[i].x, cache.points[i].y);
-	//}
-
-	// debug
-	// save point
-	//auto debug_mouse_y_ref_old = render_cache.GetCaches()[0].points[0].y;
-	//auto debug_world_y_ref = coreEngine.ConvertToWorldCoords(render_cache.GetCaches()[0].points[0].x, render_cache.GetCaches()[0].points[0].y).y;
-	// <
-
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();
 
@@ -141,15 +127,6 @@ void AutoScaler::CorrectAreaY(GraphContext& context, const TransformCoordinates&
 	context.SetVisibleArea(new_area);
 
 	render_cache.RecalculatePixelY(PixelRecalcParams{ ky, dy, plot_ref_y });
-
-	// debug
-	//render_cache.RecalculatePixelY(PixelRecalcParams{ky, dy,plot_ref_y});
-	//auto debug_mouse_y_ref_new = render_cache.GetCaches()[0].points[0].y;
-
-	// PoC
-	//for (int i = 0; i < size_points; ++i) {
-	//	render_cache.DebugGetCaches()[0].points[i] = coreEngine.ConvertToPixelCoords(render_cache_points[i].x, render_cache_points[i].y);
-	//}
 }
 
 bool AutoScaler::GetStateAutoX() const {
