@@ -113,7 +113,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -201,8 +201,10 @@ for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackH
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Base;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
