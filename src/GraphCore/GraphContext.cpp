@@ -24,7 +24,6 @@ void GraphContext::UpdateCoordinates(const TransformCoordinates& coreEngine) {
 
 /////
 
-
 RECT GraphContext::GetPlotArea() const {
     return plot_area;
 }
@@ -81,4 +80,12 @@ void GraphContext::SetReferencePosition(Position2d position) {
 
 void GraphContext::SetOffsetReferencePosition(Offset2d offset) {
     reference_position += offset;
+}
+
+double GraphContext::GetTrackVisibleAreaX() const {
+    return track_visible_area_x;
+}
+
+void GraphContext::SetTrackVisibleAreaX(double new_visible_area_x) {
+    track_visible_area_x = new_visible_area_x;
 }

@@ -46,6 +46,7 @@ enum DataException {
 enum ActionHotKey {
     fast_zoom,
     x_zoom,
+    autoscale_track,
     autoscale_x,
     autoscale_y,
 	visible_fps
@@ -54,6 +55,7 @@ enum ActionHotKey {
 struct ActionHotKeyState {
     bool fast_zoom = false;
     bool x_zoom = false;
+	bool autoscale_track = ConfigUI::AutoScaler::default_autoscaler_track_active;
     bool autoscale_x = ConfigUI::AutoScaler::default_autoscaler_x_active;
     bool autoscale_y = ConfigUI::AutoScaler::default_autoscaler_y_active;
     bool visible_fps = ConfigUI::Fps::default_active;

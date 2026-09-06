@@ -26,7 +26,8 @@ public:
         const TugboatState& ts,
         ScaleDirection direction, 
         bool fast_zoom, 
-        bool mode_axes_X);
+        bool mode_axes_X,
+        bool mode_track);
 };
 
 #endif

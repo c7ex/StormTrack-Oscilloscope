@@ -23,6 +23,7 @@ void GraphState::Render(HDC hdc)
 
     auto_scaler_.SwitchActiveRangeX(window_state_);
     auto_scaler_.SwitchActiveRangeY(window_state_);
+	auto_scaler_.SwitchActiveRangeTrack(window_state_);
 
     // >> check & recalculate area if auto scale ON
 

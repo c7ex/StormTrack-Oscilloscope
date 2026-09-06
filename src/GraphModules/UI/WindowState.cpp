@@ -223,6 +223,7 @@ bool WindowState::GetKeysState(ActionHotKey key) const {
     switch (key) {
         case ActionHotKey::fast_zoom: { return keys_state.fast_zoom; }
         case ActionHotKey::x_zoom: { return keys_state.x_zoom; }
+		case ActionHotKey::autoscale_track: { return keys_state.autoscale_track; }
         case ActionHotKey::autoscale_x: { return keys_state.autoscale_x; }
         case ActionHotKey::autoscale_y: { return keys_state.autoscale_y; }
         case ActionHotKey::visible_fps: { return keys_state.visible_fps; }
@@ -233,10 +234,10 @@ void WindowState::ActivateKey(ActionHotKey key) {
     switch (key) {
         case ActionHotKey::fast_zoom: { keys_state.fast_zoom = true; break; }
         case ActionHotKey::x_zoom: { keys_state.x_zoom = true; break; }
+		case ActionHotKey::autoscale_track: { keys_state.autoscale_track = true; break; }
         case ActionHotKey::autoscale_x: { keys_state.autoscale_x = true; break; }
         case ActionHotKey::autoscale_y: { keys_state.autoscale_y = true; break; }
         case ActionHotKey::visible_fps: { keys_state.visible_fps = true; break; }
-
     }
 }
 
@@ -244,6 +245,7 @@ void WindowState::DisactivateKey(ActionHotKey key) {
     switch (key) {
         case ActionHotKey::fast_zoom: { keys_state.fast_zoom = false; break; }
         case ActionHotKey::x_zoom: { keys_state.x_zoom = false; break; }
+		case ActionHotKey::autoscale_track: { keys_state.autoscale_track = false; break; }
         case ActionHotKey::autoscale_x: { keys_state.autoscale_x = false; break; }
         case ActionHotKey::autoscale_y: { keys_state.autoscale_y = false; break; }
         case ActionHotKey::visible_fps: { keys_state.visible_fps = false; break; }

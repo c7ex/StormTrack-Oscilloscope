@@ -8,9 +8,10 @@ void ZoomState::ApplyZoom(
     const TugboatState& ts,
     ScaleDirection direction,
     bool fast_zoom,
-    bool mode_axes_X) 
+    bool mode_axes_X,
+    bool mode_track)
 {
-    if (ts.IsActive()) return;
+    if (ts.IsActive()) return;   
 
     Size2d visible_area = context.GetVisibleArea();
 
@@ -27,12 +28,22 @@ void ZoomState::ApplyZoom(
         ConfigUI::Zoom::default_scale_factor;
 
     if (mode_axes_X) {
-        // only X
-        if (direction == ScaleDirection::ZoomIn) { visible_area.x /= scale_factor; }
-        else { visible_area.x *= scale_factor; }
+        if (mode_track) {
+			// only track X
+            double track_visible_area_x = context.GetTrackVisibleAreaX();
+            if (direction == ScaleDirection::ZoomIn) { track_visible_area_x /= scale_factor; }
+            else { track_visible_area_x *= scale_factor; }
+            context.SetTrackVisibleAreaX(track_visible_area_x);
+            return;
+        }
+        else {
+            // only X
+            if (direction == ScaleDirection::ZoomIn) { visible_area.x /= scale_factor; }
+            else { visible_area.x *= scale_factor; }
+        }
     }
     else {
-        // X-Y
+		// X/Y-autoscaling
         if (direction == ScaleDirection::ZoomIn) { visible_area /= scale_factor; }
         else { visible_area *= scale_factor; }
     }

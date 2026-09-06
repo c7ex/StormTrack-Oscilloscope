@@ -114,8 +114,10 @@ public:
 
     class AutoScaler {
     public:
-		static constexpr bool default_autoscaler_x_active = true;
+        static constexpr bool default_autoscaler_track_active = false;
+        static constexpr bool default_autoscaler_x_active = true;
         static constexpr bool default_autoscaler_y_active = true;
+        static constexpr double default_track_visible_area_x = 100.0;
         static constexpr double default_singularity_case_x_range_min = -0.5;
         static constexpr double default_singularity_case_x_range_max = 0.5;
         static constexpr double default_singularity_case_y_range_min = -0.5;
@@ -128,6 +130,7 @@ public:
     public:
         static constexpr int toggle_fast_zoom = VK_CONTROL;
         static constexpr int toggle_x_mode_zoom = VK_SHIFT;
+        static constexpr int toggle_autoscale_track = 'Q';
         static constexpr int toggle_autoscale_x = 'A';
         static constexpr int toggle_autoscale_y = 'S';
         static constexpr int toggle_visible_fps = 'F';

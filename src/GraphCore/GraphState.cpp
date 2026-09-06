@@ -70,12 +70,14 @@ void GraphState::HandlerMouseWheel(LPARAM lParam, WPARAM wParam, HWND hwnd) {
         graph_context_.UpdateMousePosition(pt.x, pt.y);
 
         zoom_state_.ApplyZoom(
-            graph_context_, 
-            transform_coords_, 
+            graph_context_,
+            transform_coords_,
             tugboat_state_,
             direction,
             window_state_.GetKeysState(ActionHotKey::fast_zoom),
-            window_state_.GetKeysState(ActionHotKey::x_zoom));
+            window_state_.GetKeysState(ActionHotKey::x_zoom),
+            auto_scaler_.GetStateAutoTrack()
+        );
     }
 }
 
@@ -90,6 +92,7 @@ void GraphState::HandlerKeyDown(WPARAM wParam) {
     switch (wParam) {
         case ConfigUI::BindHotKeys::toggle_fast_zoom: window_state_.ActivateKey(ActionHotKey::fast_zoom); break;
         case ConfigUI::BindHotKeys::toggle_x_mode_zoom: window_state_.ActivateKey(ActionHotKey::x_zoom); break;
+		case ConfigUI::BindHotKeys::toggle_autoscale_track: window_state_.ActivateKey(ActionHotKey::autoscale_track); break;
         case ConfigUI::BindHotKeys::toggle_autoscale_x: window_state_.ActivateKey(ActionHotKey::autoscale_x); break;
         case ConfigUI::BindHotKeys::toggle_autoscale_y: window_state_.ActivateKey(ActionHotKey::autoscale_y); break;
         case ConfigUI::BindHotKeys::toggle_visible_fps: window_state_.ActivateKey(ActionHotKey::visible_fps); break;
@@ -100,6 +103,7 @@ void GraphState::HandlerKeyUp(WPARAM wParam) {
     switch (wParam) {
         case ConfigUI::BindHotKeys::toggle_fast_zoom: window_state_.DisactivateKey(ActionHotKey::fast_zoom); break;
         case ConfigUI::BindHotKeys::toggle_x_mode_zoom: window_state_.DisactivateKey(ActionHotKey::x_zoom); break;
+        case ConfigUI::BindHotKeys::toggle_autoscale_track: window_state_.DisactivateKey(ActionHotKey::autoscale_track); break;
         case ConfigUI::BindHotKeys::toggle_autoscale_x: window_state_.DisactivateKey(ActionHotKey::autoscale_x); break;
         case ConfigUI::BindHotKeys::toggle_autoscale_y: window_state_.DisactivateKey(ActionHotKey::autoscale_y); break;
         case ConfigUI::BindHotKeys::toggle_visible_fps: window_state_.DisactivateKey(ActionHotKey::visible_fps); break;

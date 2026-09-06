@@ -20,6 +20,16 @@ void AutoScaler::SwitchActiveRangeY(const WindowState& window) {
 	}
 }
 
+void AutoScaler::SwitchActiveRangeTrack(const WindowState& window) {
+	bool hotkey = window.GetKeysState(ActionHotKey::autoscale_track) ^ ConfigUI::AutoScaler::default_autoscaler_track_active;
+	if (holder_track != hotkey) {
+		if (!holder_track && hotkey) {
+			active_track = !active_track;
+		}
+		holder_track = hotkey;
+	}
+}
+
 std::pair<bool, Range> AutoScaler::GetTotalRangeX(const DataState& data, WindowState& window)
 {
 	size_t count_active_valid_traces = 0;
@@ -70,7 +80,7 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 	// Free-fly mode by defaut without autoscale
 	window.UpdateDataException(DataException::_VALID_DATA_RANGE);
 
-	if (!active_x) return;
+	if (!active_x && !active_track) return;
 
 	std::pair<bool, Range> status_with_rangeX = GetTotalRangeX(data, window);
 
@@ -80,6 +90,18 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();
+
+	if (active_track == true) {
+		double visible_area_track_size = context.GetTrackVisibleAreaX();
+		double left_side = rangeX.max - visible_area_track_size;
+		if (left_side > rangeX.min) {
+			rangeX.min = left_side;
+		}
+		else {
+			visible_area_track_size = rangeX.max - rangeX.min;
+			context.SetTrackVisibleAreaX(visible_area_track_size);
+		}
+	}
 
 	double deltaX = (rangeX.max - rangeX.min);
 	double padding = deltaX * ConfigUI::AutoScaler::padding_scale_x;
@@ -143,4 +165,8 @@ bool AutoScaler::GetStateAutoX() const {
 
 bool AutoScaler::GetStateAutoY() const {
 	return active_y;
+}
+
+bool AutoScaler::GetStateAutoTrack() const {
+	return active_track;
 }

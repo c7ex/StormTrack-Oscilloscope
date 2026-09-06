@@ -1,6 +1,8 @@
 #ifndef GRAPHCONTEXT_HPP
 #define GRAPHCONTEXT_HPP
 
+#include"ConfigUI.hpp"
+
 #include"Windows.h"
 
 #include"Vec2d.hpp"
@@ -25,9 +27,11 @@ private:
     // from TugboatState
     Position2d reference_position{ 0.0, 0.0 };
 
+	// from AutoScaler
+	double track_visible_area_x = ConfigUI::AutoScaler::default_track_visible_area_x;
+
 public:
     Size2d GetVisibleArea() const;
-
 
     void SetVisibleArea(Size2d new_visible_area);
 
@@ -68,6 +72,13 @@ public:
     void SetReferencePosition(Position2d position);
 
     void SetOffsetReferencePosition(Offset2d offset);
+
+    /////
+
+    double GetTrackVisibleAreaX() const;
+
+	void SetTrackVisibleAreaX(double new_visible_area_x);
+
 };
 
 #endif

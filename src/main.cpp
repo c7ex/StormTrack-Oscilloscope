@@ -362,7 +362,46 @@ void RunEmptyData() {
     window.WaitForClose();
 }
 
+void TestAutoscaleTrackMode() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrackInitParameters cfg = { {1000, 600}, {500.0, 10.0}, {0.0, -5.0} };
+    StormTrack window(hInstance, cfg, L"StormTrack: Slow & Unpredictable Autotrack (Press Q)");
+
+    window.Show();
+
+    size_t tid_signal = window.AddTrace(L"Unpredictable Signal", RGB(0, 255, 100));
+
+    double t = 0.0;
+    const double dt = 0.1;
+
+    while (window.IsActive()) {
+        std::vector<double> chunk;
+        chunk.reserve(1);
+
+        for (int i = 0; i < 1; ++i) {
+            double noise = (std::rand() % 10 - 5) / 100.0;
+            double slow_wave = std::sin(t * 0.1);
+            double fast_wave = std::cos(t * 0.5) * 0.5;
+            double impulse = (t > 50 && t < 52) ? 3.0 : 0.0;
+
+            double value = slow_wave + fast_wave + noise + impulse;
+
+            chunk.push_back(value);
+            t += dt;
+        }
+
+        window.RealtimeView(chunk, tid_signal);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    window.Close();
+    window.WaitForClose();
+}
+
 int main() {
+    //TestAutoscaleTrackMode();
+
     std::thread streamingDemo(demo::RunStreaming);
     std::thread realtimeDemo(demo::RunRealtime);
     std::thread multiTraceDemo(demo::RunMultiTrace);
