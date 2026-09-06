@@ -1,7 +1,7 @@
 #include "TextFormatter.hpp"
 
 bool TextFormatter::IsZero(double value) {
-    return (std::fabs(value) < ZERO_EPSILON);
+    return (std::fabs(value) < ConfigUI::Ruler::text_format_zero_epsilon);
 }
 
 std::wstring TextFormatter::FormatZero(double value) {
@@ -45,7 +45,7 @@ std::wstring TextFormatter::Format(double value) {
     }
 
     double absValue = std::fabs(value);
-    if (absValue < SCIENTIFIC_THRESHOLD || absValue >= LARGE_THRESHOLD) {
+    if (absValue < ConfigUI::Ruler::text_format_scientific_threshold || absValue >= ConfigUI::Ruler::text_format_large_threshold) {
         s = FormatScientific(value);
     }
     else if (absValue >= 100) {

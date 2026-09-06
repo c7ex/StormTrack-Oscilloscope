@@ -12,7 +12,7 @@ void Grid::LoadParameters(const CoreContent& cc) {
 
 void Grid::DrawGridFilter(std::vector<GridPassContent>& passes) {
     for (int i = passes.size() - 1; i >= 0; i--) {
-        if (passes[i].alpha < GridConfig::ALPHA_THRESHOLD_VISIBLE) {
+        if (passes[i].alpha < ConfigUI::Ruler::alpha_threshold_visible) {
             passes.erase(passes.begin() + i);
         }
     }
@@ -28,10 +28,10 @@ void Grid::DrawGridFilter(std::vector<GridPassContent>& passes) {
 
 void Grid::DrawGridVertical(HDC& hdc, const TransformCoordinates& coreEngine, const Size2d& step) {
     const double start_x = std::floor(min.x / step.x) * step.x;
-    const double epsilon = GridConfig::ACCURACY_FACTOR * step.x;
+    const double epsilon = ConfigUI::Ruler::accuracy_grid_draw * step.x;
     int lines_drawn = 0;
 
-    for (double x = start_x; x <= max.x + epsilon && lines_drawn < GridConfig::MAX_DRAW_LINES; x += step.x, ++lines_drawn) {
+    for (double x = start_x; x <= max.x + epsilon && lines_drawn < ConfigUI::Ruler::max_count_grid_lines; x += step.x, ++lines_drawn) {
         Position2d p1 = coreEngine.ConvertToPixelCoords(x, min.y);
         Position2d p2 = coreEngine.ConvertToPixelCoords(x, max.y);
         if (p1.x >= plot.left && p1.x <= plot.right) {
@@ -43,10 +43,10 @@ void Grid::DrawGridVertical(HDC& hdc, const TransformCoordinates& coreEngine, co
 
 void Grid::DrawGridHorizontal(HDC& hdc, const TransformCoordinates& coreEngine, const Size2d& step) {
     const double start_y = std::floor(min.y / step.y) * step.y;
-    const double epsilon = GridConfig::ACCURACY_FACTOR * step.y;
+    const double epsilon = ConfigUI::Ruler::accuracy_grid_draw * step.y;
     int lines_drawn = 0;
 
-    for (double y = start_y; y <= max.y + epsilon && lines_drawn < GridConfig::MAX_DRAW_LINES; y += step.y, ++lines_drawn) {
+    for (double y = start_y; y <= max.y + epsilon && lines_drawn < ConfigUI::Ruler::max_count_grid_lines; y += step.y, ++lines_drawn) {
         Position2d p1 = coreEngine.ConvertToPixelCoords(min.x, y);
         Position2d p2 = coreEngine.ConvertToPixelCoords(max.x, y);
         if (p1.y >= plot.top && p1.y <= plot.bottom) {
@@ -65,7 +65,7 @@ void Grid::DrawGrid(HDC& hdc, const TransformCoordinates& coreEngine, const Grid
 
     COLORREF current_color = TransparentColor::Mix(ConfigUI::GeneralGraph::background, gpc.color, gpc.alpha);
     
-    rwa::PEN pen(hdc, PS_SOLID, GridConfig::GRID_LINE_WIDTH, current_color);
+    rwa::PEN pen(hdc, PS_SOLID, ConfigUI::Ruler::grid_line_width, current_color);
     
     if (gridDrawSelection == GridDrawSelection::Vertical) {
         DrawGridVertical(hdc, coreEngine, step);

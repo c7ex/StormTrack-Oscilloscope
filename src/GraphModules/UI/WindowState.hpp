@@ -68,15 +68,12 @@ private:
     DataException data_exception;
     ActionHotKeyState keys_state;
 
-    /*
-        RECT ->
-        LONG    left;
-        LONG    top;
-        LONG    right;
-        LONG    bottom;
-    */
- 
-    RECT base_margins = { 65, 35, 45, 45 };
+    RECT base_margins = { 
+        ConfigUI::GeneralGraph::base_margins_left, 
+        ConfigUI::GeneralGraph::base_margins_top, 
+        ConfigUI::GeneralGraph::base_margins_right, 
+        ConfigUI::GeneralGraph::base_margins_bottom };
+
     RECT margins = base_margins;
 
 private:

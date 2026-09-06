@@ -57,9 +57,8 @@
     <ClInclude Include="..\..\src\GraphModules\Data\DataState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Data\LinearData.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Data\RenderCache.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesDescription.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesState.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Base\AxesConfig.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Base\AxesDescription.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Ruler\Caption\Caption.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Ruler\Grid\Grid.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Ruler\Support\GridCalculator.hpp" />
@@ -174,7 +173,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Base;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -199,7 +198,7 @@ for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackH
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Base;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

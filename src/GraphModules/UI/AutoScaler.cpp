@@ -81,7 +81,11 @@ void AutoScaler::CorrectAreaX(GraphContext& context, const TransformCoordinates&
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();
 
-	double deltaX = rangeX.max - rangeX.min;
+	double deltaX = (rangeX.max - rangeX.min);
+	double padding = deltaX * ConfigUI::AutoScaler::padding_scale_x;
+	rangeX.min -= (padding / 2.);
+	deltaX += padding;
+
 	Position2d new_ref = Position2d{ rangeX.min, current_ref.y };
 	Position2d new_area = Position2d{ deltaX, current_area.y };
 
@@ -113,9 +117,13 @@ void AutoScaler::CorrectAreaY(GraphContext& context, const TransformCoordinates&
 
 	auto current_area = context.GetVisibleArea();
 	auto current_ref = context.GetReferencePosition();
+	double deltaY = max_y - min_y;
+	double padding = deltaY * ConfigUI::AutoScaler::padding_scale_y;
+	min_y -= (padding / 2.);
+	deltaY += padding;
 
 	Position2d new_ref = Position2d{ current_ref.x, min_y };
-	Position2d new_area = Position2d{ current_area.x, max_y - min_y };
+	Position2d new_area = Position2d{ current_area.x, deltaY };
 
 	double plot_size_y = context.GetPlotSize().y;
 

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip>
 
+#include "ConfigUI.hpp"
+
 #include "Grid.hpp"
 #include "Caption.hpp"
 #include "WindowState.hpp"

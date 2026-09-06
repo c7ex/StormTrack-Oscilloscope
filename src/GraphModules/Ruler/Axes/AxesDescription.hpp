@@ -3,9 +3,9 @@
 
 #include"vector"
 
-#include "Area2d.hpp"
+#include "ConfigUI.hpp"
 
-#include "AxesConfig.hpp"
+#include "Area2d.hpp"
 #include "TransparentColor.hpp"
 #include "TextFormatter.hpp"
 #include "GridCalculator.hpp"

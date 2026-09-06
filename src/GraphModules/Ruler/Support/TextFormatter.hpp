@@ -1,6 +1,8 @@
 #ifndef TEXTFORMATTER_H
 #define TEXTFORMATTER_H
 
+#include "ConfigUI.hpp"
+
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -17,10 +19,6 @@ private:
     static std::wstring FormatFixed(double value, int precision);
     static void CleanTrailingZeros(std::wstring& s);
     static void CleanScientificNotation(std::wstring& s);
-
-    static constexpr double SCIENTIFIC_THRESHOLD = 0.001;
-    static constexpr double LARGE_THRESHOLD = 1000.0;
-    static constexpr double ZERO_EPSILON = 1e-12;
 };
 
 #endif

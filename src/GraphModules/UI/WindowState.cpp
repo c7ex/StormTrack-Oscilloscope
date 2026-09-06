@@ -259,8 +259,8 @@ void WindowState::DrawPlotBoundary(HDC hdc, GraphContext& context, const Transfo
     int right = plot.right;
     int bottom = plot.bottom;
 
-    COLORREF color = is_plot_area ? GridConfig::BORDER_ACTIVE : GridConfig::BORDER_UNACTIVE;
-    rwa::PEN pen(hdc, PS_SOLID, ConfigUI::Plot::width_board, color);
+    COLORREF border_color = is_plot_area ? ConfigUI::Ruler::border_active_color : ConfigUI::Ruler::border_unactive_color;
+    rwa::PEN pen(hdc, PS_SOLID, ConfigUI::Plot::width_board, border_color);
 
     MoveToEx(hdc, left, bottom - 1, NULL);
     LineTo(hdc, right - 1, bottom - 1);

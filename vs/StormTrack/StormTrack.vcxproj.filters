@@ -25,9 +25,6 @@
     <Filter Include="src\GraphModules\Ruler\Axes">
       <UniqueIdentifier>{c83ed89c-ac1a-48c2-9e82-831d5eae690e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\GraphModules\Ruler\Base">
-      <UniqueIdentifier>{a1c1702b-51e2-4777-b4e7-dacbbcf01e23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\GraphModules\Ruler\Caption">
       <UniqueIdentifier>{9ccedea9-a4ea-454b-8c12-c78d15e26e44}</UniqueIdentifier>
     </Filter>
@@ -182,12 +179,6 @@
     <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesState.hpp">
       <Filter>src\GraphModules\Ruler\Axes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Base\AxesConfig.hpp">
-      <Filter>src\GraphModules\Ruler\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Base\AxesDescription.hpp">
-      <Filter>src\GraphModules\Ruler\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\GraphModules\Ruler\Caption\Caption.hpp">
       <Filter>src\GraphModules\Ruler\Caption</Filter>
     </ClInclude>
@@ -217,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\StormTrack\WinApiIconLoader.hpp">
       <Filter>src\StormTrack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesDescription.hpp">
+      <Filter>src\GraphModules\Ruler\Axes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

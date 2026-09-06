@@ -17,7 +17,7 @@ Area2d CreateReferenceArea(int x, int y)
 
 void Caption::DrawCaptionFilter(std::vector<GridPassContent>& passes) {
     for (int i = passes.size() - 1; i >= 0; i--) {
-        if (passes[i].alpha < GridConfig::ALPHA_THRESHOLD_VISIBLE) {
+        if (passes[i].alpha < ConfigUI::Ruler::alpha_threshold_visible) {
             passes.erase(passes.begin() + i);
         }
     }
@@ -42,7 +42,7 @@ void Caption::LoadParameters(const CoreContent& cc) {
 }
 
 void Caption::DrawCaptionVertical(HDC hdc, const TransformCoordinates& coreEngine, const Size2d& step) {
-    const int offset = GridConfig::OFFSET_CAPTION_X;
+    const int offset = ConfigUI::Ruler::caption_offset_x;
 
     for (double x = std::floor(min.x / step.x) * step.x; x <= max.x; x += step.x) {
         const Position2d p = coreEngine.ConvertToPixelCoords(x, min.y);
@@ -64,7 +64,7 @@ void Caption::DrawCaptionVertical(HDC hdc, const TransformCoordinates& coreEngin
 }
 
 void Caption::DrawCaptionHorizontal(HDC hdc, const TransformCoordinates& coreEngine, const Size2d& step) {
-    const int offset = GridConfig::OFFSET_CAPTION_Y;
+    const int offset = ConfigUI::Ruler::caption_offset_y;
 
     for (double y = std::floor(min.y / step.y) * step.y; y <= max.y; y += step.y) {
         const Position2d p = coreEngine.ConvertToPixelCoords(min.x, y);

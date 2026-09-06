@@ -9,10 +9,51 @@ public:
     public:
         static constexpr COLORREF background = RGB(10, 14, 23);
         static constexpr COLORREF boundary = RGB(8, 0, 15);
+
+        static constexpr int base_margins_left = 65;
+        static constexpr int base_margins_top = 35;
+        static constexpr int base_margins_right = 240;
+        static constexpr int base_margins_bottom = 45;
+    };
+
+    class Ruler {
+    public:
+        static constexpr double alpha_gauss_ratio = 0.5;
+        static constexpr double alpha_threshold_visible = 0.05;
+
+        static constexpr int max_count_grid_lines = 70;
+        static constexpr double optimal_count_grid_lines = 14;
+        static constexpr double accuracy_grid_draw = 1e-10;
+        static constexpr int grid_line_width = 1;
+
+        static constexpr int caption_offset_x = 5;
+        static constexpr int caption_offset_y = 25;
+
+        static constexpr COLORREF caption_main_color = RGB(230, 230, 230);
+        static constexpr COLORREF caption_sub_color = RGB(230, 230, 230);
+
+        static constexpr COLORREF grid_main_color = RGB(130, 130, 130);
+        static constexpr COLORREF grid_sub_color = RGB(130, 130, 130);
+
+        static constexpr COLORREF border_active_color = RGB(15, 15, 15);
+        static constexpr COLORREF border_unactive_color = RGB(50, 50, 50);
+
+        static constexpr double transparent_color_min = 0.0;
+        static constexpr double transparent_color_max = 1.0;
+
+        static constexpr double text_format_scientific_threshold = 0.001;
+        static constexpr double text_format_large_threshold = 1000.0;
+        static constexpr double text_format_zero_epsilon = 1e-12;
+
+        static constexpr double grid_calculator_base = 10.0;
+        static constexpr double grid_calculator_subdivision = 10.0;
     };
 
     class LegendItem {
     public:
+        static constexpr double background_right_padding = 0.03; // m.b. not like margins
+        static constexpr double background_left_padding = 0.03; // like margins
+
         static constexpr int item_size = 15;
         static constexpr int padding_start_x = 10;
         static constexpr int padding_start_y = 10;
@@ -53,7 +94,7 @@ public:
 
     class Plot {
     public:
-        static constexpr int width_board = 3;
+        static constexpr int width_board = 4;
         static constexpr double minumal_x = 0.25;
         static constexpr double minumal_y = 0.25;
     };
@@ -66,7 +107,7 @@ public:
 
     class Fps {
 	public:		
-		static constexpr bool default_active = true;
+		static constexpr bool default_active = false;
         static constexpr size_t default_fps = 60;
         static constexpr size_t default_window_smoov_fps = 64;
     };
@@ -74,11 +115,13 @@ public:
     class AutoScaler {
     public:
 		static constexpr bool default_autoscaler_x_active = true;
-        static constexpr bool default_autoscaler_y_active = false;
+        static constexpr bool default_autoscaler_y_active = true;
         static constexpr double default_singularity_case_x_range_min = -0.5;
         static constexpr double default_singularity_case_x_range_max = 0.5;
         static constexpr double default_singularity_case_y_range_min = -0.5;
         static constexpr double default_singularity_case_y_range_max = 0.5;
+        static constexpr double padding_scale_x = 0.04;
+        static constexpr double padding_scale_y = 0.04;
     };
 
     class BindHotKeys {

@@ -1,6 +1,8 @@
 #ifndef GRID_HPP
 #define GRID_HPP
 
+#include "ConfigUI.hpp"
+
 #include "RaiiWinApi.hpp"
 #include "AxesDescription.hpp"
 #include "TransformCoordinates.hpp"

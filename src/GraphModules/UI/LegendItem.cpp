@@ -8,8 +8,8 @@ void LegendItem::Draw(HDC hdc, GraphContext& context) {
     RECT plot_area = context.GetPlotArea();
     Size2d window_size = context.GetWindowSize();
 
-    int right_margin = window_size.x * ConfigUI::Margins::clip_scale_x;
-    int left_margin = window_size.x * ConfigUI::Margins::clip_scale_x;
+    int right_margin = window_size.x * ConfigUI::LegendItem::background_right_padding;
+    int left_margin = window_size.x * ConfigUI::LegendItem::background_left_padding;
 
     int legend_width = window_size.x - plot_area.right - left_margin - right_margin;
     if (legend_width < 1) return;

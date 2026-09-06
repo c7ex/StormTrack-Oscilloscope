@@ -18,8 +18,8 @@ void AxesState::LaunchDrawCaptions(HDC hdc, GraphContext& context, const Transfo
     Size2d test_alpha_p = GridCalculator::CalculateAlphaColorGrid(core_content.area, slp);
     Size2d test_alpha_l = GridCalculator::CalculateAlphaColorGrid(core_content.area, sll);
 
-    COLORREF grid_color_p = GridConfig::GRID_MAIN;
-    COLORREF grid_color_l = GridConfig::GRID_SUB;
+    COLORREF grid_color_p = ConfigUI::Ruler::caption_main_color;
+    COLORREF grid_color_l = ConfigUI::Ruler::caption_sub_color;
 
     std::vector<GridPassContent> passes = {
         {test_alpha_l.y, sll, grid_color_l, GridDrawSelection::Horizontal},
@@ -45,8 +45,8 @@ void AxesState::LaunchDrawGrids(HDC hdc, GraphContext& context, const TransformC
     Size2d test_alpha_p = GridCalculator::CalculateAlphaColorGrid(core_content.area, slp);
     Size2d test_alpha_l = GridCalculator::CalculateAlphaColorGrid(core_content.area, sll);
 
-    COLORREF grid_color_p = GridConfig::GRID_MAIN;
-    COLORREF grid_color_l = GridConfig::GRID_SUB;
+    COLORREF grid_color_p = ConfigUI::Ruler::grid_main_color;
+    COLORREF grid_color_l = ConfigUI::Ruler::grid_sub_color;
 
     std::vector<GridPassContent> passes = {
         {test_alpha_l.y, sll, grid_color_l, GridDrawSelection::Horizontal},

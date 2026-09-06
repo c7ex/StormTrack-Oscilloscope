@@ -8,7 +8,7 @@ Size2d GridCalculator::CalculateCurrentStepGrid(Size2d span) {
 }
 
 Size2d GridCalculator::CalculateLowStepGrid(Size2d current_step) {
-    return (current_step / SUBDIVISION);
+    return (current_step / ConfigUI::Ruler::grid_calculator_subdivision);
 }
 
 Size2d GridCalculator::CalculateAlphaColorGrid(Size2d span, Size2d step) {
@@ -19,9 +19,9 @@ Size2d GridCalculator::CalculateAlphaColorGrid(Size2d span, Size2d step) {
         double l = (i == 0) ? lines.x : lines.y;
         double& a = (i == 0) ? alpha.x : alpha.y;
 
-        double deviation = std::abs(l - OPTIMAL_LINES) / OPTIMAL_LINES;
+        double deviation = std::abs(l - ConfigUI::Ruler::optimal_count_grid_lines) / ConfigUI::Ruler::optimal_count_grid_lines;
 
-        a = std::exp(-deviation * deviation * GridConfig::ALPHA_GAUSS_VALUE);
+        a = std::exp(-deviation * deviation * ConfigUI::Ruler::alpha_gauss_ratio);
 
         a *= a;
 

@@ -1,6 +1,8 @@
 #ifndef CAPTION_HPP
 #define CAPTION_HPP
 
+#include "ConfigUI.hpp"
+
 #include "RaiiWinApi.hpp"
 #include "AxesDescription.hpp"
 #include "TransformCoordinates.hpp"
