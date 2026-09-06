@@ -5,6 +5,18 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и этот проект придерживается [семантического версионирования](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-09-06
+
+### Added
+- Добавлена поддержка API для комплексных данных `std::complex<double>`.
+  - Статический график: `void JustView(const std::vector<std::complex<double>>& load_data, std::wstring caption_re, std::wstring caption_im, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0)`.
+  - Обновление кадра: `bool FrameView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im)`.
+  - Обновление потока по чанкам: `bool RealtimeView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im)`.
+  - Обновление потока по значению: `bool RealtimeView(const std::complex<double> load_value, size_t trace_index_re, size_t trace_index_im)`.
+
+### Changed
+- Обновлен Readme.
+
 ## [1.4.9] - 2026-09-06
 
 ### Added

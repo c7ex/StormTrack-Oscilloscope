@@ -123,9 +123,7 @@ namespace example_signal {
 
 namespace demo {
 
-
     std::atomic<bool> is_running{ true };
-
 
     void RunStreaming() {
         HINSTANCE hInstance = GetModuleHandle(nullptr);
@@ -399,9 +397,66 @@ void TestAutoscaleTrackMode() {
     window.WaitForClose();
 }
 
-int main() {
-    //TestAutoscaleTrackMode();
+void RunComplexAPITest() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
 
+    StormTrackInitParameters cfg = { {1200, 800}, {100.0, 10.0}, {0.0, -2.0} };
+    StormTrack window(hInstance, cfg, L"StormTrack: Complex API Test (v1.5.0)");
+
+    window.Show();
+
+    size_t tid_frame_i = window.AddTrace(L"Frame: I (Chirp)", RGB(255, 200, 0));
+    size_t tid_frame_q = window.AddTrace(L"Frame: Q (Chirp)", RGB(0, 200, 255));
+
+    size_t tid_rt_vec_mag = window.AddTrace(L"RT Vec: Magnitude", RGB(0, 255, 0));
+
+    size_t tid_rt_scalar_phase = window.AddTrace(L"RT Scalar: Phase", RGB(255, 0, 255));
+
+    std::cout << "Complex API Test Started. Press Enter to close." << std::endl;
+
+    {
+        std::vector<std::complex<double>> static_data(200);
+        for (size_t i = 0; i < static_data.size(); ++i) {
+            double t = i * 0.1;
+            static_data[i] = std::exp(-t * 0.05) * std::complex<double>(std::cos(t), std::sin(t));
+        }
+        window.JustView(static_data, L"Static I", L"Static Q", RGB(255, 100, 100), RGB(100, 100, 255), 0.1, 0.0);
+    }
+
+    double t_stream = 0.0;
+    const double dt = 0.05;
+    int frame_counter = 0;
+
+    while (window.IsActive()) {
+        std::vector<std::complex<double>> chunk(10);
+        for (int i = 0; i < 10; ++i) {
+            double noise = (std::rand() % 100 - 50) / 1000.0;
+            double real_part = std::cos(t_stream * 2.0) + std::sin(t_stream * 5.0) + noise;
+            double imag_part = std::sin(t_stream * 3.0) + noise;
+            chunk[i] = std::complex<double>(real_part, imag_part);
+            t_stream += dt;
+        }
+
+        std::vector<std::complex<double>> frame_chunk = chunk;
+        window.FrameView(frame_chunk, tid_frame_i, tid_frame_q);
+
+        window.RealtimeView(chunk, tid_rt_vec_mag, tid_rt_vec_mag);
+        window.RealtimeView(chunk, tid_rt_vec_mag, tid_rt_scalar_phase);
+        double phase_val = std::arg(chunk.back());
+
+        std::complex<double> scalar_sample = chunk.back();
+        window.RealtimeView(scalar_sample, tid_rt_scalar_phase, tid_rt_scalar_phase);
+        frame_counter++;
+        if (frame_counter > 50000) break;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+
+    window.Close();
+    window.WaitForClose();
+}
+
+int main() {
     std::thread streamingDemo(demo::RunStreaming);
     std::thread realtimeDemo(demo::RunRealtime);
     std::thread multiTraceDemo(demo::RunMultiTrace);

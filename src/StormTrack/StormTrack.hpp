@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <thread>
 #include <atomic>
+#include <complex>
 
 #include"GraphState.hpp"
 #include"WinApiIconLoader.hpp"
@@ -86,10 +87,18 @@ public:
 
 public:
     size_t AddTrace(std::wstring caption, COLORREF color, double step = 1, double offset = 0);
+
+    // single
     void JustView(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     bool FrameView(std::vector<double>& load_data, size_t trace_index);
     bool RealtimeView(std::vector<double>& load_data, size_t trace_index);
     bool RealtimeView(const double load_value, size_t trace_index);
+
+    // complex
+    void JustView(const std::vector<std::complex<double>>& load_data, std::wstring caption_re, std::wstring caption_im, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0);
+    bool FrameView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im);
+    bool RealtimeView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im);
+	bool RealtimeView(const std::complex<double> load_value, size_t trace_index_re, size_t trace_index_im);
 };
 
 #endif
