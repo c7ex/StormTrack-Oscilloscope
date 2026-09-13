@@ -106,10 +106,11 @@ public:
     };
 
     class Fps {
-	public:		
+	public:
 		static constexpr bool default_active = false;
         static constexpr size_t default_fps = 60;
         static constexpr size_t default_window_smoov_fps = 64;
+        static constexpr COLORREF textColor = RGB(0, 255, 0);
     };
 
     class AutoScaler {

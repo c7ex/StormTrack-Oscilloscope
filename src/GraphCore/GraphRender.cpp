@@ -73,5 +73,7 @@ void GraphState::Render(HDC hdc)
     size_t fps = static_cast<size_t>(millisecond / duration);
     fps_state_.Draw(graph_context_, hdc, fps);
 
+    display_hotkeys_.drawHotKeyStates(hdc, graph_context_, auto_scaler_, fps_state_);
+
     // >> end draw
 }

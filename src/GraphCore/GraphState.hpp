@@ -15,6 +15,7 @@
 #include "WindowState.hpp"
 #include "DataTracker.hpp"
 #include "FpsState.hpp"
+#include "DisplayHotKeys.hpp"
 #include "GraphContext.hpp"
 #include "TransformCoordinates.hpp"
 
@@ -38,6 +39,7 @@ private:
     WindowState window_state_;
     DataTracker data_tracker_;
     FpsState fps_state_;
+	DisplayHotKeys display_hotkeys_;
 
 public:
     GraphState();

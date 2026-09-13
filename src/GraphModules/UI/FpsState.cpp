@@ -1,5 +1,9 @@
 #include "FpsState.hpp"
 
+bool FpsState::GetState() const {
+	return active;
+}
+
 void FpsState::SwitchActive(const WindowState& window) {
     bool hotkey = window.GetKeysState(ActionHotKey::visible_fps) ^ ConfigUI::Fps::default_active;
     if (holder != hotkey) {
@@ -13,17 +17,17 @@ void FpsState::SwitchActive(const WindowState& window) {
 void FpsState::Draw(GraphContext& context, HDC hdc, int fps) {
     if (!active) return;
 
-    double alpha = 1. / static_cast<double>(window_smoov_fps);
+	double alpha = 1. / ConfigUI::Fps::default_window_smoov_fps;
     double betta = 1. - alpha;
     average_fps = static_cast<double>(fps) * alpha + betta * average_fps;
 
-    std::wstring text = L"FPS: " + std::to_wstring(static_cast<int>(average_fps));
+    std::wstring text = L"rendering score (fps): " + std::to_wstring(static_cast<int>(average_fps));
 
-    rwa::FONT font(hdc, 14, 0, 0, 0, FW_BOLD, false, false, false,
+    rwa::FONT font(hdc, 13, 0, 0, 0, FW_BOLD, false, false, false,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
         DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Arial");
 
-    SetTextColor(hdc, RGB(0, 255, 0));
+    SetTextColor(hdc, ConfigUI::Fps::textColor);
 
     auto ref_plot = context.GetPlotReferenceOffset();
     auto size_plot = context.GetPlotSize();

@@ -123,6 +123,9 @@
     <ClCompile Include="..\..\src\StormTrack\WinApiIconLoader.cpp">
       <Filter>src\StormTrack</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\GraphModules\UI\DisplayHotKeys.cpp">
+      <Filter>src\GraphModules\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\GraphCore\GraphContext.hpp">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesDescription.hpp">
       <Filter>src\GraphModules\Ruler\Axes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GraphModules\UI\DisplayHotKeys.hpp">
+      <Filter>src\GraphModules\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
