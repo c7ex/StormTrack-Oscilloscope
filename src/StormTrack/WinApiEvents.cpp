@@ -130,6 +130,10 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
             DeleteObject(hBackBuffer);
             hBackBuffer = nullptr;
         }
+        if (hIcon) {
+			DestroyIcon(hIcon);
+			hIcon = nullptr;
+        }
         PostQuitMessage(0);
         KillTimer(hwnd, TimerId);
         windowClosed = true;

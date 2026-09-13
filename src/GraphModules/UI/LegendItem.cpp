@@ -53,19 +53,17 @@ void LegendItem::DrawBackground(HDC hdc, const RECT& rect) {
 }
 
 void LegendItem::DrawFrame(HDC hdc, const RECT& rect) {
-    rwa::PEN pen(hdc, PS_SOLID, 1, ConfigUI::LegendItem::pen_frame);
     FrameRect(hdc, &rect, (HBRUSH)GetStockObject(NULL_BRUSH));
 }
 
 void LegendItem::DrawColorBox(HDC hdc, int x, int y, int size, const LegendProperties& item) {
     RECT color_rect = { x, y, x + size, y + size };
     rwa::PEN pen(hdc, PS_SOLID, 2, item.color);
-    rwa::BRUSH null_brush(hdc, ConfigUI::LegendItem::unactive_checkbox);
-    
     if (item.active) {
         rwa::BRUSH color_brush(hdc, item.color);
         Rectangle(hdc, color_rect.left, color_rect.top, color_rect.right, color_rect.bottom);
     } else {
+        rwa::BRUSH null_brush(hdc, ConfigUI::LegendItem::unactive_checkbox);
         Rectangle(hdc, color_rect.left, color_rect.top, color_rect.right, color_rect.bottom);
     }
 }

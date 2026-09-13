@@ -36,21 +36,6 @@ bool StormTrack::RegisterWindowClass() {
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszClassName = CLASS_NAME;
 
-    constexpr int icon_width = 256;
-    constexpr int icon_height = 256;
-
-    HICON hIcon = WinApiIconLoader::CreateIconFromICOMemory(
-        icon::StormTrackIconData,
-        icon::StormTrackIconDataSize,
-        icon_width, icon_height
-    );
-
-    if (!hIcon) {
-        hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    }
-
-    wc.hIcon = hIcon;
-
     return RegisterClassEx(&wc) != 0;
 }
 
@@ -75,6 +60,23 @@ bool StormTrack::Create(int nCmdShow) {
     if (!hwnd) {
         return false;
     }
+
+    constexpr int icon_width = 64;
+    constexpr int icon_height = 64;
+
+    HICON rawIcon = WinApiIconLoader::CreateIconFromICOMemory(
+        icon::StormTrackIconData,
+        icon::StormTrackIconDataSize,
+        icon_width, icon_height
+    );
+
+    if (!rawIcon)
+        hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    else
+        hIcon = rawIcon;
+
+    SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+    SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);

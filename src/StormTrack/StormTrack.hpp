@@ -55,12 +55,13 @@ private:
     std::atomic<bool> windowClosed;
 
 private:
-    GraphState graphState;
-
-private:
+    HICON hIcon = nullptr;
     HBITMAP hBackBuffer = nullptr;
     int bufferWidth = 0;
     int bufferHeight = 0;
+
+private:
+    GraphState graphState;
     
 private:
     const UINT_PTR TimerId = 1;
@@ -73,10 +74,12 @@ private:
     bool Create(int nCmdShow);
     void ThreadProc(int nCmdShow);
 
+private:
+    void Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title);
+
 public:
     StormTrack(HINSTANCE hInst, const wchar_t* title = L"StormTrack");
     StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters = {}, const wchar_t* title = L"StormTrack");
-    void Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title);
     ~StormTrack();
     
 public:
