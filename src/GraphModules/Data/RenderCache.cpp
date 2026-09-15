@@ -412,16 +412,10 @@ void RenderCache::ThresholdCacheY(GraphContext& context)
 		auto& cache = caches[i];
 
 		if (cache.is_active == false) continue;
+		if (cache.points.size() == 0) continue;
 
-		// if 1 point -> it's just point
-		if (cache.points.size() <= 1) {
-			// not valid
-			if (cache.points.size() == 0) continue;
-
-			// size == 1
-			// logic single point
-			// empty line ?
-		}
+		// cache was created or reset in "GenerateRenderCacheData" function
+		// cache size here lines (always > 1) or empty data (0)
 
 		// here size >= 2
 		auto& points = cache.points;

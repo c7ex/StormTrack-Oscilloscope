@@ -191,7 +191,7 @@ window.WaitForClose();
 | Plot area resize | Move the cursor to the edge of the dark border (a double-sided arrow will appear) and drag the boundary. Expands or collapses the legend panel. |
 
 ## Requirements
-- Windows XP or later
+- Windows 7 or later
 - A C++11-compatible compiler (Visual Studio 2015+, MinGW-w64 with GCC 5+)
 - No external libraries: only standard `kernel32`, `user32`, `gdi32`
 

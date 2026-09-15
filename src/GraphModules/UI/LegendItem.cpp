@@ -132,7 +132,16 @@ void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd) {
 
     if (mouse.x >= color_rect.left && mouse.x <= color_rect.right &&
         mouse.y >= color_rect.top && mouse.y <= color_rect.bottom) {
+
+        if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
+            for (auto& item : items) {
+                item.active = !item.active;
+            }
+        }
+
         items[index].active = !items[index].active;
+
         InvalidateRect(hwnd, NULL, TRUE);
     }
+
 }

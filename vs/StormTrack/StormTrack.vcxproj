@@ -29,17 +29,18 @@
     <ClCompile Include="..\..\src\GraphModules\Data\DataState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\Data\LinearData.cpp" />
     <ClCompile Include="..\..\src\GraphModules\Data\RenderCache.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Axes\AxesState.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Caption\Caption.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Grid\Grid.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Support\GridCalculator.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Support\TextFormatter.cpp" />
-    <ClCompile Include="..\..\src\GraphModules\Ruler\Support\TransparentColor.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\AutoScaler.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\DataTracker.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\DisplayHotKeys.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\FpsState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\LegendItem.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\PlotResizer.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\AxesState.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\Caption.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\Grid.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\GridCalculator.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\TextFormatter.cpp" />
+    <ClCompile Include="..\..\src\GraphModules\UI\Ruler\TransparentColor.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\TugboatState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\WindowState.cpp" />
     <ClCompile Include="..\..\src\GraphModules\UI\ZoomState.cpp" />
@@ -58,13 +59,6 @@
     <ClInclude Include="..\..\src\GraphModules\Data\DataState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Data\LinearData.hpp" />
     <ClInclude Include="..\..\src\GraphModules\Data\RenderCache.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesDescription.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Axes\AxesState.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Caption\Caption.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Grid\Grid.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Support\GridCalculator.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Support\TextFormatter.hpp" />
-    <ClInclude Include="..\..\src\GraphModules\Ruler\Support\TransparentColor.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\AutoScaler.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\ConfigUI.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\DataTracker.hpp" />
@@ -72,6 +66,13 @@
     <ClInclude Include="..\..\src\GraphModules\UI\FpsState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\LegendItem.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\PlotResizer.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\AxesDescription.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\AxesState.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\Caption.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\Grid.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\GridCalculator.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\TextFormatter.hpp" />
+    <ClInclude Include="..\..\src\GraphModules\UI\Ruler\TransparentColor.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\TugboatState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\WindowState.hpp" />
     <ClInclude Include="..\..\src\GraphModules\UI\ZoomState.hpp" />
@@ -113,7 +114,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -175,7 +176,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI\Ruler;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -200,7 +201,7 @@ for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackH
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\Ruler\Axes;..\..\src\GraphModules\Ruler\Support;..\..\src\GraphModules\Ruler\Caption;..\..\src\GraphModules\Ruler\Grid;..\..\src\GraphModules\Ruler;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\RaiiWinApi;..\..\src\GraphModules\UI\Ruler;..\..\src\GraphModules\UI;..\..\src\GraphModules\Data;..\..\src\GraphModules\BaseMath;..\..\src\GraphCore;..\..\src\StormTrack;..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
