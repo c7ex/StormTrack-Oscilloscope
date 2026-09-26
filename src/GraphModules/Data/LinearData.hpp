@@ -9,6 +9,7 @@
 
 #include <windows.h>
 #include <vector>
+#include <string>
 
 #include "Vec2d.hpp"
 
@@ -17,6 +18,7 @@ struct LinearDataParameters {
 	double offset;
 	double active;
 	COLORREF color;
+	std::wstring caption;
 	size_t index_trace;
 };
 
@@ -27,6 +29,7 @@ private:
 	double offset;
 	double active;
 	COLORREF color;
+	std::wstring caption;
 	size_t index_trace;
 
 public:
@@ -37,7 +40,7 @@ public:
 	const Position2d operator [](size_t index) const;
 
 public:
-	int64_t ReturnIndex(double x) const;
+	int64_t ReturnIndexPoint(double x) const;
 	
 	void SetStatus(bool status);
 	void SetColor(COLORREF new_color);
@@ -53,7 +56,7 @@ public:
 	void AppendData(const double new_value);
 
 public:
-	void Init(const std::vector<double>& init_data, double init_step, double init_offset);
+	void Init(const std::vector<double>& init_data, COLORREF init_color, std::wstring init_caption, double init_step, double init_offset);
 	LinearData();
 };
 

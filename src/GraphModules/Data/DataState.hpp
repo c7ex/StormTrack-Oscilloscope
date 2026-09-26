@@ -14,18 +14,24 @@ private:
     std::vector<LinearData> data;
 
 public:
-    explicit DataState();
+    void Draw(HDC hdc, const RenderCache& cache);
 
+public:
+    const size_t GetDataSize() const;
     const std::vector<LinearData>& GetData() const;
+    bool GetActiveState(size_t trace_index);
+    
+public:
+    void SetActiveState(size_t trace_index, bool state);
 
-    void load(std::vector<double>& load_data, double step = 1, double offset = 0);
+public:
+    void load(std::vector<double>& load_data, COLORREF color, std::wstring caption, double step = 1., double offset = 0.);
     void stream(std::vector<double>& new_data, size_t trace_index);
     void append(std::vector<double>& new_data, size_t trace_index);
     void append(const double new_value, size_t trace_index);
 
-    void update_data(const LegendItem& li);
-
-    void draw(HDC hdc, const RenderCache& cache, const LegendItem& li);
+public:
+    explicit DataState();
 };
 
 #endif

@@ -13,10 +13,10 @@ class GraphContext;
 
 class DisplayHotKeys {
 private:
-	void drawSingleHotKeyState(HDC hdc, GraphContext& context, int key, bool active, int& offset_x, int offset_y);
+	void DrawSingleHotKeyState(HDC hdc, GraphContext& context, int key, bool active, int& offset_x, int offset_y);
 
 public:
-	void drawHotKeyStates(HDC hdc, GraphContext& context, const AutoScaler& autoscaler, const FpsState& fps_state);
+	void DrawHotKeyStates(HDC hdc, GraphContext& context, const AutoScaler& autoscaler, const FpsState& fps_state);
 };
 
 #endif

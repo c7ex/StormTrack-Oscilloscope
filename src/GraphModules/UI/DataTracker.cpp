@@ -89,11 +89,11 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
         if (max_track_x > max_area.x) { max_track_x = max_area.x; }
 
         // check min
-        int64_t min_track_index = data.ReturnIndex(min_track_x);
+        int64_t min_track_index = data.ReturnIndexPoint(min_track_x);
         if (min_track_index == -1) { min_track_index = 0; }
 
         // check max
-        int64_t max_track_index = data.ReturnIndex(max_track_x);
+        int64_t max_track_index = data.ReturnIndexPoint(max_track_x);
         if (max_track_index == -1) { max_track_index = data.size() - 1; }
 
         // here need found nearest range form [min_track_index: max_track_index]

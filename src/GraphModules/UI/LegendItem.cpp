@@ -1,10 +1,6 @@
 #include"LegendItem.hpp"
 
-void LegendItem::Add(LegendProperties newItem) {
-    items.push_back(newItem);
-}
-
-void LegendItem::Draw(HDC hdc, GraphContext& context) {
+void LegendItem::Draw(HDC hdc, GraphContext& context, const DataState& data) {
     RECT plot_area = context.GetPlotArea();
     Size2d window_size = context.GetWindowSize();
 
@@ -24,7 +20,8 @@ void LegendItem::Draw(HDC hdc, GraphContext& context) {
     DrawBackground(hdc, rect);
     DrawFrame(hdc, rect);
 
-    if (items.empty()) return;
+    auto count_traces = data.GetDataSize();
+    if (count_traces == 0) return;
 
     const int start_x = rect.left + ConfigUI::LegendItem::padding_start_x;
     const int start_y = rect.top + ConfigUI::LegendItem::padding_start_y;
@@ -36,13 +33,13 @@ void LegendItem::Draw(HDC hdc, GraphContext& context) {
 
     if (!show_color_box) return;
 
-    for (size_t i = 0; i < items.size(); ++i) {
+    for (size_t i = 0; i < count_traces; ++i) {
         int y = start_y + i * ConfigUI::LegendItem::step_checkbox_y;
-        DrawColorBox(hdc, start_x, y, ConfigUI::LegendItem::item_size, items[i]);
+        DrawColorBox(hdc, start_x, y, ConfigUI::LegendItem::item_size, data.GetData()[i]);
 
         if (show_text) {
             DrawCaptions(
-                hdc, start_x + ConfigUI::LegendItem::item_size + ConfigUI::LegendItem::spacing, y, items[i].caption);
+                hdc, start_x + ConfigUI::LegendItem::item_size + ConfigUI::LegendItem::spacing, y, data.GetData()[i].getParameters().caption);
         }
     }
 }
@@ -56,11 +53,11 @@ void LegendItem::DrawFrame(HDC hdc, const RECT& rect) {
     FrameRect(hdc, &rect, (HBRUSH)GetStockObject(NULL_BRUSH));
 }
 
-void LegendItem::DrawColorBox(HDC hdc, int x, int y, int size, const LegendProperties& item) {
+void LegendItem::DrawColorBox(HDC hdc, int x, int y, int size, const LinearData& data) {
     RECT color_rect = { x, y, x + size, y + size };
-    rwa::PEN pen(hdc, PS_SOLID, 2, item.color);
-    if (item.active) {
-        rwa::BRUSH color_brush(hdc, item.color);
+    rwa::PEN pen(hdc, PS_SOLID, 2, data.getParameters().color);
+    if (data.getParameters().active) {
+        rwa::BRUSH color_brush(hdc, data.getParameters().color);
         Rectangle(hdc, color_rect.left, color_rect.top, color_rect.right, color_rect.bottom);
     } else {
         rwa::BRUSH null_brush(hdc, ConfigUI::LegendItem::unactive_checkbox);
@@ -74,25 +71,7 @@ void LegendItem::DrawCaptions(HDC hdc, int x, int y, const std::wstring& text) {
     TextOut(hdc, x, y, text.c_str(), (int)text.length());
 }
 
-bool LegendItem::IsActive(int index) const {
-    if (index >= 0 && index < items.size()) {
-        return items[index].active;
-    }
-    return false;
-}
-
-COLORREF LegendItem::GetColor(int index) const {
-    if (index >= 0 && index < items.size()) {
-        return items[index].color;
-    }
-    return 0;
-}
-
-size_t LegendItem::GetCountTrace() const {
-    return items.size();
-}
-
-void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd) {
+void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd, DataState& data) {
     RECT plot_area = context.GetPlotArea();
     Size2d window_size = context.GetWindowSize();
     Position2d mouse = context.GetMousePosition();
@@ -123,7 +102,7 @@ void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd) {
 
     int index = (mouse.y - start_y) / ConfigUI::LegendItem::step_checkbox_y;
 
-    if (index < 0 || index >= (int)items.size()) return;
+    if (index < 0 || index >= (int)data.GetDataSize()) return;
 
     int item_x = start_x;
     int item_y = start_y + index * ConfigUI::LegendItem::step_checkbox_y;
@@ -134,14 +113,15 @@ void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd) {
         mouse.y >= color_rect.top && mouse.y <= color_rect.bottom) {
 
         if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
-            for (auto& item : items) {
-                item.active = !item.active;
+            for (size_t i = 0; i < data.GetDataSize(); ++i) {
+                bool state = data.GetActiveState(i);
+                data.SetActiveState(i, !state);
             }
         }
 
-        items[index].active = !items[index].active;
+        bool state = data.GetActiveState(index);
+        data.SetActiveState(index, !state);
 
         InvalidateRect(hwnd, NULL, TRUE);
     }
-
 }

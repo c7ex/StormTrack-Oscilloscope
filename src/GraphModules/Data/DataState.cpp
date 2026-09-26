@@ -3,14 +3,33 @@
 
 DataState::DataState() {}
 
+const size_t DataState::GetDataSize() const {
+    return data.size();
+}
+
 const std::vector<LinearData>& DataState::GetData() const {
     return data;
 }
 
-void DataState::load(std::vector<double>& load_data, double step, double offset) {
+bool DataState::GetActiveState(size_t trace_index) {
+    if (trace_index < data.size()) {
+        return data[trace_index].GetStatus();
+    }
+    return false;
+}
+
+void DataState::SetActiveState(size_t trace_index, bool state) {
+    if (trace_index < data.size()) {
+        data[trace_index].SetStatus(state);
+    }
+}
+
+void DataState::load(std::vector<double>& load_data, COLORREF color, std::wstring caption, double step, double offset) {
     LinearData ldata;
-    ldata.Init(load_data, step, offset);
+    ldata.Init(load_data, color, caption, step, offset);
     data.push_back(ldata);
+    size_t new_index = data.size() - 1;
+    data[new_index].SetIndexTrace(new_index);
 }
 
 void DataState::stream(std::vector<double>& new_data, size_t trace_index) {
@@ -25,19 +44,9 @@ void DataState::append(const double new_value, size_t trace_index) {
     data[trace_index].AppendData(new_value);
 }
 
-void DataState::update_data(const LegendItem& li) {
-    for (int i = 0; i < data.size(); ++i) {
-        data[i].SetStatus(li.IsActive(i));
-        data[i].SetColor(li.GetColor(i));
-        data[i].SetIndexTrace(i);
-    }
-}
-
-void DataState::draw(HDC hdc, const RenderCache& cache, const LegendItem& li) {
+void DataState::Draw(HDC hdc, const RenderCache& cache) {
     //double timeGDI = 0;
     //auto start = std::chrono::high_resolution_clock::now();
-
-    update_data(li);
 
     constexpr size_t CHUNK_SIZE = 32;
     std::vector<POINT> chunk(CHUNK_SIZE);
@@ -45,7 +54,7 @@ void DataState::draw(HDC hdc, const RenderCache& cache, const LegendItem& li) {
     for (const auto& trace : cache.GetCaches()) {
         if (!trace.is_active || trace.points.empty()) continue;
 
-        COLORREF color = li.GetColor(trace.trace_id);
+        COLORREF color = data[trace.trace_id].GetColor();
         rwa::PEN pen(hdc, PS_SOLID, trace.is_compressed ? 1 : 2, color);
 
         size_t idx = 0;

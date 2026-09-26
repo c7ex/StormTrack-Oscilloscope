@@ -462,7 +462,6 @@ std::vector<TraceCache>& RenderCache::DebugGetCaches() { return caches; }
 void RenderCache::GenerateRenderCacheData(
 	GraphContext& context,
 	const TransformCoordinates& coreEngine,
-	const LegendItem& li,
 	const std::vector<LinearData>& data_pull) {
 
 	// clear caches
@@ -478,7 +477,7 @@ void RenderCache::GenerateRenderCacheData(
 	calculateRangeXInPixelX();
 
 	for (size_t i = 0; i < data_pull.size(); ++i) {
-		bool active_data = li.IsActive(i);
+		bool active_data = data_pull[i].GetStatus();
 		trace_id = i;
 		if (active_data) {
 			CachesManager(context, coreEngine, data_pull[i]);

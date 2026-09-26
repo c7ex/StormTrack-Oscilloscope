@@ -34,14 +34,14 @@ void GraphState::Render(HDC hdc)
     render_cache_.GenerateRenderCacheData(
         graph_context_,
         transform_coords_,
-        legend_item_,
         data_state_.GetData()
     );
 
-    if (auto_scaler_.GetStateAutoY())
+    if (auto_scaler_.GetStateAutoY()) {
         auto_scaler_.CorrectAreaY(graph_context_, transform_coords_, render_cache_);
-    else
+    } else {
         render_cache_.ThresholdCacheY(graph_context_);
+    }
 
     // >> begin draw
 
@@ -54,14 +54,14 @@ void GraphState::Render(HDC hdc)
     axes_state_.LaunchDrawGrids(hdc, graph_context_, transform_coords_);
 
     // display 1080x1920, Intel i5-7300HQ, 100к x 3 graphs = 60 fps 
-    data_state_.draw(hdc, render_cache_, legend_item_);
+    data_state_.Draw(hdc, render_cache_);
 
     window_state_.DrawPlotBoundary(hdc, graph_context_, transform_coords_);
 
     rgn.Free();
 
     axes_state_.LaunchDrawCaptions(hdc, graph_context_, transform_coords_);
-    legend_item_.Draw(hdc, graph_context_);
+    legend_item_.Draw(hdc, graph_context_, data_state_);
     data_tracker_.ShowCoordinates(hdc, graph_context_, transform_coords_, data_state_, window_state_);
 
     //#ifndef CURSORZOOM
@@ -73,7 +73,7 @@ void GraphState::Render(HDC hdc)
     size_t fps = static_cast<size_t>(millisecond / duration);
     fps_state_.Draw(graph_context_, hdc, fps);
 
-    display_hotkeys_.drawHotKeyStates(hdc, graph_context_, auto_scaler_, fps_state_);
+    display_hotkeys_.DrawHotKeyStates(hdc, graph_context_, auto_scaler_, fps_state_);
 
     // >> end draw
 }

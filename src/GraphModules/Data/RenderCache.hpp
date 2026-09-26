@@ -99,7 +99,6 @@ public:
 	void GenerateRenderCacheData(
 		GraphContext& context, 
 		const TransformCoordinates& coreEngine, 
-		const LegendItem& li, 
 		const std::vector<LinearData>& data_pull);
 };
 

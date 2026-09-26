@@ -15,11 +15,11 @@ void FpsState::SwitchActive(const WindowState& window) {
 }
 
 void FpsState::Draw(GraphContext& context, HDC hdc, int fps) {
-    if (!active) return;
-
 	double alpha = 1. / ConfigUI::Fps::default_window_smoov_fps;
     double betta = 1. - alpha;
     average_fps = static_cast<double>(fps) * alpha + betta * average_fps;
+
+    if (!active) return;
 
     std::wstring text = L"rendering score (fps): " + std::to_wstring(static_cast<int>(average_fps));
 

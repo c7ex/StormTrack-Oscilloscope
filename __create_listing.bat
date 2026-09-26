@@ -2,7 +2,7 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
-set "OUTPUT_FILE=__listing.mentor"
+set "OUTPUT_FILE=__programm.txt"
 set "CURRENT_DIR=%CD%"
 
 if exist "%OUTPUT_FILE%" del "%OUTPUT_FILE%"

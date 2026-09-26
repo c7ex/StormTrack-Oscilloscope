@@ -42,7 +42,7 @@ void GraphState::HandlerLButtonDown(LPARAM lParam, HWND hwnd) {
         }
 
         std::lock_guard<std::mutex> lock(mtx);
-        legend_item_.HitCheckAndToggle(graph_context_, hwnd);
+        legend_item_.HitCheckAndToggle(graph_context_, hwnd, data_state_);
     }
 }
 
@@ -172,32 +172,22 @@ bool GraphState::ExtractFlagOfDataTrack() const {
 
 void GraphState::AddData(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step, double offset) {
     std::lock_guard<std::mutex> lock(mtx);
-    data_state_.load(load_data, step, offset);
-    LegendProperties lp;
-    lp.active = true;
-    lp.caption = caption;
-    lp.color = color;
-    legend_item_.Add(lp);
+    data_state_.load(load_data, color, caption, step, offset);
 }
 
 size_t GraphState::CreateTrace(std::wstring caption, COLORREF color, double step, double offset) {
     std::lock_guard<std::mutex> lock(mtx);
     std::vector<double> emptyData(0);
-    data_state_.load(emptyData, step, offset);
-    LegendProperties lp;
-    lp.active = true;
-    lp.caption = caption;
-    lp.color = color;
-    legend_item_.Add(lp);
+    data_state_.load(emptyData, color, caption, step, offset);
 
-    auto count_traces = legend_item_.GetCountTrace();
+    auto count_traces = data_state_.GetDataSize();
     auto new_traces_id = count_traces - 1;
     return new_traces_id;
 }
 
 bool GraphState::StreamUpdate(std::vector<double>& load_data, size_t trace_index) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto count_traces = legend_item_.GetCountTrace();
+    auto count_traces = data_state_.GetDataSize();
 
     if (trace_index < count_traces) {
         data_state_.stream(load_data, trace_index);
@@ -209,7 +199,7 @@ bool GraphState::StreamUpdate(std::vector<double>& load_data, size_t trace_index
 
 bool GraphState::StreamAppend(std::vector<double>& load_data, size_t trace_index) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto count_traces = legend_item_.GetCountTrace();
+    auto count_traces = data_state_.GetDataSize();
 
     if (trace_index < count_traces) {
         data_state_.append(load_data, trace_index);
@@ -221,7 +211,7 @@ bool GraphState::StreamAppend(std::vector<double>& load_data, size_t trace_index
 
 bool GraphState::StreamAppend(const double load_value, size_t trace_index) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto count_traces = legend_item_.GetCountTrace();
+    auto count_traces = data_state_.GetDataSize();
 
     if (trace_index < count_traces) {
         data_state_.append(load_value, trace_index);

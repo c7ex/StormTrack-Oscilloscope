@@ -5,7 +5,7 @@ size_t LinearData::size() const {
 }
 
 const LinearDataParameters LinearData::getParameters() const {
-	return LinearDataParameters{ step, offset, active };
+	return LinearDataParameters{ step, offset, active, color, caption, index_trace };
 }
 
 const Position2d LinearData::operator [](size_t index) const 
@@ -23,7 +23,7 @@ const Position2d LinearData::operator [](size_t index) const
 	return { x, y };
 }
 
-int64_t LinearData::ReturnIndex(double x) const {
+int64_t LinearData::ReturnIndexPoint(double x) const {
 	int64_t index = static_cast<int64_t>(((x - offset) / step) + 0.5);
 	if(index < 0 || index >= size())
 	{ /* error access*/ }
@@ -67,17 +67,22 @@ void LinearData::AppendData(const double new_value) {
 	data.push_back(new_value);
 }
 
-void LinearData::Init(const std::vector<double>& init_data, double init_step, double init_offset) {
+void LinearData::Init(const std::vector<double>& init_data, COLORREF init_color, std::wstring init_caption, double init_step, double init_offset) {
+	index_trace = -1;
 	data = init_data;
 	step = init_step;
 	offset = init_offset;
+	color = init_color;
+	caption = init_caption;
 	active = true;
 }
 
 LinearData::LinearData() {
+	index_trace = -1;
 	step = 1;
 	offset = 0;
 	active = true;
 	color = RGB(255, 255, 255);
+	caption = L"empty trace";
 	index_trace = 0;
 }
