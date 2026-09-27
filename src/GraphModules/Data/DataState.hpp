@@ -20,14 +20,13 @@ public:
     const size_t GetDataSize() const;
     const std::vector<LinearData>& GetData() const;
     bool GetActiveState(size_t trace_index);
-    
-public:
     void SetActiveState(size_t trace_index, bool state);
+    void UpdateProperties(size_t trace_index, const TraceProperties& tp);
 
 public:
-    void load(std::vector<double>& load_data, COLORREF color, std::wstring caption, double step = 1., double offset = 0.);
+    void load(const std::vector<double>& load_data, COLORREF color, std::wstring caption, double step = 1., double offset = 0.);
     void stream(std::vector<double>& new_data, size_t trace_index);
-    void append(std::vector<double>& new_data, size_t trace_index);
+    void append(const std::vector<double>& new_data, size_t trace_index);
     void append(const double new_value, size_t trace_index);
 
 public:

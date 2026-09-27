@@ -22,7 +22,7 @@ void RenderCache::calculateRangeXInPixelX() {
 }
 
 double RenderCache::calculateCompressedScale(const LinearData& ldata) {
-	double step = (ldata.getParameters()).step;
+	double step = (ldata.getParameters()).prop.step;
 	double count_points_data_in_pixelX = rangeXInPixelX / step;
 	return count_points_data_in_pixelX;
 }
@@ -44,8 +44,8 @@ void RenderCache::calculateEffectiveIndices(const LinearData& ldata, const Posit
 	}
 
 	// calculated effective indexes with +1 correct
-	int64_t left_index = static_cast<int64_t>((vrX.min_value_x - data_parameters.offset) / data_parameters.step);
-	int64_t right_index = static_cast<int64_t>((vrX.max_value_x - data_parameters.offset) / data_parameters.step);
+	int64_t left_index = static_cast<int64_t>((vrX.min_value_x - data_parameters.prop.offset) / data_parameters.prop.step);
+	int64_t right_index = static_cast<int64_t>((vrX.max_value_x - data_parameters.prop.offset) / data_parameters.prop.step);
 
 	left_index--;
 	right_index++;
@@ -118,7 +118,7 @@ bool RenderCache::ArtifactsDetectorCacheCompressed(GraphContext& context, const 
 	double world_left = context.GetReferencePosition().x;
 
 	// pixel x-width world coordinations
-	double step = data.getParameters().step;
+	double step = data.getParameters().prop.step;
 	double bin_width = compressedScale * step;
 
 	// begin fractional phase
@@ -153,7 +153,7 @@ void RenderCache::CreateScenarioCacheCompressed(GraphContext& context, const Tra
 	double correct_phase = 0;
 
 	if (ArtifactsDetectorCacheCompressed(context, data, compressedScale)) {
-		double step = data.getParameters().step;
+		double step = data.getParameters().prop.step;
 		double bin_width = compressedScale * step;
 		correct_phase = bin_width / 2.;
 	}

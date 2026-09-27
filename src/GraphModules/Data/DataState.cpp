@@ -24,7 +24,13 @@ void DataState::SetActiveState(size_t trace_index, bool state) {
     }
 }
 
-void DataState::load(std::vector<double>& load_data, COLORREF color, std::wstring caption, double step, double offset) {
+void DataState::UpdateProperties(size_t trace_index, const TraceProperties& tp) {
+    if (trace_index < data.size()) {
+        data[trace_index].SetProperties(tp);
+    }
+}
+
+void DataState::load(const std::vector<double>& load_data, COLORREF color, std::wstring caption, double step, double offset) {
     LinearData ldata;
     ldata.Init(load_data, color, caption, step, offset);
     data.push_back(ldata);
@@ -36,7 +42,7 @@ void DataState::stream(std::vector<double>& new_data, size_t trace_index) {
     data[trace_index].LoadData(new_data);
 }
 
-void DataState::append(std::vector<double>& new_data, size_t trace_index) {
+void DataState::append(const std::vector<double>& new_data, size_t trace_index) {
     data[trace_index].AppendData(new_data);
 }
 

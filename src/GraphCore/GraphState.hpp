@@ -8,6 +8,7 @@
 #include "AxesState.hpp"
 #include "RenderCache.hpp"
 #include "DataState.hpp"
+#include "DataManager.hpp"
 #include "LegendItem.hpp"
 #include "TugboatState.hpp"
 #include "PlotResizer.hpp"
@@ -32,6 +33,7 @@ private:
     AxesState axes_state_;
     RenderCache render_cache_;
     DataState data_state_;
+    DataManager data_manager_;
     LegendItem legend_item_;
     TugboatState tugboat_state_;
     PlotResizer plot_resizer_;
@@ -72,6 +74,14 @@ public:
     bool StreamUpdate(std::vector<double>& load_data, size_t trace_index);
     bool StreamAppend(std::vector<double>& load_data, size_t trace_index);
     bool StreamAppend(const double load_value, size_t trace_index);
+
+    void ManagerDoTrace(const TraceProperties& tp);
+    void ManagerStream(std::vector<double>& load_data, const TraceProperties& tp);
+    void ManagerStream(std::vector<double>& load_data, std::wstring caption);
+    void ManagerAppend(const std::vector<double>& load_data, const TraceProperties& tp);
+    void ManagerAppend(const std::vector<double>& load_data, std::wstring caption);
+    void ManagerAppend(const double point_data, const TraceProperties& tp);
+    void ManagerAppend(const double point_data, std::wstring caption);
 
     void DrawCentralPoint(HDC hdc);
     void Render(HDC hdc);

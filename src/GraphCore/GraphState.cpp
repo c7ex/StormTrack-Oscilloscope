@@ -220,3 +220,38 @@ bool GraphState::StreamAppend(const double load_value, size_t trace_index) {
 
     return false;
 }
+
+void GraphState::ManagerDoTrace(const TraceProperties& tp) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.SetTraceParameters(tp, data_state_);
+}
+
+void GraphState::ManagerStream(std::vector<double>& load_data, const TraceProperties& tp) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Refresh(load_data, tp, data_state_);
+}
+
+void GraphState::ManagerStream(std::vector<double>& load_data, std::wstring caption) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Refresh(load_data, caption, data_state_);
+}
+
+void GraphState::ManagerAppend(const std::vector<double>& load_data, const TraceProperties& tp) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Append(load_data, tp, data_state_);
+}
+
+void GraphState::ManagerAppend(const std::vector<double>& load_data, std::wstring caption) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Append(load_data, caption, data_state_);
+}
+
+void GraphState::ManagerAppend(const double point_data, const TraceProperties& tp) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Append(point_data, tp, data_state_);
+}
+
+void GraphState::ManagerAppend(const double point_data, std::wstring caption) {
+    std::lock_guard<std::mutex> lock(mtx);
+    data_manager_.Append(point_data, caption, data_state_);
+}

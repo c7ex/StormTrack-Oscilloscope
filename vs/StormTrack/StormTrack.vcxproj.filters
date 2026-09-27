@@ -209,5 +209,8 @@
     <ClInclude Include="..\..\src\GraphModules\UI\Ruler\TransparentColor.hpp">
       <Filter>src\GraphModules\UI\Ruler</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\GraphModules\Data\DataManager.hpp">
+      <Filter>src\GraphModules\Data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

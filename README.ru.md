@@ -4,7 +4,7 @@
 
 **StormTrack** — C++ WinApi библиотека для отображения временных рядов в реальном времени на Windows с использованием GDI. Основное назначение: ускорение разработки R&D проектов с визуализацией в среде Visual Studio. Библиотека представляет собой программный осциллограф: позволяет строить статические и потоковые данные. Окно отрисовки выполняется в отдельном потоке, оставляя консоль отзывчивой. Хорошая производительность для миллиона точек.
 
-![Пример интерфейса](screen/DemoTrack.gif) 
+![Пример интерфейса](screen/v1.6.0.gif) 
 
 ## Основные возможности
 
@@ -158,6 +158,50 @@ window.Close();
 window.WaitForClose();
 ```
 
+### Unique-API
+
+Высокоуровневое API, где не нужно хранить `trace_index` — трейс адресуется по уникальному имени. Если трейса с таким именем ещё нет, он будет создан; если есть — данные добавятся к нему. Рекомендуется использовать именно это API.
+
+```cpp
+#include <complex>
+#include <vector>
+#include "StormTrack.hpp"
+
+int main() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrack window(hInstance, L"[Пример] API по именам");
+    window.Show();
+
+    // Создать трейс (или обновить параметры существующего)
+    window.UniqueTrace(L"Data 1", RGB(255, 0, 0));
+
+    // Стриминг: создание трейса, если он не был создан, и замена вектора данных
+    std::vector<double> data = /*...*/;
+    window.UniqueStream(data, L"Data 1");
+
+    // Накопление: создание трейса, если он не был создан, и добавление вектора данных в конец
+    std::vector<double> chunk = /*...*/;
+    window.UniquePushBack(chunk, L"Data 2", RGB(100, 100, 200));
+
+    // Накопление: создание трейса, если он не был создан, и добавление одной точки данных в конец
+    window.UniquePushBack(3.14, L"Data 2");
+
+    // Комплексные данные: автоматически создаст два трейса "Signal-Re" и "Signal-Im", в данном случае пример стриминга
+    std::vector<std::complex<double>> iq_data = /*...*/;
+    window.UniqueStream(iq_data, L"Signal", RGB(0, 255, 0), RGB(0, 0, 255));
+
+    // В данном примере не нужен — программа не закрывает окно принудительно.
+    // window.Close();
+
+    // Ждём, пока пользователь закроет окно
+    window.WaitForClose();
+
+    return 0;
+}
+```
+
+Обратная совместимость с существующим API (`AddTrace` + `FrameView` / `RealtimeView`) сохранена — можно смешивать оба подхода.
+
 ## Описание API
 
 | Метод | Назначение | Владение данными |
@@ -175,6 +219,13 @@ window.WaitForClose();
 | `Close()` | Отправить сигнал закрытия окну | — |
 | `WaitForClose()` | Дождаться завершения потока окна | — |
 | `IsActive()` | Проверить, открыто ли окно | — |
+| `UniqueTrace(caption, color, step, offset)` | Создать трейс по имени или обновить параметры существующего | — |
+| `UniqueStream(data, caption[, color, step, offset])` | Стриминг `std::vector<double>` по имени трейса | Копирует |
+| `UniqueStream(complex_data, caption[, color_re, color_im, ...])` | Стриминг `std::vector<std::complex<double>>` — создаёт трейсы `caption-Re` и `caption-Im` | Копирует |
+| `UniquePushBack(data, caption[, color, step, offset])` | Добавить вектор `std::vector<double>` в конец трейса по имени | Копирует |
+| `UniquePushBack(point, caption[, color, ...])` | Добавить одно значение `double` в конец трейса по имени | Копирует |
+| `UniquePushBack(complex_data, caption[, color_re, color_im, ...])` | Добавить блок комплексных данных в конец трейсов `-Re` и `-Im` | Копирует |
+| `UniquePushBack(complex_point, caption[, color_re, color_im, ...])` | Добавить одно комплексное значение в конец трейсов `-Re` и `-Im` | Копирует |
 
 ## Управление
 
@@ -192,7 +243,7 @@ window.WaitForClose();
 
 ## Требования
 - Windows 7 и выше
-- Компилятор с поддержкой C++11 (Visual Studio 2015+, MinGW-w64 с GCC 5+)
+- Компилятор с поддержкой C++17
 - Никаких внешних библиотек: только стандартные `kernel32`, `user32`, `gdi32`
 
 ## Лицензия

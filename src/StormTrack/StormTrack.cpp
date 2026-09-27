@@ -99,6 +99,12 @@ void StormTrack::ThreadProc(int nCmdShow) {
     }
 }
 
+StormTrack::StormTrack(const wchar_t* title) {
+    HINSTANCE hInst = GetModuleHandle(nullptr);
+    StormTrackInitParameters init_parameters;
+    Create(hInst, init_parameters, title);
+}
+
 StormTrack::StormTrack(HINSTANCE hInst, const wchar_t* title) {
     StormTrackInitParameters init_parameters;
     Create(hInst, init_parameters, title);
@@ -129,6 +135,8 @@ void StormTrack::Create(HINSTANCE hInst, StormTrackInitParameters init_parameter
     graphState.InitializeReferencePosition(
         init_parameters.start_coordination.x,
         init_parameters.start_coordination.y);
+
+    Show();
 }
 
 StormTrack::~StormTrack() {

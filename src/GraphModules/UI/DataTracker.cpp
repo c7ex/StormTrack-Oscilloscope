@@ -58,7 +58,7 @@ double DataTracker::VecModule(const Vec2d& p1, const Vec2d& p2) {
 void DataTracker::SearchNearestLinearData(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data)
 {
     LinearDataParameters ldp = data.getParameters();
-    if (!ldp.active) return;
+    if (!ldp.prop.active) return;
 
     Position2d mouse_position = context.GetMousePosition();
     Position2d coordinates = coreEngine.ConvertToWorldCoords(mouse_position.x, mouse_position.y);
@@ -77,7 +77,7 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
     DataSearchResult currentResult;
 
     // step != 0
-    if (ldp.step != 0){
+    if (ldp.prop.step != 0){
         size_t index_trace = data.GetIndexTrace();
 
         double halfWindowTrackX = static_cast<double>(ConfigUI::DataTracker::radiusTrackDataInPixels) * pixelStepInCoordRange.x;

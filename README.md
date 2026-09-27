@@ -4,7 +4,7 @@
 
 **StormTrack** is a C++ WinAPI library for real-time time series visualization on Windows using GDI. Its main purpose is to speed up R&D projects that need visualization in Visual Studio. The library works as a software oscilloscope: it can plot both static and streaming data. The rendering window runs in a separate thread, keeping the console responsive. Great performance even with a million data points.
 
-![Interface example](screen/DemoTrack.gif) 
+![Interface example](screen/v1.6.0.gif) 
 
 ## Key Features
 
@@ -158,6 +158,48 @@ window.Close();
 window.WaitForClose();
 ```
 
+### Unique API
+
+A high-level API where you don't need to store `trace_index` — each trace is addressed by its unique name. If a trace with that name doesn't exist yet, it will be created; if it does, the data will be appended to it. Recommended for most use cases.
+
+```cpp
+#include <complex>
+#include <vector>
+#include "StormTrack.hpp"
+
+int main() {
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    StormTrack window(hInstance, L"[Example] named API");
+    window.Show();
+
+    // Create a trace (or update parameters of an existing one)
+    window.UniqueTrace(L"Data 1", RGB(255, 0, 0));
+
+    // Streaming: create the trace if it doesn't exist, replace its data vector
+    std::vector<double> data = /*...*/;
+    window.UniqueStream(data, L"Data 1");
+
+    // Accumulation: create the trace if it doesn't exist, append a data vector
+    std::vector<double> chunk = /*...*/;
+    window.UniquePushBack(chunk, L"Data 2", RGB(100, 100, 200));
+
+    // Accumulation: create the trace if it doesn't exist, append a single data point
+    window.UniquePushBack(3.14, L"Data 2");
+
+    // Complex data: automatically creates two traces "Signal-Re" and "Signal-Im"; this is a streaming example
+    std::vector<std::complex<double>> iq_data = /*...*/;
+    window.UniqueStream(iq_data, L"Signal", RGB(0, 255, 0), RGB(0, 0, 255));
+
+    // Not needed in this example — the program does not close the window by itself.
+    // window.Close();
+
+    // Wait until the user closes the window
+    window.WaitForClose();
+
+    return 0;
+}
+```
+
 ## API Reference
 
 | Method | Description | Data ownership |
@@ -175,6 +217,13 @@ window.WaitForClose();
 | `Close()` | Send close signal to window | — |
 | `WaitForClose()` | Block until window thread exits | — |
 | `IsActive()` | Check if window is still open | — |
+| `UniqueTrace(caption, color, step, offset)` | Create a trace by name or update an existing one | — |
+| `UniqueStream(data, caption[, color, step, offset])` | Stream `std::vector<double>` to a named trace | Copies |
+| `UniqueStream(complex_data, caption[, color_re, color_im, ...])` | Stream `std::vector<std::complex<double>>` — creates `caption-Re` and `caption-Im` traces | Copies |
+| `UniquePushBack(data, caption[, color, step, offset])` | Append a `std::vector<double>` to a named trace | Copies |
+| `UniquePushBack(point, caption[, color, ...])` | Append a single `double` value to a named trace | Copies |
+| `UniquePushBack(complex_data, caption[, color_re, color_im, ...])` | Append a block of complex data to `-Re` and `-Im` traces | Copies |
+| `UniquePushBack(complex_point, caption[, color_re, color_im, ...])` | Append a single complex value to `-Re` and `-Im` traces | Copies |
 
 ## Controls
 
@@ -192,7 +241,7 @@ window.WaitForClose();
 
 ## Requirements
 - Windows 7 or later
-- A C++11-compatible compiler (Visual Studio 2015+, MinGW-w64 with GCC 5+)
+- A C++17-compatible compiler
 - No external libraries: only standard `kernel32`, `user32`, `gdi32`
 
 ## License

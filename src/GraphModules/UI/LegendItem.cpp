@@ -39,7 +39,7 @@ void LegendItem::Draw(HDC hdc, GraphContext& context, const DataState& data) {
 
         if (show_text) {
             DrawCaptions(
-                hdc, start_x + ConfigUI::LegendItem::item_size + ConfigUI::LegendItem::spacing, y, data.GetData()[i].getParameters().caption);
+                hdc, start_x + ConfigUI::LegendItem::item_size + ConfigUI::LegendItem::spacing, y, data.GetData()[i].getParameters().prop.caption);
         }
     }
 }
@@ -55,9 +55,9 @@ void LegendItem::DrawFrame(HDC hdc, const RECT& rect) {
 
 void LegendItem::DrawColorBox(HDC hdc, int x, int y, int size, const LinearData& data) {
     RECT color_rect = { x, y, x + size, y + size };
-    rwa::PEN pen(hdc, PS_SOLID, 2, data.getParameters().color);
-    if (data.getParameters().active) {
-        rwa::BRUSH color_brush(hdc, data.getParameters().color);
+    rwa::PEN pen(hdc, PS_SOLID, 2, data.getParameters().prop.color);
+    if (data.getParameters().prop.active) {
+        rwa::BRUSH color_brush(hdc, data.getParameters().prop.color);
         Rectangle(hdc, color_rect.left, color_rect.top, color_rect.right, color_rect.bottom);
     } else {
         rwa::BRUSH null_brush(hdc, ConfigUI::LegendItem::unactive_checkbox);

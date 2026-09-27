@@ -4,16 +4,15 @@ size_t LinearData::size() const {
 	return data.size();
 }
 
-const LinearDataParameters LinearData::getParameters() const {
-	return LinearDataParameters{ step, offset, active, color, caption, index_trace };
+const LinearDataParameters& LinearData::getParameters() const {
+	return param;
 }
 
 const Position2d LinearData::operator [](size_t index) const 
 {	
-	double x = offset + step * static_cast<double>(index);
+	double x = param.prop.offset + param.prop.step * static_cast<double>(index);
 	double y = 0;
-	if (index >= size())
-	{
+	if (index >= size()) {
 		/* error access*/
 		#ifdef _DEBUG
 		return { x, 0 };
@@ -24,7 +23,7 @@ const Position2d LinearData::operator [](size_t index) const
 }
 
 int64_t LinearData::ReturnIndexPoint(double x) const {
-	int64_t index = static_cast<int64_t>(((x - offset) / step) + 0.5);
+	int64_t index = static_cast<int64_t>(((x - param.prop.offset) / param.prop.step) + 0.5);
 	if(index < 0 || index >= size())
 	{ /* error access*/ }
 	else { return index; }
@@ -32,27 +31,33 @@ int64_t LinearData::ReturnIndexPoint(double x) const {
 }
 
 void LinearData::SetStatus(bool status) {
-	active = status;
+	param.prop.active = status;
 }
 
 void LinearData::SetColor(COLORREF new_color) {
-	color = new_color;
+	param.prop.color = new_color;
 }
 
 void LinearData::SetIndexTrace(size_t new_index_trace) {
-	index_trace = new_index_trace;
+	param.index_trace = new_index_trace;
+}
+
+void LinearData::SetProperties(const TraceProperties& tp) {
+	param.prop.color = tp.color;
+	param.prop.offset = tp.offset;
+	param.prop.step = tp.step;
 }
 
 bool LinearData::GetStatus() const {
-	return active;
+	return param.prop.active;
 }
 
 size_t LinearData::GetIndexTrace() const {
-	return index_trace;
+	return param.index_trace;
 }
 
 COLORREF LinearData::GetColor() const {
-	return color;
+	return param.prop.color;
 }
 
 void LinearData::LoadData(std::vector<double>& new_data) {
@@ -68,21 +73,11 @@ void LinearData::AppendData(const double new_value) {
 }
 
 void LinearData::Init(const std::vector<double>& init_data, COLORREF init_color, std::wstring init_caption, double init_step, double init_offset) {
-	index_trace = -1;
 	data = init_data;
-	step = init_step;
-	offset = init_offset;
-	color = init_color;
-	caption = init_caption;
-	active = true;
-}
-
-LinearData::LinearData() {
-	index_trace = -1;
-	step = 1;
-	offset = 0;
-	active = true;
-	color = RGB(255, 255, 255);
-	caption = L"empty trace";
-	index_trace = 0;
+	param.index_trace = -1;
+	param.prop.caption = init_caption;
+	param.prop.color = init_color;
+	param.prop.step = init_step;
+	param.prop.offset = init_offset;
+	param.prop.active = true;
 }

@@ -13,31 +13,6 @@
 #include"GraphState.hpp"
 #include"WinApiIconLoader.hpp"
 
-/*
-    <StormTrack>
-    description:
-        A Windows window wrapper class that runs in a separate thread.
-        This class encapsulates Windows API window creation and management,
-        allowing windows to be created and controlled from console applications
-        without blocking the main thread.
-
-    Usage example:
-        HINSTANCE hInstance = GetModuleHandle(nullptr);
-        StormTrack window(hInstance, L"My Window");
-        
-        use:
-            - JustView
-            - AddTrace + FrameView/RealtimeView
-
-        window.Show(); // Window runs in background thread
-        window.Close(); // Close window
-        window.WaitForClose(); // Wait for thread to finish
-
-    Console remains interactive!
-
-    C++11 or later
- */
-
 struct StormTrackInitParameters {
     Vec2d window_size = { 800, 600 };
     Vec2d visible_area_size = { 100, 100 };
@@ -78,6 +53,7 @@ private:
     void Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title);
 
 public:
+    StormTrack(const wchar_t* title = L"StormTrack");
     StormTrack(HINSTANCE hInst, const wchar_t* title = L"StormTrack");
     StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters = {}, const wchar_t* title = L"StormTrack");
     ~StormTrack();
@@ -89,19 +65,31 @@ public:
     bool IsActive() const;
 
 public:
+    // low API
     size_t AddTrace(std::wstring caption, COLORREF color, double step = 1, double offset = 0);
-
-    // single
     void JustView(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
     bool FrameView(std::vector<double>& load_data, size_t trace_index);
     bool RealtimeView(std::vector<double>& load_data, size_t trace_index);
     bool RealtimeView(const double load_value, size_t trace_index);
-
-    // complex
     void JustView(const std::vector<std::complex<double>>& load_data, std::wstring caption_re, std::wstring caption_im, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0);
     bool FrameView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im);
     bool RealtimeView(const std::vector<std::complex<double>>& load_data, size_t trace_index_re, size_t trace_index_im);
 	bool RealtimeView(const std::complex<double> load_value, size_t trace_index_re, size_t trace_index_im);
+
+    // new API
+    void UniqueTrace(std::wstring caption, COLORREF color, double step = 1, double offset = 0);
+    void UniqueStream(std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
+    void UniqueStream(std::vector<double>& load_data, std::wstring caption);
+    void UniqueStream(const std::vector<std::complex<double>>& load_data, std::wstring caption, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0);
+    void UniqueStream(const std::vector<std::complex<double>>& load_data, std::wstring caption);
+    void UniquePushBack(const std::vector<double>& load_data, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
+    void UniquePushBack(const std::vector<double>& load_data, std::wstring caption);
+    void UniquePushBack(const std::vector<std::complex<double>>& load_data, std::wstring caption, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0);
+    void UniquePushBack(const std::vector<std::complex<double>>& load_data, std::wstring caption);
+    void UniquePushBack(const double point, std::wstring caption, COLORREF color, double step = 1, double offset = 0);
+    void UniquePushBack(const double point, std::wstring caption);
+    void UniquePushBack(const std::complex<double> point, std::wstring caption, COLORREF color_re, COLORREF color_im, double step = 1, double offset = 0);
+    void UniquePushBack(const std::complex<double> point, std::wstring caption);
 };
 
 #endif
