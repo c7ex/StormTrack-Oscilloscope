@@ -1,9 +1,15 @@
 #include "StormTrack.hpp"
 
+#include "GraphState.hpp"
+
+struct StormTrack::implcore {
+    GraphState graphState;
+};
+
 LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
     case WM_SIZE: {
-        graphState.HandlerChangeSizeWindow(lParam);
+        implcore_->graphState.HandlerChangeSizeWindow(lParam);
 
         int width = LOWORD(lParam);
         int height = HIWORD(lParam);
@@ -36,7 +42,7 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
             FillRect(memDC, &clientRect, blackBrush);
             DeleteObject(blackBrush);
 
-            graphState.Render(memDC);
+            implcore_->graphState.Render(memDC);
 
             BitBlt(hdc, 0, 0, bufferWidth, bufferHeight, memDC, 0, 0, SRCCOPY);
 
@@ -60,30 +66,30 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
         tme.hwndTrack = hwnd;
         TrackMouseEvent(&tme);
 
-        graphState.HandlerMouseMove(lParam);
+        implcore_->graphState.HandlerMouseMove(lParam);
 
         InvalidateRect(hwnd, NULL, FALSE);
         return 0;
     }
 
     case WM_LBUTTONDOWN: {
-        graphState.HandlerLButtonDown(lParam, hwnd);
+        implcore_->graphState.HandlerLButtonDown(lParam, hwnd);
         return 0;
     }
 
     case WM_LBUTTONUP: {
-        graphState.HandlerLButtonUp(lParam);
+        implcore_->graphState.HandlerLButtonUp(lParam);
         return 0;
     }
 
     case WM_MOUSEWHEEL: {
-        graphState.HandlerMouseWheel(lParam, wParam, hwnd);
+        implcore_->graphState.HandlerMouseWheel(lParam, wParam, hwnd);
         InvalidateRect(hwnd, NULL, FALSE);
         return 0;
     }
 
     case WM_MOUSELEAVE: {
-        graphState.HandlerMouseLeave(lParam);
+        implcore_->graphState.HandlerMouseLeave(lParam);
         InvalidateRect(hwnd, NULL, FALSE);
         return 0;
     }
@@ -91,15 +97,15 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     case WM_SETCURSOR: {
         if (LOWORD(lParam) == HTCLIENT)
         {
-            bool dataTrackerIsActive = graphState.ExtractFlagOfDataTrack();
+            bool dataTrackerIsActive = implcore_->graphState.ExtractFlagOfDataTrack();
             if (dataTrackerIsActive) {
-                if (graphState.CursorMonitor(CursorType::_HIDDEN)) SetCursor(NULL);
+                if (implcore_->graphState.CursorMonitor(CursorType::_HIDDEN)) SetCursor(NULL);
                 return TRUE;
             }
 
-            bool plotResizerIsActive = graphState.ExtractFlagOfPlotResize();
+            bool plotResizerIsActive = implcore_->graphState.ExtractFlagOfPlotResize();
             if (!plotResizerIsActive) {
-                CursorType ct = graphState.ExtractCursorType();
+                CursorType ct = implcore_->graphState.ExtractCursorType();
                 
                 if (ct == CursorType::_ARROW) SetCursor(LoadCursor(NULL, IDC_ARROW));
                 else if (ct == CursorType::_CROSS) SetCursor(LoadCursor(NULL, IDC_CROSS));
@@ -115,13 +121,13 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     }
 
     case WM_KEYDOWN: {
-        graphState.HandlerKeyDown(wParam);
+        implcore_->graphState.HandlerKeyDown(wParam);
         return 0;
     }
 
 
     case WM_KEYUP: {
-        graphState.HandlerKeyUp(wParam);
+        implcore_->graphState.HandlerKeyUp(wParam);
         return 0;
     }
 
@@ -141,7 +147,7 @@ LRESULT StormTrack::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     }
 
     case WM_TIMER: {
-        if (graphState.PlotAreaActiveStatus()) SendMessage(hwnd, WM_SETCURSOR, (WPARAM)hwnd, MAKELPARAM(HTCLIENT, WM_MOUSEMOVE));
+        if (implcore_->graphState.PlotAreaActiveStatus()) SendMessage(hwnd, WM_SETCURSOR, (WPARAM)hwnd, MAKELPARAM(HTCLIENT, WM_MOUSEMOVE));
         InvalidateRect(hwnd, NULL, FALSE);
         return 0;
     }

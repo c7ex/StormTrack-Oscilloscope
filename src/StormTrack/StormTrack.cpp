@@ -1,5 +1,17 @@
 #include "StormTrack.hpp"
 
+// if have StormTrackIconData.hpp -> create Icon
+#if __has_include("StormTrackIconData.hpp")
+    #include "WinApiIconLoader.hpp"
+    #define CREATE_CUSTOM_ICON
+#endif
+
+#include "GraphState.hpp"
+
+struct StormTrack::implcore {
+    GraphState graphState;
+};
+
 const wchar_t* StormTrack::CLASS_NAME = L"StormTrack";
 
 LRESULT CALLBACK StormTrack::WindowProcStatic(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -41,7 +53,7 @@ bool StormTrack::RegisterWindowClass() {
 
 bool StormTrack::Create(int nCmdShow) {
 
-    Vec2d window_size = graphState.ExtractWindowSize();
+    Vec2d window_size = implcore_->graphState.ExtractWindowSize();
 
     hwnd = CreateWindowEx(
         0,
@@ -61,6 +73,8 @@ bool StormTrack::Create(int nCmdShow) {
         return false;
     }
 
+
+#ifdef CREATE_CUSTOM_ICON
     constexpr int icon_width = 64;
     constexpr int icon_height = 64;
 
@@ -74,6 +88,10 @@ bool StormTrack::Create(int nCmdShow) {
         hIcon = LoadIcon(NULL, IDI_APPLICATION);
     else
         hIcon = rawIcon;
+#else
+    hIcon = LoadIcon(NULL, IDI_APPLICATION);
+#endif
+
 
     SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
     SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
@@ -99,18 +117,18 @@ void StormTrack::ThreadProc(int nCmdShow) {
     }
 }
 
-StormTrack::StormTrack(const wchar_t* title) {
+StormTrack::StormTrack(const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
     HINSTANCE hInst = GetModuleHandle(nullptr);
     StormTrackInitParameters init_parameters;
     Create(hInst, init_parameters, title);
 }
 
-StormTrack::StormTrack(HINSTANCE hInst, const wchar_t* title) {
+StormTrack::StormTrack(HINSTANCE hInst, const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
     StormTrackInitParameters init_parameters;
     Create(hInst, init_parameters, title);
 }
 
-StormTrack::StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title) {
+StormTrack::StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
     Create(hInst, init_parameters, title);
 }
 
@@ -124,15 +142,15 @@ void StormTrack::Create(HINSTANCE hInst, StormTrackInitParameters init_parameter
 
     RegisterWindowClass();
 
-    graphState.InitializeWindowSize(
+    implcore_->graphState.InitializeWindowSize(
         init_parameters.window_size.x,
         init_parameters.window_size.y);
 
-    graphState.InitializeVisibleArea(
+    implcore_->graphState.InitializeVisibleArea(
         init_parameters.visible_area_size.x,
         init_parameters.visible_area_size.y);
 
-    graphState.InitializeReferencePosition(
+    implcore_->graphState.InitializeReferencePosition(
         init_parameters.start_coordination.x,
         init_parameters.start_coordination.y);
 

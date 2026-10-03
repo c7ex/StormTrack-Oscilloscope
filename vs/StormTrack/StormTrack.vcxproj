@@ -186,9 +186,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if exist "$(OutDir)StormTrackHeaders" rmdir /S /Q "$(OutDir)StormTrackHeaders"
-mkdir "$(OutDir)StormTrackHeaders"
-for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackHeaders\"</Command>
+      <Command>for /r "$(SolutionDir)..\src" %%f in (StormTrack.hpp) do copy "%%f" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"</Command>
@@ -216,9 +214,7 @@ for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackH
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if exist "$(OutDir)StormTrackHeaders" rmdir /S /Q "$(OutDir)StormTrackHeaders"
-mkdir "$(OutDir)StormTrackHeaders"
-for /r "$(SolutionDir)..\src" %%f in (*.hpp) do copy "%%f" "$(OutDir)StormTrackHeaders\"</Command>
+      <Command>for /r "$(SolutionDir)..\src" %%f in (StormTrack.hpp) do copy "%%f" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"</Command>

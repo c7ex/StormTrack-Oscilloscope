@@ -8,12 +8,11 @@
 #include <windows.h>
 #include <thread>
 #include <atomic>
+#include <vector>
 #include <complex>
 
-#include"GraphState.hpp"
-#include"WinApiIconLoader.hpp"
-
 struct StormTrackInitParameters {
+    struct Vec2d { double x; double y; };
     Vec2d window_size = { 800, 600 };
     Vec2d visible_area_size = { 100, 100 };
     Vec2d start_coordination = { 0, 0 };
@@ -28,20 +27,19 @@ private:
     std::thread windowThread;
     std::atomic<bool> windowCreated;
     std::atomic<bool> windowClosed;
-
-private:
     HICON hIcon = nullptr;
     HBITMAP hBackBuffer = nullptr;
     int bufferWidth = 0;
     int bufferHeight = 0;
-
-private:
-    GraphState graphState;
     
 private:
     const UINT_PTR TimerId = 1;
     UINT TimerInterval = 24;
 
+private:
+    struct implcore;
+    std::unique_ptr<implcore> implcore_;
+    
 private:
     static LRESULT CALLBACK WindowProcStatic(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

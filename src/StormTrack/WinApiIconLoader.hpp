@@ -3,7 +3,9 @@
 
 #include <windows.h>
 
-#include"StormTrackIconData.hpp"
+#if __has_include("StormTrackIconData.hpp")
+
+#include "StormTrackIconData.hpp"
 
 // AI-generated icon data structures for format .ico
 
@@ -35,6 +37,6 @@ public:
     static HICON CreateIconFromICOMemory(const unsigned char* icoData, size_t icoSize, int width, int height);
 };
 
-
+#endif
 
 #endif

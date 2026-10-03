@@ -33,10 +33,10 @@
 ### Method 1 — Ready-to-use SDK (recommended)
 1. Get the SDK. If a prebuilt SDK (.zip) is available in [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases), download and extract it.
    Otherwise, open the solution and build the `StormTrack` project in Release configuration —
-   `StormTrack.lib` and the `StormTrackHeaders` folder will appear in `bin/x64/Release`.
-2. Copy the `StormTrackHeaders` folder and `StormTrack.lib` into your project.
+   `StormTrack.lib` and `StormTrack.hpp` will appear in `bin/x64/Release`.
+2. Copy `StormTrack.lib` and `StormTrack.hpp` into your project.
 3. In your Visual Studio project settings:
-   - **C/C++ → General → Additional Include Directories** – add the path to the `StormTrackHeaders` folder.
+   - **C/C++ → General → Additional Include Directories** – specify the folder containing `StormTrack.hpp`.
    - **Linker → Input → Additional Dependencies** – add `StormTrack.lib`.
    - **Linker → General → Additional Library Directories** – specify the folder containing `StormTrack.lib`.
 4. Include the header: `#include "StormTrack.hpp"`.
@@ -46,7 +46,8 @@
 ### Method 2 — Adding source files directly to your project
 1. Create a console application in Visual Studio.
 2. Add all source folders to your project: `GraphCore/`, `GraphModules/`, `RaiiWinApi/`, `StormTrack/`. Make sure to include all paths to `.hpp` and `.cpp` files.
-3. Build in Debug/Release.
+3. If you want to add the icon, include the `res` folder (`ico2hpp.vbs` + `stormtrack.ico`) and add a pre-build command for icon generation. Example command: `cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"` — the key requirement is that the generated `StormTrackIconData.hpp` is visible to your project. As an alternative, take `StormTrackIconData.hpp` from the prebuilt SDK.
+4. Build in Debug/Release.
 
 **Note:** if you encounter error C1010, disable precompiled headers in your project settings.
 
@@ -218,7 +219,7 @@ int main() {
 | `WaitForClose()` | Block until window thread exits | — |
 | `IsActive()` | Check if window is still open | — |
 | `UniqueTrace(caption, color, step, offset)` | Create a trace by name or update an existing one | — |
-| `UniqueStream(data, caption[, color, step, offset])` | Stream `std::vector<double>` to a named trace | Copies |
+| `UniqueStream(data, caption[, color, step, offset])` | Stream `std::vector<double>` to a named trace | Moves |
 | `UniqueStream(complex_data, caption[, color_re, color_im, ...])` | Stream `std::vector<std::complex<double>>` — creates `caption-Re` and `caption-Im` traces | Copies |
 | `UniquePushBack(data, caption[, color, step, offset])` | Append a `std::vector<double>` to a named trace | Copies |
 | `UniquePushBack(point, caption[, color, ...])` | Append a single `double` value to a named trace | Copies |

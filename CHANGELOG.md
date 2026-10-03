@@ -5,6 +5,13 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и этот проект придерживается [семантического версионирования](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-10-03
+
+### Added
+- Собрать проект теперь можно без наличия файла-иконки `StormTrackIconData.hpp`.
+- `StormTrack.hpp` + `StormTrack.lib`
+  - Больше не требуется подключать всю папку с хэдерами, только `StormTrack.hpp`
+
 ## [1.6.0] - 2026-09-28
 
 ### Added

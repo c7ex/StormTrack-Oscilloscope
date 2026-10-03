@@ -1,3 +1,5 @@
+#if __has_include("StormTrackIconData.hpp")
+
 #include "WinApiIconLoader.hpp"
 
 DWORD WinApiIconLoader::ReadDWORDLE(const unsigned char* data, size_t offset) {
@@ -105,3 +107,5 @@ HICON WinApiIconLoader::CreateIconFromICOMemory(const unsigned char* icoData, si
 
     return NULL;
 }
+
+#endif

@@ -33,10 +33,10 @@
 ### Способ 1 — готовый SDK (рекомендуется)
 1. Получите SDK. Если в [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases) доступен готовый SDK (.zip), скачайте его и распакуйте.
    Иначе откройте решение и соберите проект `StormTrack` в конфигурации Release —
-   в папке `bin/x64/Release` появятся `StormTrack.lib` и папка `StormTrackHeaders`.
-2. Скопируйте в свой проект папку `StormTrackHeaders` и файл `StormTrack.lib`.
+   в папке `bin/x64/Release` появятся `StormTrack.lib` и `StormTrack.hpp`.
+2. Скопируйте в свой проект файлы `StormTrack.lib` и `StormTrack.hpp`.
 3. В настройках проекта Visual Studio:
-   - **C/C++ → General → Additional Include Directories** – добавьте путь к папке `StormTrackHeaders`.
+   - **C/C++ → General → Additional Include Directories** – укажите папку, где лежит `StormTrack.hpp`.
    - **Linker → Input → Additional Dependencies** – добавьте `StormTrack.lib`.
    - **Linker → General → Additional Library Directories** – укажите папку, где лежит `StormTrack.lib`.
 4. Подключите заголовок: `#include "StormTrack.hpp"`.
@@ -46,7 +46,8 @@
 ### Способ 2 — добавление исходных файлов в свой проект
 1. Создайте консольное приложение в Visual Studio.
 2. Добавьте в проект все папки с исходниками `GraphCore/`, `GraphModules/`, `RaiiWinApi/`, `StormTrack/`. Требуется указать все пути до `.hpp` и `.cpp`.
-3. Соберите в Debug/Release.
+3. Если хотите добавить в проект иконку, требуется добавить папку `res` (`ico2hpp.vbs` + `stormtrack.ico`) и комманду пребилда иконки. Пример команды: `cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"` - главное, чтобы сгенерированный `StormTrackIconData.hpp` был виден в вашем проекте. Как альтернативный вариант, взять файл `StormTrackIconData.hpp` из собранного SDK.
+4. Соберите в Debug/Release.
 
 **Примечание:** если возникнет ошибка C1010, отключите предкомпилированные заголовки в настройках проекта.
 
@@ -220,7 +221,7 @@ int main() {
 | `WaitForClose()` | Дождаться завершения потока окна | — |
 | `IsActive()` | Проверить, открыто ли окно | — |
 | `UniqueTrace(caption, color, step, offset)` | Создать трейс по имени или обновить параметры существующего | — |
-| `UniqueStream(data, caption[, color, step, offset])` | Стриминг `std::vector<double>` по имени трейса | Копирует |
+| `UniqueStream(data, caption[, color, step, offset])` | Стриминг `std::vector<double>` по имени трейса | Перемещает |
 | `UniqueStream(complex_data, caption[, color_re, color_im, ...])` | Стриминг `std::vector<std::complex<double>>` — создаёт трейсы `caption-Re` и `caption-Im` | Копирует |
 | `UniquePushBack(data, caption[, color, step, offset])` | Добавить вектор `std::vector<double>` в конец трейса по имени | Копирует |
 | `UniquePushBack(point, caption[, color, ...])` | Добавить одно значение `double` в конец трейса по имени | Копирует |
