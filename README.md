@@ -32,8 +32,8 @@
 
 ### Method 1 — Ready-to-use SDK (recommended)
 1. Get the SDK. If a prebuilt SDK (.zip) is available in [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases), download and extract it.
-   Otherwise, open the solution and build the `StormTrack` project in Release configuration —
-   `StormTrack.lib` and `StormTrack.hpp` will appear in `bin/x64/Release`.
+   Otherwise, open the solution `vs\StormTrack.sln` and build the project in Release configuration —
+   `StormTrack.lib` and `StormTrack.hpp` will appear in `bin\x64\Release`.
 2. Copy `StormTrack.lib` and `StormTrack.hpp` into your project.
 3. In your Visual Studio project settings:
    - **C/C++ → General → Additional Include Directories** – specify the folder containing `StormTrack.hpp`.
@@ -43,9 +43,20 @@
 
 **Note:** the `Demo` project includes a usage example.
 
-### Method 2 — Adding source files directly to your project
+### Method 2 — CMake (Windows)
+An alternative to the Visual Studio solution. Requires CMake 3.16+ and Visual Studio 2017+.
+1. Run `cmake\build.cmd` — the Visual Studio version is detected automatically.
+2. Files will appear in `bin\x64\Release\`:
+   - `StormTrack.lib`
+   - `StormTrack.hpp`
+   - `StormTrackDemo.exe`
+3. Intermediate build files (solution, VS projects) are placed in `cmake\build\`.
+
+To clean build artifacts, run `cmake\clean.cmd`.
+
+### Method 3 — Adding source files directly to your project
 1. Create a console application in Visual Studio.
-2. Add all source folders to your project: `GraphCore/`, `GraphModules/`, `RaiiWinApi/`, `StormTrack/`. Make sure to include all paths to `.hpp` and `.cpp` files.
+2. Add all source folders to your project: `GraphCore\`, `GraphModules\`, `RaiiWinApi\`, `StormTrack\`. Make sure to include all paths to `.hpp` and `.cpp` files.
 3. If you want to add the icon, include the `res` folder (`ico2hpp.vbs` + `stormtrack.ico`) and add a pre-build command for icon generation. Example command: `cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"` — the key requirement is that the generated `StormTrackIconData.hpp` is visible to your project. As an alternative, take `StormTrackIconData.hpp` from the prebuilt SDK.
 4. Build in Debug/Release.
 
@@ -241,11 +252,15 @@ int main() {
 | Plot area resize | Move the cursor to the edge of the dark border (a double-sided arrow will appear) and drag the boundary. Expands or collapses the legend panel. |
 
 ## Requirements
+
+**Using the SDK**
 - Windows 7 or later
 - A C++17-compatible compiler
 - No external libraries: only standard `kernel32`, `user32`, `gdi32`
 
+**Building with CMake**
+- CMake 3.16+
+- Visual Studio 2017+
+
 ## License
 MIT License. See the `LICENSE` file in the repository root.
-
-

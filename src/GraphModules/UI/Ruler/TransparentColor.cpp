@@ -2,7 +2,7 @@
 
 COLORREF TransparentColor::Mix(COLORREF bgColor, COLORREF textColor, double alpha)
 {
-    alpha = max(ConfigUI::Ruler::transparent_color_min, min(ConfigUI::Ruler::transparent_color_max, alpha));
+    alpha = (std::max)(ConfigUI::Ruler::transparent_color_min, (std::min)(ConfigUI::Ruler::transparent_color_max, alpha));
 
     int bgR = GetRValue(bgColor);
     int bgG = GetGValue(bgColor);

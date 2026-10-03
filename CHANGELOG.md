@@ -5,12 +5,28 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и этот проект придерживается [семантического версионирования](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] - 2026-10-04
+
+### Added
+- Добавлена CMake-сборка проекта как альтернатива `.sln`.
+  - `cmake\CMakeLists.txt` — сборка `StormTrack.lib` и демо.
+  - `cmake\build.cmd` — сборка одной командой (версия Visual Studio определяется автоматически).
+  - `cmake\clean.cmd` — очистка артефактов.
+  - Опции `STORMTRACK_BUILD_ICON` и `STORMTRACK_BUILD_DEMO` (обе включены по умолчанию).
+- Выходные файлы CMake-сборки: `bin\x64\Release\StormTrack.lib`, `StormTrack.hpp`, `StormTrackDemo.exe`.
+
+### Changed
+- Обновлен Readme — добавлен способ сборки через CMake.
+
 ## [1.6.1] - 2026-10-03
 
 ### Added
 - Собрать проект теперь можно без наличия файла-иконки `StormTrackIconData.hpp`.
 - `StormTrack.hpp` + `StormTrack.lib`
   - Больше не требуется подключать всю папку с хэдерами, только `StormTrack.hpp`
+
+### Deprecated
+- Не используйте `Vec2d` при инициализации параметров для создания окна.
 
 ## [1.6.0] - 2026-09-28
 

@@ -13,7 +13,7 @@ void LegendItem::Draw(HDC hdc, GraphContext& context, const DataState& data) {
     RECT rect = {
         plot_area.right + left_margin,
         plot_area.top,
-        window_size.x - right_margin,
+        static_cast<LONG>(window_size.x) - right_margin,
         plot_area.bottom
     };
 
@@ -85,7 +85,7 @@ void LegendItem::HitCheckAndToggle(GraphContext& context, HWND hwnd, DataState& 
     RECT rect = {
         plot_area.right + left_margin,
         plot_area.top,
-        window_size.x - right_margin,
+        static_cast<LONG>(window_size.x) - right_margin,
         plot_area.bottom
     };
 

@@ -4,6 +4,7 @@
 #include "ConfigUI.hpp"
 
 #include <windows.h>
+#include <algorithm>
 
 class TransparentColor {
 public:

@@ -9,6 +9,7 @@ __ideas.txt
 
 #Generation
 src/StormTrack/StormTrackIconData.hpp
+[Bb]uild/
 
 # User-specific files
 *.rsuser

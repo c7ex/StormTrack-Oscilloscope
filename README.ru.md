@@ -32,8 +32,8 @@
 
 ### Способ 1 — готовый SDK (рекомендуется)
 1. Получите SDK. Если в [Releases](https://github.com/c7ex/StormTrack-Oscilloscope/releases) доступен готовый SDK (.zip), скачайте его и распакуйте.
-   Иначе откройте решение и соберите проект `StormTrack` в конфигурации Release —
-   в папке `bin/x64/Release` появятся `StormTrack.lib` и `StormTrack.hpp`.
+   Иначе откройте решение `vs\StormTrack.sln` и соберите проект в конфигурации Release —
+   в папке `bin\x64\Release` появятся `StormTrack.lib` и `StormTrack.hpp`.
 2. Скопируйте в свой проект файлы `StormTrack.lib` и `StormTrack.hpp`.
 3. В настройках проекта Visual Studio:
    - **C/C++ → General → Additional Include Directories** – укажите папку, где лежит `StormTrack.hpp`.
@@ -43,10 +43,21 @@
 
 **Примечание:** проект `Demo` имеет пример подключения.
 
-### Способ 2 — добавление исходных файлов в свой проект
+### Способ 2 — CMake (Windows)
+Альтернатива решению Visual Studio. Требуется CMake 3.16+ и Visual Studio 2017+.
+1. Запустите `cmake\build.cmd` — версия Visual Studio определится автоматически.
+2. Результат сборки появится в `bin\x64\Release\`:
+   - `StormTrack.lib`
+   - `StormTrack.hpp`
+   - `StormTrackDemo.exe`
+3. Промежуточные файлы сборки (solution, проекты VS) лежат в `cmake\build\`.
+
+Для очистки артефактов запустите `cmake\clean.cmd`.
+
+### Способ 3 — добавление исходных файлов в свой проект
 1. Создайте консольное приложение в Visual Studio.
-2. Добавьте в проект все папки с исходниками `GraphCore/`, `GraphModules/`, `RaiiWinApi/`, `StormTrack/`. Требуется указать все пути до `.hpp` и `.cpp`.
-3. Если хотите добавить в проект иконку, требуется добавить папку `res` (`ico2hpp.vbs` + `stormtrack.ico`) и комманду пребилда иконки. Пример команды: `cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"` - главное, чтобы сгенерированный `StormTrackIconData.hpp` был виден в вашем проекте. Как альтернативный вариант, взять файл `StormTrackIconData.hpp` из собранного SDK.
+2. Добавьте в проект все папки с исходниками `GraphCore\`, `GraphModules\`, `RaiiWinApi\`, `StormTrack\`. Требуется указать все пути до `.hpp` и `.cpp`.
+3. Если хотите добавить в проект иконку, требуется добавить папку `res` (`ico2hpp.vbs` + `stormtrack.ico`) и команду пребилда иконки. Пример команды: `cscript //nologo "$(ProjectDir)..\..\res\ico2hpp.vbs" "$(ProjectDir)..\..\res\stormtrack.ico" "$(ProjectDir)..\..\src\StormTrack"` - главное, чтобы сгенерированный `StormTrackIconData.hpp` был виден в вашем проекте. Как альтернативный вариант, взять файл `StormTrackIconData.hpp` из собранного SDK.
 4. Соберите в Debug/Release.
 
 **Примечание:** если возникнет ошибка C1010, отключите предкомпилированные заголовки в настройках проекта.
@@ -201,8 +212,6 @@ int main() {
 }
 ```
 
-Обратная совместимость с существующим API (`AddTrace` + `FrameView` / `RealtimeView`) сохранена — можно смешивать оба подхода.
-
 ## Описание API
 
 | Метод | Назначение | Владение данными |
@@ -243,10 +252,15 @@ int main() {
 | Изменение размера области графика | Подвести курсор к границе тёмной рамки (появится двусторонняя стрелка) и перетащить границу. Скрывает или разворачивает панель с легендой. |
 
 ## Требования
+
+**Использование SDK**
 - Windows 7 и выше
 - Компилятор с поддержкой C++17
 - Никаких внешних библиотек: только стандартные `kernel32`, `user32`, `gdi32`
 
+**Сборка через CMake**
+- CMake 3.16+
+- Visual Studio 2017+
+
 ## Лицензия
 MIT License. См. файл `LICENSE` в корне репозитория.
-

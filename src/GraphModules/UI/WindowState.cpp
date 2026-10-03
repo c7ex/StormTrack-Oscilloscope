@@ -227,6 +227,7 @@ bool WindowState::GetKeysState(ActionHotKey key) const {
         case ActionHotKey::autoscale_x: { return keys_state.autoscale_x; }
         case ActionHotKey::autoscale_y: { return keys_state.autoscale_y; }
         case ActionHotKey::visible_fps: { return keys_state.visible_fps; }
+		default: { return false; }
     }
 }
 
