@@ -74,8 +74,6 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
     Position2d max_area = reference + area;
     Position2d min_area = reference;
 
-    DataSearchResult currentResult;
-
     // step != 0
     if (ldp.prop.step != 0){
         size_t index_trace = data.GetIndexTrace();
@@ -96,12 +94,7 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
         int64_t max_track_index = data.ReturnIndexPoint(max_track_x);
         if (max_track_index == -1) { max_track_index = data.size() - 1; }
 
-        // here need found nearest range form [min_track_index: max_track_index]
-        // 1. if (max_track_index - min_track_index > 16) it's very long, do compression search
-        // 2. if (max_track_index - min_track_index > 1024) - off search
-
         int64_t count_indexes = (max_track_index - min_track_index) + 1;
-        if (count_indexes <= 0 || count_indexes > ConfigUI::DataTracker::maximalSearchCountPounts) { /*no valid solution*/ return; }
 
         /*
            -------------------------------
@@ -118,7 +111,7 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
         // if radius = 6, MaxCheckDataPoints = 16
         // if radius = 8, MaxCheckDataPoints = 32
         // ...
-        const int countMaxCheckDataPoints = pow(2, std::floor(std::log2(ConfigUI::DataTracker::radiusTrackDataInPixels * 2)) + 1);
+        const int countMaxCheckDataPoints = ConfigUI::DataTracker::countTryTrackDataPoints;
 
         if (count_indexes > countMaxCheckDataPoints) {
             double float_index_step = static_cast<double>(count_indexes) / static_cast<double>(countMaxCheckDataPoints);
@@ -143,12 +136,12 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
 
 // return or mouse position in world coordination
 // or nearest data position
-Position2d DataTracker::TryHoldNearestData(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws) {
+Position2d DataTracker::TryHoldNearestData(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, const WindowState& ws) {
     Position2d mouse_position = context.GetMousePosition();
     Position2d coordinates = coreEngine.ConvertToWorldCoords(mouse_position.x, mouse_position.y);
 
-    auto linear_data = data.GetData();
-    auto size_linear_data = data.GetData().size();
+    auto& linear_data = data.GetData();
+    auto size_linear_data = linear_data.size();
 
     search_data_result.Reset();
 

@@ -60,6 +60,14 @@ COLORREF LinearData::GetColor() const {
 	return param.prop.color;
 }
 
+double LinearData::GetUnprotectedX(size_t index) const {
+	return param.prop.offset + param.prop.step * static_cast<double>(index);
+}
+
+double LinearData::GetUnprotectedY(size_t index) const {
+	return data[index];
+}
+
 void LinearData::LoadData(std::vector<double>& new_data) {
 	data = std::move(new_data);
 }

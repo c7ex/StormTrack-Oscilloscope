@@ -49,6 +49,8 @@ public:
 	bool GetStatus() const;
 	size_t GetIndexTrace() const;
 	COLORREF GetColor() const;
+	double GetUnprotectedX(size_t index) const;
+	double GetUnprotectedY(size_t index) const;
 
 public:
 	void LoadData(std::vector<double>& new_data);

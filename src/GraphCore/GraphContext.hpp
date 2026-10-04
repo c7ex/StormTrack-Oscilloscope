@@ -31,54 +31,30 @@ private:
 	double track_visible_area_x = ConfigUI::AutoScaler::default_track_visible_area_x;
 
 public:
-    Size2d GetVisibleArea() const;
-
-    void SetVisibleArea(Size2d new_visible_area);
-
-    void SetVisibleArea(double width, double height);
-
-    Position2d GetCurrentCoordinates() const;
-
-    void UpdateCoordinates(const TransformCoordinates& coreEngine);
-
-    /////
-
-    RECT GetPlotArea() const;
-
-    Position2d GetMousePosition() const;
-
-    Size2d GetWindowSize();
-
-    RelativeVec2d& GetWindowParam();
-
-    RelativeVec2d& GetPlotParam();
+    const Size2d& GetVisibleArea() const;
+    const Position2d& GetPlotReferenceOffset() const;
+    const Position2d& GetReferencePosition() const;
+    const Position2d& GetCurrentCoordinates() const;
+    const Position2d& GetMousePosition() const;
+    const RECT& GetPlotArea() const;
 
     Size2d GetPlotSize() const;
-
-    Position2d GetPlotReferenceOffset() const;
+    Size2d GetWindowSize() const;
+    RelativeVec2d& GetWindowParam();
+    RelativeVec2d& GetPlotParam();
 
     void SetPlotArea(RECT rt);
-
     void SetPlotReferenceOffset(Position2d position);
-
+    void SetVisibleArea(Size2d new_visible_area);
+    void SetVisibleArea(double width, double height);
+    void UpdateCoordinates(const TransformCoordinates& coreEngine);
     void UpdateMousePosition(const LPARAM& lParam);
-
     void UpdateMousePosition(double x, double y);
-
-    /////
-
-    Position2d GetReferencePosition() const;
-
     void SetReferencePosition(Position2d position);
-
     void SetOffsetReferencePosition(Offset2d offset);
-
-    /////
-
-    double GetTrackVisibleAreaX() const;
-
 	void SetTrackVisibleAreaX(double new_visible_area_x);
 
+    double GetTrackVisibleAreaX() const;
 };
 
 #endif

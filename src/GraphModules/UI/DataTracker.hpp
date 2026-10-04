@@ -62,7 +62,7 @@ private:
     void DrawLabel(HDC hdc, const Position2d& mouse_position, const std::wstring& text, COLORREF bgColor);
     double VecModule(const Vec2d& p1, const Vec2d& p2);
     void SearchNearestLinearData(GraphContext& context, const TransformCoordinates& coreEngine, const LinearData& data);
-    Position2d TryHoldNearestData(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws);
+    Position2d TryHoldNearestData(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, const DataState& data, const WindowState& ws);
     
 public:
     void ShowCoordinates(HDC hdc, GraphContext& context, const TransformCoordinates& coreEngine, DataState& data, const WindowState& ws);

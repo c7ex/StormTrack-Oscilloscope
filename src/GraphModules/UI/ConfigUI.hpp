@@ -71,7 +71,7 @@ public:
     class DataTracker {
     public:
         static constexpr int radiusTrackDataInPixels = 7;
-        static constexpr int maximalSearchCountPounts = 1024;
+        static constexpr int countTryTrackDataPoints = 32;
 
         static constexpr int padding = 3;
         static constexpr int offsetX = 8;

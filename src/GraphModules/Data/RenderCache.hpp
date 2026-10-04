@@ -98,7 +98,7 @@ public:
 public:
 	void GenerateRenderCacheData(
 		GraphContext& context, 
-		const TransformCoordinates& coreEngine, 
+		TransformCoordinates& coreEngine, 
 		const std::vector<LinearData>& data_pull);
 };
 

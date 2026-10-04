@@ -97,10 +97,13 @@ void RenderCache::CreateScenarioCacheDirect(const TransformCoordinates& coreEngi
 	trace.points.reserve(count);
 
 	for (size_t i = start; i <= end; ++i) {
-		trace.y_world_min = (std::min)(trace.y_world_min, data[i].y);
-		trace.y_world_max = (std::max)(trace.y_world_max, data[i].y);
+		double x = data.GetUnprotectedX(i);
+		double y = data.GetUnprotectedY(i);
 
-		Vec2d p = coreEngine.ConvertToPixelCoords(data[i]);
+		trace.y_world_min = (std::min)(trace.y_world_min, y);
+		trace.y_world_max = (std::max)(trace.y_world_max, y);
+
+		Vec2d p = coreEngine.FastConvertToPixelCoords(x, y);
 		trace.points.push_back(p);
 
 		trace.min_x = (std::min)(trace.min_x, p.x);
@@ -165,22 +168,22 @@ void RenderCache::CreateScenarioCacheCompressed(GraphContext& context, const Tra
 		// protect end
 		if (r_idx > ei.max_index) r_idx = static_cast<size_t>(ei.max_index);
 
-		double min_y = data[l_idx].y;
+		double min_y = data.GetUnprotectedY(l_idx);
 		double max_y = min_y;
 		for (int i = l_idx + 1; i <= r_idx; ++i) {
-			double y = data[i].y;
+			double y = data.GetUnprotectedY(i);
 			if (y < min_y) min_y = y;
 			else if (y > max_y) max_y = y;
 		}
 
 		size_t m_idx = (l_idx + r_idx) >> 1;
-		double x = data[m_idx].x + correct_phase;
+		double x = data.GetUnprotectedX(m_idx) + correct_phase;
 
 		trace.y_world_min = (std::min)(trace.y_world_min, min_y);
 		trace.y_world_max = (std::max)(trace.y_world_max, max_y);
 
-		Vec2d p1 = coreEngine.ConvertToPixelCoords(x, min_y);
-		Vec2d p2 = coreEngine.ConvertToPixelCoords(x, max_y);
+		Vec2d p1 = coreEngine.FastConvertToPixelCoords(x, min_y);
+		Vec2d p2 = coreEngine.FastConvertToPixelCoords(x, max_y);
 
 		trace.points.push_back(p1);
 		trace.points.push_back(p2);
@@ -461,8 +464,11 @@ std::vector<TraceCache>& RenderCache::DebugGetCaches() { return caches; }
 
 void RenderCache::GenerateRenderCacheData(
 	GraphContext& context,
-	const TransformCoordinates& coreEngine,
+	TransformCoordinates& coreEngine,
 	const std::vector<LinearData>& data_pull) {
+
+	// Install context constants
+	coreEngine.InitCacheTransform();
 
 	// clear caches
 	Reset();
