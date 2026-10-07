@@ -96,6 +96,8 @@ void DataTracker::SearchNearestLinearData(GraphContext& context, const Transform
 
         int64_t count_indexes = (max_track_index - min_track_index) + 1;
 
+        if(count_indexes <=0) return;
+
         /*
            -------------------------------
            calculate in pixel coordination
