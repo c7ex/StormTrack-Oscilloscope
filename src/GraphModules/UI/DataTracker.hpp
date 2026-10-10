@@ -1,5 +1,5 @@
-#ifndef _DATA_TRACKER_HPP
-#define _DATA_TRACKER_HPP
+#ifndef DATA_TRACKER_HPP
+#define DATA_TRACKER_HPP
 
 #include"RaiiWinApi.hpp"
 #include"LinearData.hpp"

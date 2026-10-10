@@ -1,5 +1,5 @@
-#ifndef GRAPHSTATE_H
-#define GRAPHSTATE_H
+#ifndef GRAPH_STATE_HPP
+#define GRAPH_STATE_HPP
 
 #include <mutex>
 

@@ -1,5 +1,5 @@
-#ifndef ZOOM_STATE_H
-#define ZOOM_STATE_H
+#ifndef ZOOM_STATE_HPP
+#define ZOOM_STATE_HPP
 
 #include<algorithm>
 

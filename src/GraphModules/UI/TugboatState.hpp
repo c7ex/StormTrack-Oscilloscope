@@ -1,5 +1,5 @@
-#ifndef TUGBOATSTATE_H
-#define TUGBOATSTATE_H
+#ifndef TUGBOAT_STATE_HPP
+#define TUGBOAT_STATE_HPP
 
 #include "windows.h"
 

@@ -10,6 +10,9 @@ public:
         static constexpr COLORREF background = RGB(10, 14, 23);
         static constexpr COLORREF boundary = RGB(8, 0, 15);
 
+		static constexpr double reference_position_x = 0.0;
+		static constexpr double reference_position_y = 0.0;
+
         static constexpr int base_margins_left = 65;
         static constexpr int base_margins_top = 35;
         static constexpr int base_margins_right = 240;

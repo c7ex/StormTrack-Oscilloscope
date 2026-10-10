@@ -34,7 +34,7 @@ private:
     
 private:
     const UINT_PTR TimerId = 1;
-    UINT TimerInterval = 24;
+    UINT TimerInterval = 16;
 
 private:
     struct implcore;
@@ -48,12 +48,12 @@ private:
     void ThreadProc(int nCmdShow);
 
 private:
-    void Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title);
+    void Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title, bool show);
 
 public:
-    StormTrack(const wchar_t* title = L"StormTrack");
-    StormTrack(HINSTANCE hInst, const wchar_t* title = L"StormTrack");
-    StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters = {}, const wchar_t* title = L"StormTrack");
+    StormTrack(const wchar_t* title = L"StormTrack", bool show = true);
+    StormTrack(HINSTANCE hInst, const wchar_t* title = L"StormTrack", bool show = true);
+    StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters = {}, const wchar_t* title = L"StormTrack", bool show = true);
     ~StormTrack();
     
 public:

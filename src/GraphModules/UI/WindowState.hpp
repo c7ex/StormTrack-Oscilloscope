@@ -1,5 +1,5 @@
-#ifndef WINDOWSTATE_H
-#define WINDOWSTATE_H
+#ifndef WINDOW_STATE_HPP
+#define WINDOW_STATE_HPP
 
 #include <windows.h>
 

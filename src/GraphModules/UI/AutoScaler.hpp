@@ -1,5 +1,5 @@
-#ifndef AUTO_SCALER_H
-#define AUTO_SCALER_H
+#ifndef AUTO_SCALER_HPP
+#define AUTO_SCALER_HPP
 
 #include <utility>
 

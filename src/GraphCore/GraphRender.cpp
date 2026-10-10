@@ -52,10 +52,7 @@ void GraphState::Render(HDC hdc)
     FillRect(hdc, &rplt, bgBrush.get());
 
     axes_state_.LaunchDrawGrids(hdc, graph_context_, transform_coords_);
-
-    // display 1080x1920, Intel i5-7300HQ, 100к x 3 graphs = 60 fps 
     data_state_.Draw(hdc, render_cache_);
-
     window_state_.DrawPlotBoundary(hdc, graph_context_, transform_coords_);
 
     rgn.Free();

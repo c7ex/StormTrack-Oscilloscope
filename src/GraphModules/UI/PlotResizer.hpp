@@ -1,5 +1,5 @@
-#ifndef _PLOTRESIZER_HPP_
-#define _PLOTRESIZER_HPP_
+#ifndef PLOT_RESIZER_HPP
+#define PLOT_RESIZER_HPP
 
 #include <windows.h>
 #include "Vec2d.hpp"

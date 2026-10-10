@@ -117,22 +117,22 @@ void StormTrack::ThreadProc(int nCmdShow) {
     }
 }
 
-StormTrack::StormTrack(const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
+StormTrack::StormTrack(const wchar_t* title, bool show) : implcore_(std::make_unique<implcore>()) {
     HINSTANCE hInst = GetModuleHandle(nullptr);
     StormTrackInitParameters init_parameters;
-    Create(hInst, init_parameters, title);
+    Create(hInst, init_parameters, title, show);
 }
 
-StormTrack::StormTrack(HINSTANCE hInst, const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
+StormTrack::StormTrack(HINSTANCE hInst, const wchar_t* title, bool show) : implcore_(std::make_unique<implcore>()) {
     StormTrackInitParameters init_parameters;
-    Create(hInst, init_parameters, title);
+    Create(hInst, init_parameters, title, show);
 }
 
-StormTrack::StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title) : implcore_(std::make_unique<implcore>()) {
-    Create(hInst, init_parameters, title);
+StormTrack::StormTrack(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title, bool show) : implcore_(std::make_unique<implcore>()) {
+    Create(hInst, init_parameters, title, show);
 }
 
-void StormTrack::Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title)
+void StormTrack::Create(HINSTANCE hInst, StormTrackInitParameters init_parameters, const wchar_t* title, bool show)
 {
     hInstance = hInst;
     hwnd = nullptr;
@@ -154,7 +154,7 @@ void StormTrack::Create(HINSTANCE hInst, StormTrackInitParameters init_parameter
         init_parameters.start_coordination.x,
         init_parameters.start_coordination.y);
 
-    Show();
+    if (show) { Show(); }
 }
 
 StormTrack::~StormTrack() {

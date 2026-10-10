@@ -1,5 +1,5 @@
-#ifndef AREA2D_H
-#define AREA2D_H
+#ifndef AREA_2D_HPP
+#define AREA_2D_HPP
 
 #include <windows.h>
 

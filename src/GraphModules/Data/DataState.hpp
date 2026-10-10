@@ -1,5 +1,5 @@
-#ifndef DATA_STATE_H
-#define DATA_STATE_H
+#ifndef DATA_STATE_HPP
+#define DATA_STATE_HPP
 
 #include"RaiiWinApi.hpp"
 #include"LinearData.hpp"

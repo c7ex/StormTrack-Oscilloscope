@@ -28,6 +28,46 @@
 - **Zero external dependencies** — pure Win32/GDI, no Qt, no boost, no extra DLLs. Just include headers and link the static library.
 - **Configurable UI appearance** — background colors, FPS counter visibility, and other visual parameters are exposed in a single `ConfigUI.hpp` header (requires rebuilding the project).
 
+## Performance
+
+All measurements below were taken with the frame time capped at **16 ms** (≈60 FPS),
+which corresponds to the internal render timer interval.
+
+> **Important:** the figures below describe the case when **all data points are rendered**.
+> In practice, FPS depends directly on the **visible portion** of the displayed data:
+> the library only renders the points that fall inside the current viewport,
+> so zooming in (reducing the visible range) improves performance,
+> while zooming out (showing the full dataset) is the heaviest case.
+> The values below therefore represent the **worst-case scenario** — a fully
+> visible dataset with autoscaling enabled.
+
+> **A note on the term "FPS":** two different metrics are often confused here.
+> - **Render FPS (internal)** — the number of fully rendered frames the library
+>   is able to produce per second *if it were not limited by the timer*. This value
+>   shows the real computational headroom of the renderer, and it is exactly what
+>   is measured in the table below.
+> - **Actual FPS (on-screen)** — the number of frames the user actually sees in the
+>   window. This value is capped by the internal render timer at **≈60 FPS**
+>   (interval 16 ms), so it can never exceed this limit, no matter how fast the
+>   renderer runs.
+>
+> In other words: if the *render FPS* is **above 60**, the user sees a smooth
+> **60 FPS**. If the *render FPS* drops **below 60** (e.g. ~34 or ~19 in the table),
+> the user sees exactly that lower value — the timer simply cannot keep up,
+> and each frame takes longer than 16 ms to compute.
+
+**Test hardware:** Intel Core i5-7300HQ (laptop CPU, 2017–2018).
+
+| Data points | Traces | Render FPS | Actual FPS       |
+|-------------|--------|------------|------------------|
+| 100K        | 10     | ~87        | 60 (capped)      |
+| 500K        | 10     | ~50        | ~50              |
+| 1M          | 10     | ~34        | ~34              |
+| 1M          | 1      | ~140       | 60 (capped)      |
+| 5M          | 1      | ~65        | 60 (capped)      |
+| 10M         | 1      | ~37        | ~37              |
+| 20M         | 1      | ~19        | ~19              |
+
 ## Build Instructions
 
 ### Method 1 — Ready-to-use SDK (recommended)

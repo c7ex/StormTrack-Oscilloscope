@@ -1,5 +1,5 @@
-#ifndef _LEGENDITEM_HPP
-#define _LEGENDITEM_HPP
+#ifndef LEGEND_ITEM_HPP
+#define LEGEND_ITEM_HPP
 
 #include<vector>
 #include<windows.h>

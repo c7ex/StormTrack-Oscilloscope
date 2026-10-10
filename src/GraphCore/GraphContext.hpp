@@ -1,5 +1,5 @@
-#ifndef GRAPHCONTEXT_HPP
-#define GRAPHCONTEXT_HPP
+#ifndef GRAPH_CONTEXT_HPP
+#define GRAPH_CONTEXT_HPP
 
 #include"ConfigUI.hpp"
 
@@ -8,6 +8,8 @@
 #include"Vec2d.hpp"
 #include"RelativeVec2d.hpp"
 #include"TransformCoordinates.hpp"
+
+#include"ConfigUI.hpp"
 
 class TransformCoordinates;
 
@@ -25,7 +27,10 @@ private:
     Position2d    mouse_position;
 
     // from TugboatState
-    Position2d reference_position{ 0.0, 0.0 };
+    Position2d reference_position { 
+        ConfigUI::GeneralGraph::reference_position_x, 
+        ConfigUI::GeneralGraph::reference_position_y
+    };
 
 	// from AutoScaler
 	double track_visible_area_x = ConfigUI::AutoScaler::default_track_visible_area_x;
